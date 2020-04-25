@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -e
+
+name="$1"
+org="$2"
+if [ -z "$name" ]; then
+    echo "Usage: $(basename "$0") <ssh-key-name>" >&2
+    exit 1
+fi
+if [ -z "$org" ]; then
+    org=andrew
+fi
+
+rm -f "$HOME/.ssh/keys/$name.pub"
+rm -f "$HOME/.ssh/keys/$name"

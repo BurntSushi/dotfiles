@@ -1,0 +1,31 @@
+#!/bin/sh
+
+if [ $# != 1 ]; then
+  echo "Usage: duration video-file" >&2
+  exit 1
+fi
+
+fp="$1"
+out="$(ffprobe -loglevel error -show_format "$fp")"
+
+# shellcheck disable=SC2181
+if [ $? != 0 ]; then
+  echo "$out" >&2
+  exit 1
+fi
+
+python2.7 <<EOF
+from __future__ import division, print_function
+import re
+
+m = re.search('duration=(\d+)', '''$out''')
+seconds = int(m.group(1))
+
+hours = seconds // 3600
+seconds -= hours * 3600
+
+minutes = seconds // 60
+seconds -= minutes * 60
+
+print('%dh%dm%ds' % (hours, minutes, seconds))
+EOF

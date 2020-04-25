@@ -1,0 +1,10 @@
+#!/bin/sh
+
+rsync \
+    --archive \
+    --recursive \
+    --human-readable \
+    --partial \
+    --inplace \
+    --progress \
+    "$@"

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ "$1" = group ]; then
+  find ./ -type f -print0 | xargs -0 chown $USER:users
+  find ./ -type f -print0 | xargs -0 chmod 664
+  find ./ -type d -print0 | xargs -0 chown $USER:users
+  find ./ -type d -print0 | xargs -0 chmod 775
+else
+  find ./ -type f -print0 | xargs -0 chown $USER:users
+  find ./ -type f -print0 | xargs -0 chmod 644
+  find ./ -type d -print0 | xargs -0 chown $USER:users
+  find ./ -type d -print0 | xargs -0 chmod 755
+fi

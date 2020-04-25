@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ $# != 2 ]; then
+  echo "Usage: source <(s3-login access-key-file secret-key-file)" >&2
+  exit 1
+fi
+
+access="$1"
+secret="$2"
+
+echo "export AWS_ACCESS_KEY_ID=\"$(cat $access)\""
+echo "export AWS_SECRET_ACCESS_KEY=\"$(cat $secret)\""

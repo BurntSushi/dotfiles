@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# `xinput list` shows devices.
+# `xinput list-props <device>` shows properties.
+device="SynPS/2 Synaptics TouchPad"
+# enable tap-to-click
+xinput set-prop "$device" "libinput Tapping Enabled" 1
+# make the touchpad a bit more sensitive
+xinput set-prop "$device" "libinput Accel Speed" 0.45

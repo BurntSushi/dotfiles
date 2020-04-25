@@ -1,0 +1,19 @@
+#!/bin/sh
+
+set -e
+
+name="$1"
+org="$2"
+if [ -z "$name" ]; then
+    echo "Usage: $(basename "$0") <ssh-key-name> [<org-name>]" >&2
+    exit 1
+fi
+if [ -z "$org" ]; then
+    org=andrew
+fi
+
+mkdir -p "$HOME/.ssh/keys"
+pass generate -n -c "$org/ssh/$name/passphrase"
+ssh-keygen -f "$HOME/.ssh/keys/$name" -C "$name"
+pass insert --multiline "$org/ssh/$name/pub" < "$HOME/.ssh/keys/$name.pub"
+pass insert --multiline "$org/ssh/$name/priv" < "$HOME/.ssh/keys/$name"

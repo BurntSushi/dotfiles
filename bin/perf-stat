@@ -1,0 +1,14 @@
+#!/bin/bash
+
+events="instructions,context-switches,major-faults,minor-faults"
+events+=",cpu-cycles,bus-cycles,ref-cycles"
+events+=",stalled-cycles-backend,stalled-cycles-frontend"
+events+=",L1-icache-load-misses"
+events+=",branches,branch-misses,cache-references,cache-misses"
+events+=",mem-loads,mem-stores"
+events+=",L1-dcache-loads,L1-dcache-load-misses,L1-dcache-prefetch-misses"
+events+=",L1-dcache-stores,L1-dcache-store-misses"
+events+=",LLC-loads,LLC-load-misses,LLC-prefetch-misses"
+events+=",LLC-stores,LLC-store-misses"
+
+perf stat -B -e "$events" sh -c "$(printf " %q" "$@")"

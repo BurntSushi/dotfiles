@@ -1,0 +1,5 @@
+#!/bin/sh
+
+x=$(python2 -c "import urllib; print urllib.unquote('$1'),")
+echo $x
+printf "%s" $x | xclip -selection clipboard

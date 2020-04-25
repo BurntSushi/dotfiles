@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# TODO: install mp3splt
+# For splitting an audiobook into pieces, so that you can use the seek bar
+# sanely, `mp3splt` can be used in one run pretty much at the disk's speed. Its
+# format language for metadata is atrocious, but thankfully putting the result
+# into a script frees me from revisiting the horror.
+#
+# Here's the command I use to cut into 10-minute pieces without a 1-minute
+# piece hanging at the end, and to name and title the pieces sequentially—so
+# you can be spared the ordeal:
+#
+#   mp3splt -t '10.00>2.00' -o '@f @n2' -d . -g 'r%[@o,@N=1,@t=#t @N]' "$1"
+#
+# where $1 is the source file, and `.` is the current directory as the
+# destination.
+#
+# IIRC it also comes with oggsplt and flacsplt—but no such luck for aac or ac3.
+#
+# See: https://news.ycombinator.com/item?id=22776613
+
+echo "unimplemented" >&2
+exit 1

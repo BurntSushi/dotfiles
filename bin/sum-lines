@@ -1,0 +1,6 @@
+#!/usr/bin/env python2
+
+from __future__ import absolute_import, division, print_function
+import sys
+
+print(sum(float(line.strip()) for line in sys.stdin))

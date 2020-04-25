@@ -1,0 +1,24 @@
+#!/bin/sh
+
+set -e
+
+host="$1"
+name="$2"
+org="$3"
+if [ -z "$host" ]; then
+    echo "Usage: $(basename "$0") <host> <ssh-key-name> [<org-name>]" >&2
+    exit 1
+fi
+if [ -z "$name" ]; then
+    echo "Usage: $(basename "$0") <host> <ssh-key-name> [<org-name>]" >&2
+    exit 1
+fi
+if [ -z "$org" ]; then
+    org=andrew
+fi
+
+trap 'rm -f /tmp/ssh-send-key/$name*' 0
+mkdir -p /tmp/ssh-send-key
+pass "$org/ssh/$name/pub" > "/tmp/ssh-send-key/$name.pub"
+pass "$org/ssh/$name/priv" > "/tmp/ssh-send-key/$name"
+ssh-copy-id -i "/tmp/ssh-send-key/$name.pub" "$host"

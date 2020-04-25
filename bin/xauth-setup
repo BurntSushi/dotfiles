@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ ! -f "$HOME/.Xauthority" ]; then
+  touch $HOME/.Xauthority
+  chmod 0600 $HOME/.Xauthority
+fi
+
+xauth add ":0.0" . $(mcookie)

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+while true; do
+  no-blanking
+  sleep 60
+done

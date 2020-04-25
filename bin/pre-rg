@@ -1,0 +1,14 @@
+#!/bin/bash
+
+case "$1" in
+*.pdf)
+    if [ -s "$1" ]; then
+        exec pdftotext "$1" -
+    else
+        exec cat
+    fi
+    ;;
+*)
+    exec cat
+    ;;
+esac

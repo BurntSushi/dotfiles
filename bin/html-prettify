@@ -1,0 +1,23 @@
+#!/usr/bin/env python2
+
+import argparse
+import os
+import sys
+
+from bs4 import BeautifulSoup
+
+parser = argparse.ArgumentParser(description='Prettify an HTML file')
+aa = parser.add_argument
+aa(dest='file', metavar='FILE', nargs='?', default=None)
+args = parser.parse_args()
+
+if args.file is None:
+    args.file = sys.stdin
+else:
+    if not os.access(args.file, os.R_OK):
+        print >> sys.stderr, 'Cannot read %s' % args.file
+        sys.exit(1)
+    args.file = open(args.file)
+
+soup = BeautifulSoup(args.file, 'lxml')
+print soup.prettify().encode('utf-8')

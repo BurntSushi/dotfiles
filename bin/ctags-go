@@ -1,0 +1,4 @@
+#!/bin/bash
+
+find ./ -path './vendor' -prune -or -name '*.go' -print0 \
+  | xargs -0 gotags > tags

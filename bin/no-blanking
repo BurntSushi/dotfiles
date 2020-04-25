@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# Blank everything out first and start fresh
+xset s noblank
+xset s noexpose
+xset s 0 0
+xset s off
+xset dpms 0 0 0
+xset -dpms

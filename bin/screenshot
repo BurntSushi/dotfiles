@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+    echo "Usage: $(basename $0) <file>" >&2
+    exit 1
+fi
+
+file="$1"
+sleep 3
+echo "select a window!"
+exec scrot -s "$file"

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ $# != 2 ]; then
+    echo "Usage: $(basename "$0") <input-video-file> <output-gif-file>" >&2
+    exit 1
+fi
+src="$1"
+dst="$2"
+exec ffmpeg -i "$src" -r 10 -vf scale=200:-1 "$dst"

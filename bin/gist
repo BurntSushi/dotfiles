@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Uploads a gist and copies to the resulting URL to the clipboard.
+# (Instead of the primary X selection, which requires using the mouse. Bah.)
+url=$(/usr/bin/gist "$@")
+echo "$url" | xclip -selection clipboard
+echo "$url"

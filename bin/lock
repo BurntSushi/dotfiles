@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Be more sophisticated here. We don't always want to sleep for 8 seconds
+# before forcing a 'standby'. We only want to do this if a lot of time has
+# elapsed since the 'lock' has occurred. Perhaps some date arithmetic?
+#
+# Honestly, fuck this, just assign standby to a keybinding and be done with it.
+#
+# I have no idea what the above means. ---AG (3 years older)
+
+set -e
+
+if is-work || is-laptop; then
+    clear-agents
+fi
+numlockx off
+date >> /tmp/i3lock.log
+i3lock >> /tmp/i3lock.log 2>&1 &
+sleep 5
+standby

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+unattached_local=$(
+  tmux ls \
+    | grep -E '^[0-9]+:' \
+    | grep -E -v '\(attached\)' \
+    | cut -d':' -f1
+)
+for session in $unattached_local; do
+  tmux kill-session -t $session
+done

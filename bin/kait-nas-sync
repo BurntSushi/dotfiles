@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# It's important that the various local paths don't end with a slash.
+rscp \
+  "$HOME/Documents" \
+  "$HOME/Music" \
+  "$HOME/Pictures" \
+  "$HOME/coursera" \
+  nas:/m/data/kait/

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+set -e
+
+if [ $# != 2 ]; then
+    echo "Usage: $(basename "$0") ssh-private-key-path pass-key-path" >&2
+    exit 1
+fi
+
+sshkey="$1"
+passkey="$2"
+runner="$(ssh-gen-askpass-runner "$passkey")"
+display=dummy
+if [ -n "$DISPLAY" ]; then
+    display="$DISPLAY"
+fi
+
+SSH_ASKPASS="$runner" DISPLAY="$display" ssh-add "$sshkey" < /dev/null
+rm "$runner"

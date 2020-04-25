@@ -1,0 +1,29 @@
+#!/bin/sh
+
+set -e
+
+name="$1"
+org="$2"
+if [ -z "$name" ]; then
+    echo "Usage: $(basename "$0") <ssh-key-name> [<org-name>]" >&2
+    exit 1
+fi
+if [ -z "$org" ]; then
+    org=andrew
+fi
+
+key="$HOME/.ssh/keys/$name"
+if [ "$name" = "google-compute-engine" ]; then
+  key="$HOME/.ssh/google_compute_engine"
+fi
+if ! [ -f "$key" ]; then
+    echo "$key: does not exist" >&2
+    exit 1
+fi
+
+passphrase="$org/ssh/$name/passphrase"
+if ! pass "$passphrase" > /dev/null 2>&1; then
+    ssh-add "$key"
+else
+    ssh-add-pass-key "$key" "$passphrase"
+fi

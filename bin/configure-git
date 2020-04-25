@@ -1,0 +1,5 @@
+#!/bin/sh
+
+git config user.name 'Andrew Gallant'
+git config user.email 'jamslam@gmail.com'
+git config user.signingkey 'jamslam@gmail.com'

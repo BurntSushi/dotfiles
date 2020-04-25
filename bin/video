@@ -1,0 +1,122 @@
+#!/bin/bash
+
+. $HOME/bin/x11-go
+
+function headNum {
+  headName="$1"
+  gohead tabs | cut -f1-2 | grep "$headName" | cut -f1
+}
+
+function placeHead {
+  headName="$1"
+  geom=$(gohead query "$headName" | cut -f2-5)
+  x=$(echo "$geom" | cut -f1)
+  y=$(echo "$geom" | cut -f2)
+  w=$(echo "$geom" | cut -f3)
+  h=$(echo "$geom" | cut -f4)
+
+  place $(headNum "$headName") $x $y $w $h
+}
+
+function array_exists {
+  search="$1"
+  haystack=($2)
+
+  for needle in ${haystack[@]}; do
+    if [ "$search" == "$needle" ]; then
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+function array_key {
+  search="$1"
+  keys=($2)
+  values=($3)
+
+  for (( i=0; i<${#values[*]}; i++ )); do
+    if [ "$search" == "${values[$i]}" ]; then
+      echo "${keys[$i]}"
+    fi
+  done
+}
+
+if ! gohead set $*; then
+  exit 1
+fi
+sleep 1
+
+case `hostname` in
+frink)
+  ps aux | grep -v grep | grep dzen-workspaces | awk '{print $2}' | xargs -r kill
+  killall trayer
+  (sleep 1 && \
+    trayer \
+    --widthtype pixel --width 150 \
+    --heighttype pixel --height 40 \
+    --edge bottom --align right --monitor 1 \
+    --SetDockType true) &
+  (sleep 1 && \
+    $HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces \
+    | dzen2 -dock -xs 2 -h 40 -fn 'Cousine-18' -ta l -bg '#ffffff' -y 1170) &
+  ;;
+Tiger)
+  if array_exists laptop "$*"; then
+    placeHead laptop
+  else
+    placeHead "$1"
+  fi
+  autobright &
+  ;;
+monty)
+  if array_exists laptop "$*"; then
+    placeHead laptop
+  else
+    placeHead "$1"
+  fi
+  autobright &
+  ;;
+krusty)
+  if array_exists laptop "$*"; then
+    placeHead laptop
+  else
+    placeHead "$1"
+  fi
+  autobright &
+  ;;
+Turtle)
+  if array_exists laptop "$*"; then
+    placeHead laptop
+  else
+    placeHead "$1"
+  fi
+  autobright &
+  ;;
+Leopard)
+  ;;
+Jaguar)
+  ;;
+wiggum)
+  pgrep dzen-workspaces | xargs -r kill
+  killall trayer
+  (sleep 1 && \
+    trayer \
+    --widthtype pixel --width 150 \
+    --heighttype pixel --height 40 \
+    --edge bottom --align right \
+    --SetDockType true) &
+
+  headHeight="$(gohead query tv | cut -f4)"
+  y="$((headHeight - 40))"
+  (sleep 1 && \
+    $HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces \
+    | dzen2 -dock -xs 2 -h 40 -fn 'Cousine-18' -ta l -bg '#ffffff' -y "$y") &
+  ;;
+*)
+  echo "Unrecognized machine '$(hostname)'." >&2
+  exit 1
+  ;;
+esac
+

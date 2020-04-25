@@ -1,0 +1,13 @@
+#!/bin/bash
+
+for d; do
+  if ! [ -d "$d" ]; then
+    echo "$d is not a directory. skipping." >&2
+    continue
+  fi
+  mv "$d"/*.{mkv,avi,mp4} ./ 2>/dev/null
+  rm "$d"/*.{txt,nfo,jpg,exe} 2>/dev/null
+  rm -rf "$d"/Sample 2>/dev/null
+  rm -rf "$d"/Screens 2>/dev/null
+  rmdir "$d"
+done

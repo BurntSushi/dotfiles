@@ -1,0 +1,8 @@
+#!/bin/sh
+
+exec runon-all \
+    '(
+        cd "$HOME"
+        g pull --rebase
+        pass git pull --rebase
+    )'

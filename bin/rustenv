@@ -1,0 +1,8 @@
+#!/bin/sh
+
+kind=release
+if [ -n "$1" ]; then
+  kind="$1"
+fi
+PATH="$(pwd)/target/$kind:$PATH"
+export PATH

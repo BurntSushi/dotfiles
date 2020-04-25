@@ -1,0 +1,37 @@
+#!/bin/sh
+
+REPORT_DIR="/tmp/perf-reports"
+
+devnull=
+callgraph=
+while true; do
+    case "$1" in
+        --devnull) devnull=yes ; shift ;;
+        --callgraph) callgraph=yes ; shift ;;
+        -h|--help)
+            echo "Usage: $(basename "$0") [--devnull --callgraph] command"
+            exit 0
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+mkdir -p "$REPORT_DIR"
+f="$(mktemp "--tmpdir=$REPORT_DIR" XXXXXXXXXX.data)"
+if [ -n "$devnull" ]; then
+    if [ -n "$callgraph" ]; then
+        perf record -F 10000 -o "$f" -g --call-graph dwarf "$@" > /dev/null
+    else
+        perf record -F 10000 -o "$f" -g "$@" > /dev/null
+    fi
+else
+    if [ -n "$callgraph" ]; then
+        perf record -F 10000 -o "$f" -g --call-graph dwarf "$@"
+    else
+        perf record -F 10000 -o "$f" -g "$@"
+    fi
+fi
+echo "===== perf report created: $f ====="
+exec perf report -M intel -i "$f"

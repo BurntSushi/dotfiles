@@ -1,0 +1,6 @@
+#!/bin/sh
+
+rm -rf /etc/pacman.d/gnupg
+pacman-key --init
+pacman-key --populate archlinux
+pacman-key --refresh-keys

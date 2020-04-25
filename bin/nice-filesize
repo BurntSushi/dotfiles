@@ -1,0 +1,18 @@
+#!/usr/bin/env python2
+
+from __future__ import absolute_import, division, print_function
+import argparse
+import sys
+
+p = argparse.ArgumentParser()
+p.add_argument('size', nargs='?', default=None, type=int,
+               help='If not set, size is read from stdin.')
+args = p.parse_args()
+
+size = float(args.size if args.size is not None else int(sys.stdin.read()))
+units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+unit = 0
+while size > 1024:
+    size /= 1024
+    unit += 1
+print('%0.2f %s' % (size, units[unit]))

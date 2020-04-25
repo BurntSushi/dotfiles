@@ -1,0 +1,17 @@
+#!/bin/sh
+
+curvers=
+if command -V rg > /dev/null 2>&1; then
+    curvers="$(rg -V | cut -d' ' -f2)"
+fi
+latesturl="https://api.github.com/repos/BurntSushi/ripgrep/releases/latest"
+latestvers="$(curl -s "$latesturl" | jq -r .tag_name)"
+if [ "$curvers" = "$latestvers" ]; then
+    echo "ripgrep is up to date"
+    exit 0
+fi
+
+name="ripgrep_${latestvers}_amd64.deb"
+url="https://github.com/BurntSushi/ripgrep/releases/download/$latestvers/$name"
+(cd /tmp && curl -LO "$url" && sudo dpkg -i "$name")
+echo "ripgrep updated from $curvers to $latestvers"

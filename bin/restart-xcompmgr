@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# See: https://github.com/chjj/compton/wiki/vsync-guide
+
+killall xcompmgr --wait
+exec xcompmgr
+
+# killall compton --wait
+# exec compton --backend glx --vsync
+# exec compton --backend glx
+# exec compton --backend glx \
+    # --glx-no-stencil \
+    # --glx-no-rebind-pixmap \
+    # --use-damage \
+# allow_rgb10_configs=false exec compton \
+  # --backend glx \
+  # --glx-no-stencil \
+  # --glx-no-rebind-pixmap
+
+# exec compton \
+  # --backend xr_glx_hybrid \
+  # --paint-on-overlay \
+  # --glx-no-stencil \
+  # --glx-no-rebind-pixmap
+
+# exec compton --paint-on-overlay

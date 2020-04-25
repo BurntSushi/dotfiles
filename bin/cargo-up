@@ -1,0 +1,101 @@
+#!/bin/bash
+
+set -e
+
+function update_version {
+  manifest="$1"
+  semver="$2"
+
+  sed -i "s/^version = \".*\"\s\+#:version$/version = \"$semver\"  #:version/g" "$manifest"
+}
+
+function current_version {
+  manifest="$1"
+  grep '^version' "$manifest" | sed 's/.*"\([0-9]\+\.[0-9]\+\.[0-9]\+\)"/\1/g'
+}
+
+function next_version {
+  cur="$1"
+  nopatch=${cur%.*}
+  patch=${cur##*.}
+  patchplus=$((patch + 1))
+  printf "%s.%s\n" $nopatch $patchplus
+}
+
+function pkg_name {
+  manifest="$1"
+  grep -E '^name = "[^"]+"$' "$manifest" \
+    | head -n1 \
+    | grep -Po '(?<=name = ")[^"]+'
+}
+
+release=yes
+push=yes
+while true; do
+  case "$1" in
+    --no-release) release= && shift ;;
+    --no-push) push= && shift ;;
+    -*)
+      echo "Usage: $(basename $0) [ --no-release --no-push ] [ path/to/Cargo.toml [ semver ] ]" >&2
+      exit 1
+      ;;
+    *) break ;;
+  esac
+done
+
+case $# in
+  0)
+    manifest=Cargo.toml
+    semver=$(next_version $(current_version "$manifest"))
+    ;;
+  1)
+    manifest="$1"
+    semver=$(next_version $(current_version "$manifest"))
+    ;;
+  2)
+    manifest="$1"
+    semver="$2"
+    ;;
+  *)
+    echo "Usage: $(basename $0) [ --no-release ] [ path/to/Cargo.toml [ semver ] ]" >&2
+    exit 1
+    ;;
+esac
+
+if [ -n "$(git status --untracked-files=no --porcelain)" ]; then
+  echo "Git working directory is not clean." >&2
+  exit 1
+fi
+if ! grep -q '#:version' "$manifest"; then
+  echo "Could not find '#:version' tag in $manifest" >&2
+  exit 1
+fi
+
+update_version "$manifest" "$semver"
+pkg="$(pkg_name "$manifest")"
+prefix="$pkg-"
+# prefix="$(basename $(dirname "$manifest"))-"
+if [ "$prefix" = ".-" ]; then
+  prefix=
+fi
+tagname="$prefix$semver"
+if [ -f Cargo.toml ] && grep -E -q '\[\[bin\]\]' Cargo.toml; then
+  cargo update -p "$pkg"
+fi
+git commit -a -m "$tagname"
+git tag -s -a "$tagname" -m "$tagname"
+
+if [ -n "$release" ]; then
+  (
+    cd "$(dirname "$manifest")"
+    cargo publish
+  )
+  if [ -n "$push" ]; then
+    for remote in origin github home; do
+      if git remote | grep -q "$remote"; then
+        git push "$remote" master
+        git push "$remote" "$tagname"
+      fi
+    done
+  fi
+fi

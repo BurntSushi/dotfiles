@@ -1,0 +1,20 @@
+#!/bin/sh
+
+case $# in
+  0|1|2) echo "Usage: $(basename $0) NUMBER[SUFFIX] UNTIL command ..." >&2 ; exit 1 ;;
+esac
+
+sleepTime="$1"
+shift
+
+until=0
+[ "$1" != "0" ] && until=$(date --date "$1" +%s)
+shift
+
+while true; do
+  if [ "$until" != "0" ] && [ $(date +%s) -ge "$until" ]; then
+    exit
+  fi
+  "$@"
+  sleep $sleepTime
+done

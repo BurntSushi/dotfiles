@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec hub pr list --sort-ascending -f '%pC%U - %<(15)%au - %t%n'

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# less="$VIMRUNTIME/macros/less.sh"
+# args="-s ~/.vimrc.less "
+# args="-c \":source /home/andrew/.vimrc.less\""
+# args="$args -c \":au SwapExists * let v:swapchoice='0'\""
+# args="$args -n"
+# args="$args -R"
+# args="$args -c \":set cmdheight=2\""
+
+# File descriptor 1 is standard output
+if [ -t 1 ]; then
+  if [ $# -eq 0 ]; then
+    set -- -
+  fi
+  # $less $args $@
+  vim -s ~/.vimrc.less "$@"
+  # $VIMRUNTIME/macros/less.sh -s ~/.vimrc.less $@
+fi

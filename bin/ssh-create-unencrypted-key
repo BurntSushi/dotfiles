@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# This should be used sparingly, but is useful in certain circumstances.
+#
+# For example, this is used in my media PCs which want to be able to connect
+# to the local NAS without dealing with passwords.
+#
+# I also use this to create ssh keys to store on phones. In that case, the
+# key should only be used on that phone. In the case where a phone is lost or
+# compromised, one can revoke that key.
+
+set -e
+
+name="$1"
+org="$2"
+if [ -z "$name" ]; then
+    echo "Usage: $(basename "$0") <ssh-key-name> [<org-name>]" >&2
+    exit 1
+fi
+if [ -z "$org" ]; then
+    org=andrew
+fi
+
+mkdir -p "$HOME/.ssh/keys"
+ssh-keygen -f "$HOME/.ssh/keys/$name" -C "$name"
+pass insert --multiline "$org/ssh/$name/pub" < "$HOME/.ssh/keys/$name.pub"
+pass insert --multiline "$org/ssh/$name/priv" < "$HOME/.ssh/keys/$name"

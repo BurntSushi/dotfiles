@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ $# = 0 ]; then
+  dir=.
+else
+  dir=("$@")
+fi
+du -achx -d 1 "${dir[@]}" | sort -h

@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+find ./ -mindepth 1 -maxdepth 1 -type d |
+  sed 's#^\./##g' |
+  grep -v '^\.'

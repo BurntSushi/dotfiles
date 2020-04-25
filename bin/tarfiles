@@ -1,0 +1,8 @@
+#!/bin/sh
+
+d="$1"
+shift
+
+mkdir "$d"
+cp -a "$@" "$d"/
+tar zcf "$d.tar.gz" "$d"

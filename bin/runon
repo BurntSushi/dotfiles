@@ -1,0 +1,9 @@
+#!/bin/sh
+
+host="$1"
+shift
+if [ -z "$host" ]; then
+    echo "Usage: $(basename "$0") <host> <command> ..." >&2
+    exit 1
+fi
+exec ssh "$host" -tt "zsh -i -c '$*'" < /dev/null

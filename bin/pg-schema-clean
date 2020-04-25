@@ -1,0 +1,30 @@
+#!/bin/sh
+
+dry_run=true
+while [ $# -gt 0 ]; do
+  case $1 in
+    --do-it) dry_run= ; shift ;;
+    *) break ;;
+  esac
+done
+if [ $# != 1 ]; then
+  echo "Usage: $(basename $0) [--do-it] PG_SCHEMA_NAME" >&2
+  exit 1
+fi
+
+db="$1"
+if [ -z "$dry_run" ]; then
+  psql "$db" -c '\dn' \
+    | awk '{print $1}' \
+    | grep -E '^[a-z]' \
+    | grep -E -v '^public$' \
+    | xargs printf "DROP SCHEMA %s CASCADE;\n" \
+    | while read -r sql; do psql "$db" -c "$sql"; done
+else
+  psql "$db" -c '\dn' \
+    | awk '{print $1}' \
+    | grep -E '^[a-z]' \
+    | grep -E -v '^public$' \
+    | xargs printf "DROP SCHEMA %s CASCADE;\n"
+  echo "dry run complete; pass --do-it to execute" >&2
+fi

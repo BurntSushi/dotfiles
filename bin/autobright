@@ -1,0 +1,13 @@
+#!/bin/sh
+
+status="$(cat /sys/class/power_supply/BAT0/status)"
+if [ "$status" != "Discharging" ]; then
+  brightness ac
+else
+  brightness bat
+fi
+# if on_ac_power; then
+#   brightness ac
+# else
+#   brightness bat
+# fi

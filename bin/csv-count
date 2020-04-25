@@ -1,0 +1,24 @@
+#!/usr/bin/env python2
+
+from __future__ import absolute_import, division, print_function
+import argparse
+import csv
+import sys
+
+p = argparse.ArgumentParser(
+    description='Count the number of records in the given CSV file.')
+p.add_argument('file', metavar='FILE')
+p.add_argument('-d', metavar='DELIMITER', default=',')
+args = p.parse_args()
+
+csv.field_size_limit(sys.maxsize)
+count = 0
+rdr = csv.reader(open(args.file), delimiter=args.d)
+try:
+    for i, row in enumerate(rdr):
+        count += 1
+except Exception as e:
+    print(e, file=sys.stderr)
+    print('Current count: %d' % count)
+    sys.exit(1)
+print(count)

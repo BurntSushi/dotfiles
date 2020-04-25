@@ -1,0 +1,4 @@
+#!/bin/sh
+
+url="https://api.github.com/repos/BurntSushi/ripgrep/releases/latest"
+curl -s "$url" | jq -r .tag_name

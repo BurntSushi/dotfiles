@@ -1,0 +1,5 @@
+#!/bin/sh
+
+/usr/bin/sudo apt-get update
+/usr/bin/sudo apt-get --with-new-pkgs upgrade
+/usr/bin/sudo apt autoremove

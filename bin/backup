@@ -1,0 +1,378 @@
+#!/bin/bash
+
+# vim: tabstop=2 shiftwidth=2 softtabstop=2
+
+# This shell script is a relatively simple tool for using s3 as a backup
+# service based on some simple requirements:
+#
+#   - Some data is updated infrequently, but is large.
+#   - Some data is updated more frequently, but is small.
+#   - Some data is sensitive, e.g., tax information. Such data
+#     should be encrypted *before* being sent to s3.
+#
+# This script addresses these requirements by introducing two different types
+# of backup: "oneshot" and "sync."
+#
+# Oneshot backups take a single directory, turn it into a gzip archive, encrypt
+# it and then upload it to s3://BUCKET/oneshot/$(date +'%Y-%m-%d'). This
+# organizes the backups by day. This means you can only backup a directory at
+# most once a day. This is OK because oneshot backups address the "big and
+# infrequent" use case.
+#
+# Sync backups take a single directory, encrypt each file individually and then
+# upload the resulting encrypted tree to s3 directly. There is no compression
+# and the directory hierarchy itself is not concealed. This script WILL delete
+# files in s3 that are no longer in the sync directory, so it is recommended
+# to enable versioning on your bucket. (If you're worried about space, then
+# set up a lifecycle rule to expire previous versions of files older than a
+# particular age.)
+#
+# The sync command is intended to be run multiple times on the same directory.
+# It won't re-upload or even re-encrypt every file every time. It isn't the
+# fastest thing in the world, but it's fast enough to run once a day from a
+# cronjob.
+#
+# Finally, this tool hard-codes knowledge of a particular directory hierarchy
+# and prevents one from backing up directories that we know shouldn't be
+# backed up. One can remove these checks in the `check_dir` function.
+
+set -e
+
+# The temporary directories to use while performing backups.
+TMPDIR="/m/tmp"
+# This directory is a placeholder for compressing and encrypting "one time"
+# backups. This directory should be periodically cleaned.
+TMPDIR_ONESHOT="$TMPDIR/oneshot"
+# This directory contains three replicas of each directory that is synced.
+# The first replica consists of md5 sums, which are updated every time a sync
+# is started. The second replica consists of the actual files, but are
+# encrypted. The third replica contains the md5 sums of the files in the
+# encrypted replica *before* encryption. The replica containing the encrypted
+# files is ultimately the one that is synced to s3. The other two replicas
+# permit checking if a file needs to be re-encrypted. This makes the command
+# idempotent.
+#
+# Note that sync does not require the existence of any replica directories.
+# Ultimately, `aws s3 sync` will determine which files need to be synced; our
+# scheme exists as a performance optimization to avoid re-encrypting data that
+# hasn't changed.
+#
+# This scheme *does* expose the directory structure to s3, but each individual
+# file is encrypted using our own keys.
+TMPDIR_SYNC="$TMPDIR/sync"
+
+# These are the three aforementioned replica directories.
+TMPDIR_SYNC_PLAIN_SUMS="$TMPDIR_SYNC/plain-sums"
+TMPDIR_SYNC_ENCRYPTED_SUMS="$TMPDIR_SYNC/encrypted-sums"
+TMPDIR_SYNC_ENCRYPTED_FILES="$TMPDIR_SYNC/encrypted-files"
+
+# Corresponding s3 paths.
+S3_BUCKET="gallant-home"
+S3_ONESHOT="s3://$S3_BUCKET/oneshot"
+S3_SYNC="s3://$S3_BUCKET/sync"
+
+usage() {
+  echo "Usage: $(basename $0) [flags]" >&2
+  echo "Flags:" >&2
+  echo "  --clean        Clean the oneshot temporary directories." >&2
+  echo "  --list         List all oneshot backups. This is the default." >&2
+  echo "  --summary      List all oneshot backups and show a summary." >&2
+  echo "  --oneshot DIR  Do a oneshot backup of given directory." >&2
+  echo "  --sync DIR     Sync the given directory to s3, with client side encryption." >&2
+  exit 1
+}
+
+cmd_list() {
+  aws s3 ls --recursive --human-readable "$S3_ONESHOT"
+}
+
+cmd_summary() {
+  aws s3 ls --recursive --human-readable --summarize "$S3_ONESHOT"
+}
+
+cmd_clean() {
+  today=$(date +'%Y-%m-%d')
+  for dir in "$TMPDIR_ONESHOT"/*/; do
+    if ! [ -d "$dir" ]; then
+      continue
+    fi
+    # Delete any directory older than 1 day.
+    dir_day="$(basename "$dir")"
+    if [ $(daydiff "$today" "$dir_day") -ge 2 ]; then
+      echo "# removing $dir" >&2
+      rm -rf "$dir"
+    fi
+  done
+}
+
+# Execute the oneshot backup strategy on a single directory.
+#
+# All we really do here is create a gzipped tar archive of the given
+# directory in a temporary directory, encrypt it and then upload it.
+#
+# Since the data could be quite large, we don't use /tmp, which is probably
+# a ramdisk. We don't clean up after ourselves immediately, but we will clean
+# aup nything that's older than a day.
+cmd_oneshot() {
+  if [ $# != 1 ]; then
+    usage
+  fi
+
+  today=$(date +'%Y-%m-%d')
+  tmpdir="$TMPDIR_ONESHOT/$today"
+
+  backup_dir="$1"
+  if ! [ -d "$backup_dir" ]; then
+    echo "$backup_dir is not a directory" >&2
+    exit 1
+  fi
+
+  backup_dir="$(realpath "$backup_dir")"
+  backup_parent="$(dirname "$backup_dir")"
+  backup_name="$(basename "$backup_dir")"
+  check_dir "$backup_dir"
+
+  echo "===== started oneshot backup of $backup_dir at $(date)" >&2
+
+  backup_tmpdir="$tmpdir/$backup_name"
+  mkdir -p "$backup_tmpdir"
+
+  archive="$backup_tmpdir/$backup_name.tar.gz"
+  gpg_archive_name="$backup_name.tar.gz.gpg"
+  gpg_archive="$backup_tmpdir/$gpg_archive_name"
+  if ! [ -f "$archive" ]; then
+    echo "# creating compressed archive of $backup_dir" >&2
+    tar zcf "$archive" -C "$backup_dir/.." "$backup_name"
+  fi
+  if ! [ -f "$gpg_archive" ]; then
+    echo "# encrypting $archive" >&2
+    encrypt_file "$archive" "$gpg_archive"
+  fi
+
+  s3_path_prefix="$S3_ONESHOT/$today"
+  s3_path="$s3_path_prefix/${backup_parent#/}/$gpg_archive_name"
+  echo "# uploading to s3 $s3_path" >&2
+  aws s3 cp $no_aws_progress \
+    --storage-class STANDARD_IA "$gpg_archive" "$s3_path"
+
+  echo "# cleaning temporary dir" >&2
+  "$0" --clean
+
+  echo "===== finished oneshot backup of $backup_dir at $(date)" >&2
+}
+
+# Execute the sync backup strategy on a single directory.
+#
+# Normally, this would be a simple call to `aws s3 sync`, but since we want to
+# encrypt our data before sending it to s3, we need to re-implement parts of
+# the sync itself. In particular, since we might run this on large directory
+# trees, we don't want to re-encrypt every file every time the command is run.
+# Instead, we track the md5 sums of files just before they are encrypted, and
+# compare those with the md5 sums of the current files. We respond accordingly
+# by adding new encrypted files, re-encrypting files or deleting encrypting
+# files.
+#
+# Ultimately, we don't sync the given directory directly. Instead, we sync a
+# replica of the directory that mirrors it, except that each file has been
+# encrypted.
+#
+# Note that there are some races in this logic. For example, a file might
+# change after we record its md5 but before we compare it with the previous
+# md5. This is OK; we will pick up the change on the next sync automatically.
+cmd_sync() {
+  if [ $# != 1 ]; then
+    usage
+  fi
+
+  sync_dir="$(realpath "$1")"
+  check_dir "$sync_dir"
+
+  echo "===== starting sync of $sync_dir at $(date)" >&2
+
+  # Create the directory structure for each replica.
+  rm -rf "$TMPDIR_SYNC_PLAIN_SUMS$sync_dir"
+  find "$sync_dir" -type d | while read -r dir; do
+    mkdir -p \
+      "$TMPDIR_SYNC_PLAIN_SUMS$dir" \
+      "$TMPDIR_SYNC_ENCRYPTED_SUMS$dir" \
+      "$TMPDIR_SYNC_ENCRYPTED_FILES$dir"
+  done
+
+  old_md5=$(mktemp)
+  old_files=$(mktemp)
+  new_md5=$(mktemp)
+  new_files=$(mktemp)
+
+  # Find the md5 sums of the current files.
+  find "$sync_dir" -type f -print0 \
+    | xargs -0 -n512 -P4 md5sum | \
+    while read -r md5 path; do
+      echo -e "$path\t$md5"
+    done \
+    | sort > "$new_md5"
+  cut -f1 "$new_md5" | sort > "$new_files"
+
+  # Find the md5 sums of the files that have been encrypted.
+  # (Note that these are the md5 sums of the file just before encryption.)
+  find "$TMPDIR_SYNC_ENCRYPTED_SUMS$sync_dir" -name '*.md5' -type f | \
+    while read -r path; do
+      orig_path_md5="${path#$TMPDIR_SYNC_ENCRYPTED_SUMS}"
+      orig_path="${orig_path_md5%%.md5}"
+      echo -e "$orig_path\t$(cat "$path")"
+    done \
+    | sort > "$old_md5"
+  cut -f1 "$old_md5" | sort > "$old_files"
+
+  # Find everything in the current set that isn't in the old set and add it.
+  comm -13 "$old_files" "$new_files" \
+    | xargs --no-run-if-empty -d'\n' -P4 -n128 \
+        "$0" --internal-encrypt-and-sum adding
+  # Find everything in the old set that isn't in the current set and remove it.
+  comm -23 "$old_files" "$new_files" | \
+    while read -r path; do
+      echo "# removing $path" >&2
+      rm -f "$TMPDIR_SYNC_ENCRYPTED_FILES$path.gpg"
+      rm -f "$TMPDIR_SYNC_ENCRYPTED_SUMS$path.md5"
+    done
+  # Find md5 disagreements and re-encrypt the file.
+  join -t$'\t' "$old_md5" "$new_md5" | \
+    while IFS=$'\t' read -r path old new; do
+      if [[ "$old" != "$new" ]]; then
+        echo "$path"
+      fi
+    done \
+    | xargs --no-run-if-empty -d'\n' -P4 -n128 \
+        "$0" --internal-encrypt-and-sum updating
+  # Clean up after ourselves.
+  rm -f "$old_md5" "$old_files" "$new_md5" "$new_files"
+
+  # Sync to s3.
+  aws s3 sync --delete $no_aws_progress \
+    "$TMPDIR_SYNC_ENCRYPTED_FILES$sync_dir" "$S3_SYNC$sync_dir"
+
+  echo "===== finished sync of $sync_dir at $(date)" >&2
+}
+
+# This is an internal command that we use to encrypt a file and update its
+# md5 sum. We define it this way so that we can parallelize its execution with
+# xargs.
+cmd_internal_encrypt_and_sum() {
+  if [ $# -lt 2 ]; then
+    echo "Usage: $(basename $0) --internal-encrypt-and-sum action path [ path ... ]" >&2
+    exit 1
+  fi
+  action="$1"
+  shift
+
+  for path; do
+    echo "# $action $path" >&2
+    encrypt_file "$path" "$TMPDIR_SYNC_ENCRYPTED_FILES$path.gpg"
+    md5sum "$path" | awk '{print $1}' > "$TMPDIR_SYNC_ENCRYPTED_SUMS$path.md5"
+  done
+}
+
+# Compute the difference between two datestamps, in seconds.
+daydiff() {
+  date1="$(date -d "$1" +'%s')"
+  date2="$(date -d "$2" +'%s')"
+  echo $(((date1 - date2) / (60 * 60 * 24)))
+}
+
+# Enforce some sanity checks on directories given by user.
+#
+# Technically, these aren't necessary in general. They're intended to enforce
+# my own personal convention.
+check_dir() {
+  dir="$1"
+
+  if ! [[ $dir = /m/* ]]; then
+    echo "$dir is not a descendent of /m/" >&2
+    exit 1
+  fi
+
+  blacklist=(media git old-snapshots isos tmp log sets)
+  for name in "${blacklist[@]}"; do
+    if [[ $dir = /m/$name ]]; then
+      echo "/m/$name cannot be backed up" >&2
+      exit 1
+    fi
+  done
+}
+
+# Convenience function for shelling out to gpg.
+encrypt_file() {
+  in="$1"
+  out="$2"
+  set +e
+  gpg --yes --encrypt \
+    --output "$out" \
+    --recipient jamslam@gmail.com \
+    --recipient kbrady39@gmail.com \
+    "$in" \
+    2>&1 | grep -E -v 'gpg: automatically retrieved'
+}
+
+# Convenience function for checking that a command exists.
+requires() {
+  cmd="$1"
+  if ! command -v "$cmd" > /dev/null 2>&1; then
+    echo "DEPENDENCY MISSING: $(basename $0) requires $cmd to be installed" >&2
+    exit 1
+  fi
+}
+
+# When set, clean the backup tmp directory and exit.
+clean=
+# When set, list available backups and exit.
+list=
+# When set, list available backups with a summary and exit.
+summary=
+# When set, sync the directory to s3.
+sync=
+# When set, do a oneshot backup keyed on today's date.
+oneshot=
+# When set, do not show aws upload progress.
+no_aws_progress=
+
+# For internal use.
+internal_encrypt_and_sum=
+
+# Dependencies.
+requires aws
+requires gpg
+requires egrep
+requires xargs
+requires md5sum
+requires date
+requires comm
+requires join
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --clean) clean=yes ; shift ;;
+    --list) list=yes ; shift ;;
+    --summary) summary=yes ; shift ;;
+    --oneshot) oneshot=yes ; shift ;;
+    --sync) sync=yes ; shift ;;
+    --no-aws-progress) no_aws_progress=--quiet ; shift ;;
+    --internal-encrypt-and-sum) internal_encrypt_and_sum=yes ; shift ;;
+    -h|-*) usage ;;
+    *) break ;;
+  esac
+done
+
+if [ -n "$internal_encrypt_and_sum" ]; then
+  cmd_internal_encrypt_and_sum "$@"
+elif [ -n "$list" ]; then
+  cmd_list
+elif [ -n "$summary" ]; then
+  cmd_summary
+elif [ -n "$clean" ]; then
+  cmd_clean
+elif [ -n "$sync" ]; then
+  cmd_sync "$@"
+elif [ -n "$oneshot" ]; then
+  cmd_oneshot "$@"
+else
+  cmd_summary
+fi

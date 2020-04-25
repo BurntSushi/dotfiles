@@ -1,0 +1,5 @@
+#!/bin/sh
+
+no-blanking
+xset +dpms
+xset dpms 0 0 600

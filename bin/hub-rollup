@@ -1,0 +1,32 @@
+#!/bin/sh
+
+if [ $# != 1 ]; then
+  echo "Usage: $(basename "$0") <pr-number>" >&2
+  exit 1
+fi
+
+pr="$1"
+rebasing="$(git status | grep -q rebase && echo yes)"
+branch="$(git rev-parse --abbrev-ref HEAD)"
+inrollup="$(echo $branch | grep -q '^tmp/rollup/' && echo yes)"
+if [ -n "$inrollup" ]; then
+  branch="$(echo $branch | sed 's#^tmp/rollup/##g')"
+fi
+rollupbranch="tmp/rollup/$branch"
+rolledup="$(git branch | grep -q " $rollupbranch" && echo yes)"
+
+if [ -n "$rebasing" ]; then
+  echo "please continue rebase in progress first" >&2
+  exit 1
+fi
+
+set -ex
+if [ -z "$rolledup" ]; then
+  hub pr checkout "$pr" "$rollupbranch"
+  git rebase "$branch"
+fi
+if git rev-parse --abbrev-ref HEAD | grep -q '^tmp/rollup/'; then
+  git checkout "$branch"
+fi
+git merge --ff-only "$rollupbranch"
+git branch -D "$rollupbranch"

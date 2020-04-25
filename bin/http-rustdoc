@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec darkhttpd /home/andrew/rust --port 8100 --default-mimetype image/svg+xml

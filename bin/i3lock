@@ -1,0 +1,4 @@
+#!/bin/sh
+
+clr=$(python3 -c "import random; print('%06x' % random.randint(0, 0xffffff))")
+/usr/bin/i3lock --nofork --color "$clr" "$@"

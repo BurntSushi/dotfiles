@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# This used to do more when I used different versions of Chrome on different
+# machines. But now I just use stable when I use Chrome.
+exec google-chrome-stable "$@"

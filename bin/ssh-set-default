@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -e
+
+name="$1"
+org="$2"
+if [ -z "$name" ]; then
+    echo "Usage: $(basename "$0") <ssh-key-name>" >&2
+    exit 1
+fi
+if [ -z "$org" ]; then
+    org=andrew
+fi
+
+ssh-extract-key "$name" "$org"
+ln -s "keys/$name.pub" "$HOME/.ssh/id_rsa.pub"
+ln -s "keys/$name" "$HOME/.ssh/id_rsa"

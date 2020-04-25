@@ -1,0 +1,19 @@
+#!/bin/sh
+
+case $1 in
+  bat)
+    xbacklight -set 40
+    ;;
+  ac)
+    xbacklight -set 100
+    ;;
+  inc)
+    xbacklight -inc 20
+    ;;
+  dec)
+    xbacklight -dec 20
+    ;;
+  *)
+    echo "Unrecognized configuration '$1'." >&2
+    exit 1
+esac

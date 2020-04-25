@@ -1,0 +1,30 @@
+#!/bin/sh
+
+set -e
+
+force=
+
+while true; do
+  case "$1" in
+    -f|--force)
+      force=yes
+      shift
+      ;;
+    -h|--help)
+      echo "Usage: $(basename $0) [-f/--force] <branch>" >&2
+      exit
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+branch="$1"
+for remote in home origin; do
+  if [ -z "$force" ]; then
+    git push $remote $branch
+  else
+    git pushf $remote $branch
+  fi
+done

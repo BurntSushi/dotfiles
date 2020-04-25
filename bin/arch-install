@@ -1,0 +1,298 @@
+#!/bin/bash
+
+# Recommended steps:
+#
+#   bootstrap before entering chroot
+#   copy this script into INSTALL_DIR
+#   rootinit after entering chroot
+#   x (if installing graphics)
+#   pkgs
+#   xpkgs (if installing graphics)
+#   userinit
+#   kaitinit (optional)
+#   grubinit
+#
+# At this point, log in as the user created above.
+#
+#   yayinit
+#   yaypkgs
+#   yayxpkgs (if installing graphics)
+#   homeinit
+#   xenvinit (if installing graphics)
+#   gpginit
+#   sshinit
+#   scannerinit
+#   autologin (for media PCs)
+#   nmmedia (for media PCs)
+
+INSTALL_DIR=/mnt
+
+bootstrap() {
+  pacstrap "$INSTALL_DIR" base base-devel linux linux-firmware
+  genfstab -U "$INSTALL_DIR" >> "$INSTALL_DIR"/etc/fstab
+}
+
+rootinit() {
+  if [ $# != 1 ]; then
+    echo "Usage: $(basename "$0") rootinit <hostname>" >&2
+    exit 1
+  fi
+  hostname="$1"
+
+  ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
+  hwclock --systohc
+  sed -i 's/^#\(en_US\.UTF-8 .*\)$/\1/g' /etc/locale.gen
+  locale-gen
+  echo 'LANG=en_US.UTF-8' > /etc/locale.conf
+
+  echo "$hostname" > /etc/hostname
+  {
+    echo "127.0.0.1  localhost"
+    echo "::1  localhost"
+    echo "127.0.1.1  $hostname.localdomain $hostname"
+  } >> /etc/hosts
+
+  echo 'COMPRESSXZ=(xz -c -z -0 -)' >> /etc/makepkg.conf
+
+  echo "set root password:"
+  passwd
+}
+
+x() {
+  if [ $# != 1 ]; then
+    echo "Usage: $(basename "$0") x <intel | radeon>" >&2
+    exit 1
+  fi
+  driver="$1"
+
+  pacman --noconfirm -S xorg xorg-xinit
+  case "$driver" in
+    intel)
+      pacman --noconfirm -S xf86-video-intel
+      ;;
+    radeon)
+      pacman --noconfirm -S xf86-video-ati
+      ;;
+    *)
+      echo "unrecognized graphics driver" >&2
+      exit 1
+      ;;
+  esac
+}
+
+pkgs() {
+  pacman --noconfirm -S \
+    zsh \
+    asp \
+    sudo \
+    vi \
+    alsa-utils \
+    aspell aspell-en hunspell hunspell-en_US \
+    python python-pip python-setuptools python-virtualenv bpython \
+    python2 python2-pip python2-setuptools python2-virtualenv bpython2 \
+    flake8 \
+    go go-tools \
+    rustup \
+    grub efibootmgr \
+    iputils inetutils whois bind-tools dhcpcd \
+    cups \
+    shellcheck \
+    asciidoc \
+    pdftk \
+    cronie openssh openssl sshfs sshuttle gnupg tmux nfs-utils enscript \
+    docker espeak ffmpeg jq ripgrep youtube-dl fzf \
+    iotop htop linux-tools pkgfile pwgen pv strace tig time tree valgrind \
+    vim \
+    git git-crypt aws-cli s3cmd colordiff curl wget ctags darkhttpd pass rsync
+  pkgfile --update
+}
+
+xpkgs() {
+  pacman --noconfirm -Rsn vim
+  pacman --noconfirm -S \
+    xterm \
+    alacritty \
+    k3b konversation konsole dolphin okular \
+    qt5 qt5ct oxygen oxygen-icons \
+    xsane \
+    xbindkeys \
+    libnotify \
+    kmix \
+    dunst \
+    i3lock \
+    mpv \
+    nitrogen \
+    numlockx \
+    xclip \
+    xdotool \
+    trayer \
+    freerdp \
+    gmrun \
+    gvim \
+    noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra \
+    firefox
+}
+
+userinit() {
+  # Use the same group ID on all machines.
+  sudo groupmod -n users-old users
+  sudo groupadd -g 100 users
+
+  sudo useradd -g users -u 1000 -m -s /bin/zsh \
+    -G disk,lp,wheel,log,dbus,network,video,audio,optical,storage,scanner,power \
+    andrew
+  echo "set andrew password"
+  sudo passwd andrew
+  echo "make sure '%wheel ALL=(ALL) NOPASSWD: ALL' is in sudoers"
+}
+
+kaitinit() {
+  sudo useradd -g users -u 1002 -m -s /bin/bash \
+    -G disk,lp,wheel,log,dbus,network,video,audio,optical,storage,scanner,power \
+    kait
+  echo "set kait password"
+  sudo passwd kait
+  echo "make sure '%wheel ALL=(ALL) NOPASSWD: ALL' is in sudoers"
+}
+
+grubinit() {
+  grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub
+  grub-mkconfig -o /boot/grub/grub.cfg
+}
+
+yayinit() {
+  cd /tmp || exit 1
+  if [ ! -d yay ]; then
+    git clone https://aur.archlinux.org/yay
+  fi
+  cd yay || exit 1
+  makepkg -fsi --noconfirm
+}
+
+yaypkgs() {
+  yay --noconfirm -S \
+    neovim-git neovim-plug-git python-neovim-git python2-neovim-git \
+    brother-dcp7065dn \
+    brscan4 \
+    ngrok \
+    par \
+    vim-fzf-git vim-go-git vim-ledger-git vim-plug-git \
+    vim-renamer-git vim-syntastic-git vim-toml-git \
+    zsh-autosuggestions \
+    zsh-completions \
+    zsh-syntax-highlighting \
+    zsh-fast-syntax-highlighting-git \
+    dict-wn
+}
+
+yayxpkgs() {
+  yay --noconfirm -S \
+    dzen2-xft-xpm-xinerama-git \
+    google-chrome \
+    mirage \
+    idesk \
+    gkrellm \
+    gkleds \
+    gkrellsun \
+    gkrellweather \
+    nerd-fonts-hack \
+    ttf-oxygen \
+    ttf-dejavu \
+    ttf-fira-mono \
+    ttf-mononoki-git \
+    ttf-roboto \
+    ttf-ubuntu-font-family
+}
+
+homeinit() {
+  cd "$HOME" || exit 1
+  curl https://burntsushi.net/stuff/setup-home > /tmp/setup-home.sh
+  sh /tmp/setup-home.sh
+  git clone andrew@home.burntsushi.net:/m/git/password-store .password-store
+  (cd .password-store && configure-git)
+
+  mkdir -p .gnupg
+  {
+    echo 'default-cache-ttl 86400'
+    echo 'max-cache-ttl 86400'
+  } > .gnupg/gpg-agent.conf
+}
+
+xenvinit() {
+  cd "$HOME" || exit 1
+
+  . "$HOME/bin/x11-go"
+  go get -v github.com/BurntSushi/wingo/...
+  go get -v github.com/BurntSushi/gohead/...
+
+  virtualenv2 "$HOME/.pyx11"
+  . "$HOME/.pyx11/bin/activate"
+  pip install pywingo
+}
+
+gpginit() {
+  rscp nas:/m/data/andrew/keys/*.key.* /tmp/
+  gpg --import /tmp/jamslam@gmail.com.key.priv
+  gpg --import /tmp/kbrady39@gmail.com.key.priv
+  echo "use 'gpg --edit-key {email}' to trust each key completely"
+}
+
+sshinit() {
+  ssh-extract-key burntsushi
+}
+
+scannerinit() {
+  brsaneconfig4 -a name=Brother model=DCP-7065DN ip=192.168.1.150
+}
+
+autologin() {
+  sudo mkdir -p /etc/systemd/system/getty@tty1.service.d
+  sudo tee /etc/systemd/system/getty@tty1.service.d/override.conf > /dev/null <<EOF
+[Service]
+ExecStart=
+ExecStart=-/usr/bin/agetty --autologin andrew --noclear %I $TERM
+EOF
+}
+
+nmmedia() {
+  script="/etc/NetworkManager/dispatcher.d/10-media.sh"
+  sudo tee "$script" > /dev/null <<EOF
+#!/bin/sh
+
+status="\$2"
+case "\$status" in
+  up)
+    sudo -i -u andrew zsh -c '. ~/.zshrc && media'
+    ;;
+  down)
+    sudo -i -u andrew zsh -c '. ~/.zshrc && media down'
+    ;;
+esac
+EOF
+  sudo chmod 0755 "$script"
+}
+
+case "$1" in
+  bootstrap) shift ; bootstrap "$@" ;;
+  rootinit) shift ; rootinit "$@" ;;
+  x) shift ; x "$@" ;;
+  pkgs) shift ; pkgs "$@" ;;
+  xpkgs) shift ; xpkgs "$@" ;;
+  userinit) shift ; userinit "$@" ;;
+  kaitinit) shift ; kaitinit "$@" ;;
+  grubinit) shift ; grubinit "$@" ;;
+  yayinit) shift ; yayinit "$@" ;;
+  yaypkgs) shift ; yaypkgs "$@" ;;
+  yayxpkgs) shift ; yayxpkgs "$@" ;;
+  homeinit) shift ; homeinit "$@" ;;
+  xenvinit) shift ; xenvinit "$@" ;;
+  gpginit) shift ; gpginit "$@" ;;
+  sshinit) shift ; sshinit "$@" ;;
+  scannerinit) shift ; scannerinit "$@" ;;
+  autologin) shift ; autologin "$@" ;;
+  nmmedia) shift ; nmmedia "$@" ;;
+  *)
+    echo "unrecognized command" >&2
+    exit 1
+    ;;
+esac

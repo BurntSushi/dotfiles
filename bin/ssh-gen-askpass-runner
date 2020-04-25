@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -e
+
+if [ $# != 1 ]; then
+    echo "Usage: $(basename "$0") pass-key-path" >&2
+    exit 1
+fi
+
+key="$1"
+tmpfile="$(mktemp -t ssh-askpass-runner-XXXXX.sh)"
+cat > "$tmpfile" <<EOF
+#!/bin/sh
+
+pass "$key" | head -n1
+EOF
+chmod +x "$tmpfile"
+echo "$tmpfile"

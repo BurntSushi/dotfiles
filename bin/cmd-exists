@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ ! $# -eq 1 ]; then
+  echo "usage: $(basename $0) command"
+fi
+command -v $1 > /dev/null 2>&1

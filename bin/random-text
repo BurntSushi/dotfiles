@@ -1,0 +1,24 @@
+#!/usr/bin/env python2
+
+from __future__ import absolute_import, division, print_function
+
+import argparse
+import random
+
+LETTERS = map(chr, range(ord('a'), ord('z') + 1))
+
+
+if __name__ == '__main__':
+    p = argparse.ArgumentParser()
+    p.add_argument('size', type=int)
+    p.add_argument('--punct', default='\n')
+    p.add_argument('--punct-ratio', type=float, default=0.05)
+    args = p.parse_args()
+
+    data = []
+    for _ in xrange(args.size):
+        if random.random() < args.punct_ratio:
+            data.append(random.choice(args.punct))
+        else:
+            data.append(random.choice(LETTERS))
+    print(''.join(data))

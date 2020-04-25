@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec youtube-dl --extract-audio --audio-format mp3 "$@"

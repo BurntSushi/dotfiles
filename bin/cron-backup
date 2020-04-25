@@ -1,0 +1,19 @@
+#!/bin/zsh
+
+export HOME=/home/andrew
+. $HOME/.zshrc
+
+LOG=/m/log/backup.log
+
+no_aws_progress=
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --no-aws-progress) no_aws_progress=--no-aws-progress ; shift ;;
+    -h|-*)
+      echo "Usage: $(basename $0) [--no-aws-progress]" >&2
+      exit
+      ;;
+  esac
+done
+
+cmail backup $no_aws_progress --sync /m/data 2>&1 | tee -a "$LOG"

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+pwgen --capitalize --numerals --secure --ambiguous "$@" 20 1

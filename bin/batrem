@@ -1,0 +1,125 @@
+#!/usr/bin/env python2
+
+from __future__ import absolute_import, division, print_function
+
+import argparse
+import os
+import os.path
+import subprocess
+import sys
+import time
+
+
+def eprint(*args, **kwargs):
+    kwargs['file'] = sys.stderr
+    print(*args, **kwargs)
+
+
+def bat_value(fname):
+    f = os.path.join(batdir, fname)
+    if not os.access(f, os.R_OK):
+        eprint('Could not access "%s".' % f)
+        sys.exit(1)
+    val = 0.0
+    try:
+        val = float(open(f).read())
+    except IOError:
+        eprint('Could not open "%s".' % f)
+        sys.exit(1)
+    except ValueError:
+        eprint(
+            'The value "%s", returned from "%s", is not a valid float.'
+            % (open(f).read(), f))
+    return val
+
+
+def output():
+    full, now, pow_now = bat_value(ffull), bat_value(fnow), bat_value(fpow_now)
+
+    charged = '%d' % (100 * (now / full))
+
+    # If the battery isn't discharging, just report 'AC' instead of
+    # the time remaining.
+    status = open(os.path.join(batdir, 'status')).read().strip()
+    if status != 'Discharging':
+        print('%s%% AC' % charged)
+        sys.stdout.flush()
+        return
+
+    seconds_rem = (now * 60 * 60) / pow_now
+    minutes_rem = '%d' % ((seconds_rem / 60) % 60)
+    hours_rem = '%d' % (seconds_rem / 60 / 60)
+
+    def rem():
+        if conf.short_rem:
+            return '%hh%mm'
+        return '%h hours, %m minutes'
+
+    format_str = ''
+    if conf.format_str:
+        format_str = conf.format_str
+    elif conf.output_type == 'charge':
+        format_str = '%c%'
+    elif conf.output_type == 'rem':
+        format_str = rem()
+    else:
+        format_str = rem() + ' %c%'
+    assert(len(format_str) > 0)
+
+    out = format_str
+    out = out.replace('%c', charged)
+    out = out.replace('%h', hours_rem)
+    out = out.replace('%m', minutes_rem)
+    print(out)
+    sys.stdout.flush()
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+        description='Emit battery status charge level and time remaining.',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    aa = parser.add_argument
+    aa('-f', '--format-str', type=str, metavar='FORMAT_STRING',
+       help='A format string overrides the "-s" and "-t" options, and allows '
+            'complete control over the formatting of the battery status '
+            'message. Use "%%h" for hours, "%%m" for minutes and "%%c" for '
+            'charge level. For example, using '
+            '"%%h hours, %%m minutes (%%c%%)" a sample output '
+            'might look like "5 hours, 16 minutes (66.90%%)".')
+    aa('-i', '--interval', type=int, metavar='POLL_INTERVAL_SECONDS',
+       help='The time, in seconds, between battery status polling. If this '
+            'option is not specified, the current battery status will be '
+            'printed once, and the program will exit.')
+    aa('-s', '--short-rem', action='store_true',
+       help='When enabled, the "time remaining" display will be shortened '
+            'form "X hours, Y minutes" to "XhYm".')
+    aa('-t', '--output-type', choices=['charge', 'rem'], metavar='OUTPUT_TYPE',
+       help='The type of output to display. If this option is omitted, both '
+            'the charge level and the time remaining are displayed. If '
+            '"charge" is specified, only the charge level is displayed. If '
+            '"rem" is specified, only the time remaining is displayed.')
+    conf = parser.parse_args()
+
+    host = subprocess.check_output(['hostname']).strip()
+    batdir = ''
+    ffull = 'energy_full'
+    fnow = 'energy_now'
+    fpow_now = 'power_now'
+
+    if host in ('Tiger', 'Turtle', 'monty', 'krusty'):
+        batdir = '/sys/class/power_supply/BAT0'
+    if host in ('krusty'):
+        ffull = 'charge_full'
+        fnow = 'charge_now'
+        fpow_now = 'current_now'
+
+    if not os.path.isdir(batdir):
+        eprint('Battery directory "%s" is not accessible.' % batdir)
+        sys.exit(1)
+
+    if conf.interval > 0:
+        while True:
+            output()
+            time.sleep(conf.interval)
+    else:
+        output()

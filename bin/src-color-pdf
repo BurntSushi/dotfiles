@@ -1,0 +1,47 @@
+#!/bin/bash
+
+customdir="--data-dir=$HOME/.config/highlight/"
+custom=
+srctype=
+# font="Hack Nerd Font"
+# font="Hack Regular Nerd Font Complete Mono"
+# font="UbuntuMono-R"
+size=15
+theme=bclear
+linens=
+
+highlightcss=
+[[ -f highlight.css ]] && highlightcss=1
+
+function usage {
+  echo "Usage: $(basename $0): [-c] [-l] [-f font] [-s font-size] [-t theme] input-file output-file" >&2
+  exit 1
+}
+
+while [ $# -gt 0 ]; do
+  case $1 in
+  -c)    custom=$customdir ; shift ;;
+  # -f)    font=$2 ; shift 2 ;;
+  -s)    size=$2 ; shift 2 ;;
+  -S)    srctype="-S $2" ; shift 2 ;;
+  -t)    theme=$2 ; shift 2 ;;
+  -l)    linens='-l' ; shift ;;
+  -h|-*) usage ;;
+   *)    break ;;
+  esac
+done
+
+if [ ! $# -eq 2 ]; then
+  usage
+fi
+
+ifile=$1
+ofile=$2
+
+highlight -i $ifile $srctype -s $theme --inline-css -K $size -t 4 \
+          $custom $linens \
+  | wkhtmltopdf - $ofile
+
+if [ -z "$highlightcss" ] && [ -f highlight.css ]; then
+  rm highlight.css
+fi

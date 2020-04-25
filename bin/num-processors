@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ -r /proc/cpuinfo ]; then
+  NPROC=$(grep -c '^processor' /proc/cpuinfo | tr -d ' ')
+else
+  NPROC=1
+fi
+echo $NPROC

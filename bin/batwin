@@ -1,0 +1,20 @@
+#!/bin/sh
+
+case "$(hostname)" in
+monty)
+  killall dzen2
+  exec batrem -s -i 10 | dzen2 -fn "DejaVu Sans Mono-14" \
+    -fg white -bg black \
+    -x 1335 -y 860 -w 115 -h 40
+  ;;
+krusty)
+  killall dzen2
+  exec batrem -s -i 10 | dzen2 -fn "DejaVu Sans Mono-14" \
+    -fg white -bg black \
+    -x 1655 -y 1040 -w 115 -h 40
+  ;;
+*)
+  echo "Unrecognized machine '$(hostname)'." >&2
+  exit 1
+  ;;
+esac

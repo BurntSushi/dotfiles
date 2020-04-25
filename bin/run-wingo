@@ -1,0 +1,14 @@
+#!/bin/sh
+
+. "$HOME/bin/x11-go"
+
+logdir="$HOME/data/log"
+logfile="$logdir/wingo.log"
+mkdir -p "$logdir"
+
+# shellcheck disable=SC2129
+echo "======================================================" >> $logfile
+echo "======================================================" >> $logfile
+echo "======================================================" >> $logfile
+#wingo --config-dir $HOME/data/projects/wingo/config --log-level 3 --log-colors -p 1 $* > $logfile 2>&1
+wingo -p 4 --log-level 3 --log-colors "$@" >> $logfile 2>&1

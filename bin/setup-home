@@ -1,0 +1,62 @@
+#!/bin/sh
+
+set -e
+
+# Test that we can SSH to the home server OK.
+# if ! ssh -p 7704 -o StrictHostKeyChecking=no andrew@home.burntsushi.net echo 'calling home successful'; then
+  # echo 'calling home failed' >&2
+  # exit 1
+# fi
+
+if [ ! -f "$HOME/.zprofile" ]; then
+  trash=".bashrc .bash_logout .bash_profile .profile .vimrc .ssh/config"
+  mkdir -p .old
+  for f in $trash; do
+    if [ -f "$f" ]; then
+      mv "$f" .old/
+    fi
+  done
+fi
+
+if [ ! -d "$HOME/.git" ]; then
+  git init
+  git remote add origin 'https://github.com/BurntSushi/dotfiles'
+  git pull origin master --ff-only
+  git branch --set-upstream-to origin/master master
+  chmod 600 "$HOME/.ssh/config"
+else
+  git pull origin master --ff-only
+fi
+
+# Update path to include new ~/bin checkout.
+export PATH="$HOME/bin:$PATH"
+
+# Configure $HOME and $HOME/bin git checkouts.
+(cd "$HOME" && configure-git)
+
+# Install ripgrep
+if ! cmd-exists rg; then
+  CARGO_BIN="$HOME/.local/cargo/bin"
+  mkdir -p "$CARGO_BIN"
+  vers="$(
+      curl -s https://api.github.com/repos/BurntSushi/ripgrep/releases/latest \
+          | grep '"tag_name":' \
+          | grep -E -o '[0-9]+\.[0-9]+\.[0-9]+'
+  )"
+  url="https://github.com/BurntSushi/ripgrep/releases/download/$vers/ripgrep-$vers-x86_64-unknown-linux-musl.tar.gz"
+  curl -sL "$url" > "/tmp/ripgrep-$vers.tar.gz"
+  tar xf "/tmp/ripgrep-$vers.tar.gz" -C /tmp
+  cp "/tmp/ripgrep-$vers-x86_64-unknown-linux-musl/rg" "$CARGO_BIN/rg"
+fi
+
+# An Ubuntu box means this is probably just a temporary remote box, so
+# install some nice things.
+if cmd-exists apt; then
+  neovim-install-appimage
+  sudo apt update
+  for p in jq htop iotop zsh; do
+    if ! cmd-exists "$p"; then
+      sudo apt install -y "$p"
+    fi
+  done
+fi

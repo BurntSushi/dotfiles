@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Clear the gpg agent's cached passwords. It has a TTL of 1 day, but we should
+# clear them whenever we lock the screen too.
+if cmd-exists gpgconf; then
+    gpgconf --reload gpg-agent
+fi
+# And clear ssh agent keys as well. Use ssh-add-keys to re-add them.
+if cmd-exists ssh-add; then
+    ssh-add -D
+fi

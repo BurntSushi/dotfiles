@@ -1,0 +1,55 @@
+#!/bin/sh
+
+if [ $# != 5 ]; then
+  echo "Usage: $(basename): monitor-number x y width height" >&2
+  exit 1
+fi
+
+# Nice names for args.
+monitor=$1
+mx=$2
+my=$3
+mwidth=$4
+mheight=$5
+
+# Calculate the height of the "panel" and the y position of the "panel."
+height=40
+y=$((mheight - height + my))
+
+# Width constants for the system tray and battery indicator.
+tray_width=150
+bat_width=115
+
+# Determine the width of the pager based on the width of the system tray and
+# battery indicator. If it's a laptop, include the battery indicator. Otherwise,
+# leave it out.
+if [ -f "$HOME/.laptop" ]; then
+  pager_width=$((mwidth - bat_width - tray_width))
+else
+  pager_width=$((mwidth - tray_width))
+fi
+
+# Always kill the current pager and system tray.
+# shellcheck disable=SC2009
+ps aux | grep -v grep | grep dzen-workspaces | awk '{print $2}' | xargs -r kill
+killall trayer
+
+# Restart the pager and system tray with appropriate geometry.
+# (pager-multihead -x $mx -y $y --width $pager_width --height $height &)
+
+($HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces \
+  | dzen2 -dock -xs 2 -h 40 -fn 'Cousine-18' -ta l -bg '#ffffff' -y 1170) &
+(trayer --widthtype pixel --width $tray_width \
+        --heighttype pixel --height $height \
+        --edge bottom --align right \
+        --monitor $monitor \
+        --SetDockType true &)
+
+# If this is a laptop, kill the battery notifier and restart it too.
+if [ -f "$HOME/.laptop" ]; then
+  # shellcheck disable=SC2009
+  ps aux | grep -v grep | grep batrem | awk '{print $2}' | xargs -r kill
+  (batrem -s -i 10 | \
+    dzen2 -fn "DejaVu Sans Mono-14" -fg white -bg black \
+      -x $((mx + pager_width)) -y $y -w $bat_width -h $height &)
+fi

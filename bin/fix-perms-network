@@ -1,0 +1,4 @@
+#!/bin/sh
+
+sudo find ./ -type d -print0 | xargs -0 sudo chmod 775
+sudo find ./ -type f -print0 | xargs -0 sudo chmod 664

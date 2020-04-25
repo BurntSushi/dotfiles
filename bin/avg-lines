@@ -1,0 +1,13 @@
+#!/usr/bin/env python2
+
+from __future__ import absolute_import, division, print_function
+import numpy as np
+import sys
+
+xs = []
+for line in sys.stdin:
+    line = line.strip()
+    if len(line) == 0:
+        continue
+    xs.append(float(line))
+print('%f +/- %f' % (np.average(xs), np.std(xs)))

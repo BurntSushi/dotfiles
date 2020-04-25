@@ -1,0 +1,12 @@
+#!/bin/bash
+
+case "$(hostname)" in
+  Tiger|Turtle|monty|krusty)
+    path="/sys/class/backlight/intel_backlight/brightness"
+    echo -n $1 | sudo tee "$path" > /dev/null
+    ;;
+  *)
+    echo "Uncrecognized latop $(hostname)." >&2
+    exit 1
+    ;;
+esac

@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -e
+
+name="$1"
+org="$2"
+dir="$3"
+if [ -z "$name" ]; then
+    echo "Usage: $(basename "$0") <ssh-key-name>" >&2
+    exit 1
+fi
+if [ -z "$org" ]; then
+    org=andrew
+fi
+if [ -z "$dir" ]; then
+    dir="$HOME/.ssh/keys"
+fi
+
+mkdir -p "$dir"
+# Some weird keys do not have a public key.
+if pass "$org/ssh/$name/pub" >/dev/null 2>&1; then
+    pass "$org/ssh/$name/pub" > "$dir/$name.pub"
+    chmod 0600 "$dir/$name.pub"
+fi
+pass "$org/ssh/$name/priv" > "$dir/$name"
+chmod 0600 "$dir/$name"

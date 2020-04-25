@@ -1,0 +1,3 @@
+#!/bin/sh
+
+video-scale 720 "$@"

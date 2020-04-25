@@ -1,0 +1,44 @@
+#!/usr/bin/env python2
+
+from __future__ import absolute_import, division, print_function
+import argparse
+import csv
+import itertools
+import sys
+
+csv.field_size_limit(sys.maxsize)
+
+
+def delimiter_for(fname, default=None):
+    if fname.endswith('.tsv'):
+        return '\t'
+    elif fname.endswith('.csv'):
+        return ','
+    elif default is not None:
+        return default
+    else:
+        raise ValueError("Could not find delimiter for '%s'" % fname)
+
+
+if __name__ == '__main__':
+    p = argparse.ArgumentParser()
+    p.add_argument('csv_file1')
+    p.add_argument('csv_file2')
+    p.add_argument('-d', metavar='DELIMITER', default=None)
+    args = p.parse_args()
+
+    delimit1 = delimiter_for(args.csv_file1, default=args.d)
+    reader1 = csv.reader(open(args.csv_file1), delimiter=delimit1)
+    delimit2 = delimiter_for(args.csv_file2, default=args.d)
+    reader2 = csv.reader(open(args.csv_file2), delimiter=delimit2)
+    for i, (row1, row2) in enumerate(itertools.izip(reader1, reader2)):
+        if row1 != row2:
+            print(row1)
+            print(row2)
+            for v1, v2 in zip(row1, row2):
+                if v1 != v2:
+                    print('CSV files differ at row %d' % i, file=sys.stderr)
+                    print('"%s" != "%s"' % (v1, v2))
+                    sys.exit(1)
+            assert False, "unreachable (row: %d)" % i
+    sys.exit(0)

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+all-list | while read -r host; do
+    echo "===== $host ====="
+    runon "$host" "$@"
+done

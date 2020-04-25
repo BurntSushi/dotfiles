@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ $# != 1 ]; then
+    echo "Usage: $(basename $0) tag" >&2
+    exit 1
+fi
+
+tag="$1"
+exec git tag -s -a "$tag" -m "$tag"

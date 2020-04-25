@@ -1,0 +1,9 @@
+#!/usr/bin/env python
+
+import statistics
+import sys
+
+data = [int(line.strip()) for line in sys.stdin]
+print('median: %d' % statistics.median(data))
+print('stdev: %d' % statistics.stdev(data))
+print('mean: %d' % statistics.mean(data))

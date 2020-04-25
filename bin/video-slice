@@ -1,0 +1,45 @@
+#!/bin/sh
+
+usage() {
+  echo "Usage: $(basename "$0") [ --accurate ] <start> <end> <input> [<output>]"
+}
+
+accurate=
+while true; do
+  case "$1" in
+    --accurate) accurate=1 && shift ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    -*)
+      usage >&2
+      exit 1
+      ;;
+    *) break ;;
+  esac
+done
+
+start="$1"
+end="$2"
+input="$3"
+output="$4"
+if [ -z "$start" ] || [ -z "$end" ] || [ -z "$input" ]; then
+  usage >&2
+  exit 1
+fi
+if [ -z "$output" ]; then
+  d="$(dirname "$input")"
+  f="$(basename "$input")"
+  ext="${f##*.}"
+  noext="${f%.*}"
+  output="$d/${noext}_${start}-${end}.${ext}"
+fi
+
+# See: https://stackoverflow.com/a/52916510/619216
+# See: https://news.ycombinator.com/item?id=22777179
+if [ -n "$accurate" ]; then
+  exec ffmpeg -ss "$start" -to "$end" -i "$input" "$output"
+else
+  exec ffmpeg -ss "$start" -to "$end" -i "$input" -c copy -map 0 "$output"
+fi

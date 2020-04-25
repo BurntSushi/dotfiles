@@ -1,0 +1,7 @@
+#!/bin/sh
+
+path="$1"
+tmppath=$(mktemp)
+cp "$path" "$tmppath"
+iconv -f UTF-8 -t UTF-16 "$tmppath" > "$path"
+rm "$tmppath"

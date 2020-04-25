@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ $# != 1 ]; then
+  echo "Usage: $(basename $0) <path>" >&2
+  exit 1
+fi
+p="$(readlink -f "$1")"
+export GOPATH="$p"
+export PATH="$p/bin:$PATH"

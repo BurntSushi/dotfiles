@@ -1,0 +1,74 @@
+#!/usr/bin/env zsh
+
+checkout="$HOME/rust/ripgrep"
+custom=
+debug=
+# features='simd-accel'
+features=''
+target=''
+target_flag=''
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+    --debug)
+        debug=1
+        shift
+        ;;
+    --pcre2)
+        features+=' pcre2'
+        shift
+        ;;
+    --musl)
+        target='x86_64-unknown-linux-musl'
+        target_flag=("--target" $target)
+        shift
+        ;;
+    --help)
+        echo "Usage: $(basename "$0") [--debug --pcre2 --musl]"
+        exit
+        ;;
+    -*)
+        break
+        ;;
+    *)
+        checkout="$1"
+        custom=1
+        shift
+        ;;
+    esac
+done
+
+export RUSTFLAGS="-C target-cpu=native"
+# export RUSTFLAGS="-C target-cpu=native -C link-arg=-fuse-ld=lld"
+# export RUSTFLAGS="--cfg regex_disable_auto_optimizations --cfg regex_runtime_teddy_ssse3"
+if [ -n "$debug" ]; then
+  cargo build "$@" \
+    --manifest-path "$checkout/Cargo.toml" \
+    --features "$features" \
+    $target_flag
+else
+  cargo build "$@" \
+    --manifest-path "$checkout/Cargo.toml" \
+    --features "$features" \
+    --release \
+    $target_flag
+fi
+if [ -z "$custom" ]; then
+  if [ -d "$HOME/man" ]; then
+    manfile="$(
+      find "$checkout/target" -name rg.1 -print0 \
+        | xargs -0 ls -t \
+        | head -n1
+    )"
+    if [ -f "$manfile" ]; then
+      mkdir -p "$HOME/man/man1"
+      cp "$manfile" "$HOME/man/man1/rg.1"
+    fi
+  fi
+  if [ -d "$HOME/.zsh-complete" ]; then
+      cp "$checkout/complete/_rg" "$HOME/.zsh-complete/_rg"
+  fi
+  if [ -n "$target" ] && [ -z "$debug" ]; then
+      cp "$checkout/target/$target/release/rg" "$checkout/target/release/rg"
+  fi
+fi

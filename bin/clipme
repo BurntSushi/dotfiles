@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ "$1" = "shrug" ]; then
+    toclip="¯\\_(ツ)_/¯"
+elif [ "$1" = "snowman" ]; then
+    toclip="☃"
+elif [ "$1" = "sherlock-ru" ]; then
+    toclip="Шерлок Холмс"
+else
+    echo "$(basename "$0") (shrug | snowman | sherlock-ru)" >&2
+    exit 1
+fi
+
+echo -n "$toclip" | xclip -selection clipboard

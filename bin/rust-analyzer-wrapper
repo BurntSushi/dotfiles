@@ -1,0 +1,8 @@
+#!/bin/sh
+
+bin="$CARGO_INSTALL_ROOT/bin/rust-analyzer"
+if [ -n "$RA_LOG_STDERR" ]; then
+  exec "$bin" 2> "$RA_LOG_STDERR"
+else
+  exec "$bin"
+fi

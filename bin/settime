@@ -1,0 +1,4 @@
+#!/bin/bash
+
+ntpdate pool.ntp.org
+hwclock --systohc

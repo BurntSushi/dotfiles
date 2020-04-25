@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ "$1" = down ]; then
+  if cmd-exists fusermount3; then
+    fusermount3 -u $2
+  else
+    fusermount -u $2
+  fi
+else
+  if is-work; then
+    sshfs $1 $2 -o allow_other,reconnect,follow_symlinks,kernel_cache
+  else
+    sshfs $1 $2 -o allow_other,reconnect,follow_symlinks,writeback_cache=no,kernel_cache
+  fi
+fi

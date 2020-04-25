@@ -1,0 +1,16 @@
+#!/bin/sh
+
+dir=/m/git
+name="$1"
+if [ -z "$name" ]; then
+    echo "Usage: $(basename "$0") <repo-name>" >&2
+    exit 1
+fi
+
+export GIT_DIR="$dir/$name"
+if [ -d "$GIT_DIR" ]; then
+    echo "$GIT_DIR already exists" >&2
+    exit 1
+fi
+git init --bare --shared=group
+git config --unset receive.denyNonFastforwards
