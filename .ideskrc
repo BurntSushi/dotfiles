@@ -1,0 +1,43 @@
+table Config
+  FontName: gothic
+  FontSize: 14
+  FontColor: #FFFFFF
+  ToolTip.FontSize: 14
+  ToolTip.FontName: gothic
+  ToolTip.ForeColor: #0000FF
+  ToolTip.BackColor: #FFFFFF
+  ToolTip.CaptionOnHover: true
+  ToolTip.CaptionPlacement: Right
+  Locked: false
+  Transparency: 0
+  Shadow: true
+  ShadowColor: #000000
+  ShadowX: 1
+  ShadowY: 1
+  Bold: true
+  ClickDelay: 300
+  IconSnap: true
+  SnapWidth: 100
+  SnapHeight: 100
+  SnapOrigin: BottomRight
+  SnapShadow: false
+  SnapShadowTrans: 200
+  CaptionOnHover: false
+  CaptionPlacement: bottom
+  FillStyle: fillinvert
+  Background.Delay: 0
+  Background.Source: None
+  Background.File: None
+  Background.Mode: Center
+  Background.Color: #C2CCFF
+end
+
+table Actions
+  Lock: control right doubleClk
+  Reload: middle doubleClk
+  Drag: left hold
+  EndDrag: left singleClk
+  Execute[0]: left doubleClk
+  Execute[1]: right doubleClk
+end
+

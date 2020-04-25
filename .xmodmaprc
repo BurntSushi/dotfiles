@@ -1,0 +1,15 @@
+clear Lock
+keycode 66 = Escape
+keycode 104 = Return
+add Lock = Scroll_Lock
+
+! 29 = y, 32 = o, 36 = return, 44 = j, 52 = z
+!keycode 52 = Return
+!keycode 36 = z Z
+!
+!keycode 36 = Return
+!keycode 52 = z Z
+
+clear mod3
+add Mod3 = Menu
+

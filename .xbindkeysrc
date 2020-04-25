@@ -1,0 +1,83 @@
+"video laptop"
+  mod1 + mod4 + shift + v
+
+"gmrun"
+  mod4 + r
+
+"lock"
+  mod4 + l
+
+"dolphin"
+  mod4 + e
+
+"terminal -e tmux -u new zsh"
+  mod4 + t
+
+"terminal -e tmux -u new zsh"
+  mod4 + shift + t
+
+"terminal-tmux-remote nas"
+  mod4 + s
+
+"terminal-tmux-remote frink"
+  mod4 + h
+
+"terminal -e ssh -A mac -t /usr/local/bin/tmux -u new -A -s remote"
+  mod4 + m
+
+"terminal-tmux-remote bs"
+  mod4 + d
+
+"terminal -e ssh -A kent -t clones/tmux/tmux -u new -A -s remote"
+  mod4 + z
+
+"terminal -e tmux -u new -A -s bpython bpython"
+  mod4 + p
+
+"terminal -e tmux -u new -A -s alsamixer alsamixer"
+  mod4 + a
+
+"firefox"
+  mod4 + b
+
+"firefox --private-window"
+  mod4 + shift + b
+
+"firefox --new-window http://gmail.com"
+  mod4 + g
+
+"sh /home/andrew/.config/ag/startup/common.xinitrc"
+  mod1 + mod4 + shift + s
+
+"ssh-add-keys"
+  mod1 + mod4 + space
+
+"pmsleep"
+  XF86Launch1
+
+"volume up"
+  XF86AudioRaiseVolume
+
+"volume down"
+  XF86AudioLowerVolume
+
+"volume mute"
+  XF86AudioMute
+
+"volume up"
+  mod4 + Tab
+
+"volume down"
+  mod4 + shift + Tab
+
+"volume mute"
+  mod4 + grave
+
+"brightness inc"
+  XF86MonBrightnessUp
+
+"brightness dec"
+  XF86MonBrightnessDown
+
+"toggle-tap-to-click"
+  mod1 + mod4 + c

@@ -1,0 +1,65 @@
+"video laptop"
+  mod1 + mod4 + shift + v
+
+"gmrun"
+  mod4 + r
+
+"lock"
+  mod4 + l
+
+"dolphin"
+  mod4 + e
+
+"edit_textbuf"
+  mod4 + shift + e
+
+"qpdfview /home/andrew/tmp/exercises.pdf"
+  mod4 + n
+
+"zathura /home/andrew/data/misc/documents/latexsheet.pdf"
+  control + mod1 + mod4 + l
+
+"konsole -e bash"
+  mod4 + t
+
+"konsole -e 'ssh nas -t screen -RD'"
+  mod4 + s
+
+"konsole -e 'ssh -Y gopher -t screen -RD'"
+  mod4 + d
+
+"konsole -e 'ssh kent -t screen -RD'"
+  mod4 + z
+
+"konsole -e 'bash -c bpython2'"
+  mod4 + p
+
+"konsole -e 'bash -c pynfldb'"
+  mod4 + shift + n
+
+"konsole -e alsamixer"
+  mod4 + a
+
+"google-chrome"
+  mod4 + b
+
+"google-chrome --incognito"
+  mod4 + shift + b
+
+"google-chrome --new-window http://gmail.com"
+  mod4 + g
+
+"pmsleep"
+  XF86Launch1
+
+"sh /home/andrew/.config/ag/startup/common.xinitrc"
+  mod1 + mod4 + shift + s
+
+"volume mute"
+  XF86AudioMute
+
+"volume up"
+  XF86AudioRaiseVolume
+
+"volume down"
+  XF86AudioLowerVolume

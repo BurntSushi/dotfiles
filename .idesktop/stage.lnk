@@ -1,0 +1,8 @@
+table Icon
+  Caption: stage
+  Icon: /usr/share/icons/oxygen/base/64x64/places/folder-blue.png
+  X: 202
+  Y: 0
+  Command[0]: dolphin /m/media/stage
+end
+

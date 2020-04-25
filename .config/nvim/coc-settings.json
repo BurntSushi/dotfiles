@@ -1,0 +1,12 @@
+{
+  "diagnostic.virtualText": false,
+  "diagnostic.joinMessageLines": true,
+  "diagnostic.checkCurrentLine": true,
+  "diagnostic.messageTarget": "float",
+  "diagnostic.level": "information",
+  "suggest.autoTrigger": "none",
+  "signature.enable": false,
+  "coc.preferences.snippets.enable": false,
+  "rust-analyzer.diagnostics.enable": false,
+  "rust-analyzer.serverPath": "/home/andrew/bin/rust-analyzer-wrapper"
+}

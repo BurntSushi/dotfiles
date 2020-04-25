@@ -1,0 +1,27 @@
+[user]
+  email = jamslam@gmail.com
+  name = Andrew Gallant
+  signingkey = jamslam@gmail.com
+[rerere]
+  enabled = true
+[commit]
+  gpgsign = true
+[tag]
+  forceSignAnnotated = true
+[merge]
+  ff = only
+[pull]
+  rebase = true
+[rebase]
+  autoSquash = true
+[absorb]
+  maxStack = 50
+[alias]
+  pushf = push --force-with-lease
+  diffy = difftool --no-prompt --trust-exit-code --extcmd 'icdiff -N -U3'
+  amend = commit -a --amend -C HEAD
+  co = checkout
+[url "git@github.com:"]
+  insteadOf = https://github.com/
+[gui]
+	gcwarning = false

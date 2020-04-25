@@ -1,0 +1,50 @@
+# gmrun configuration file
+# gmrun is (C) Mihai Bazon, <mishoo@infoiasi.ro>
+# GPL v2.0 applies
+
+# Set terminal
+Terminal = lxterminal
+TermExec = ${Terminal} -e
+AlwaysInTerm = ssh telnet ftp lynx mc vi vim pine centericq perldoc man cmus
+
+# Set window geometry (except height)
+Width = 400
+Top = 450
+# Left = 2360 
+
+# History size
+History = 999999999
+
+# Shows last history line selected when invoked
+ShowLast = 1
+
+# Show files starting with '.'
+# Default is 0 (off), set it to 1 if you want "hidden" files to show up
+# in the completion window
+ShowDotFiles = 1
+
+# Timeout (in milliseconds) after which gmrun will simulate a TAB press
+# Set this to NULL if don't like this feature.
+TabTimeout = 0
+
+# URL handlers
+# If the entered text is "http://www.google.com" then:
+#   - %u gets replaced with the whole URL ("http://www.google.com")
+#   - %s gets replaced with "//www.google.com".  This is useful for URL-s
+#     like "man:printf" --> %s will get replaced with "printf"
+# URL_http = mozilla -remote "openURL(%u, new-window)"
+# URL_http = /home/andrew/bin/chrome "openURL(%u, new-window)"
+URL_http = google-chrome --new-window %s
+URL_mailto = mozilla -remote "mailto(%s)"
+URL_man = ${TermExec} 'man -P "less -R" %s'
+URL_info = ${TermExec} 'info %s'
+URL_pd = ${TermExec} 'perldoc %s'
+URL_file = nautilus %s
+URL_readme = ${TermExec} 'less /usr/share/doc/%s/README'
+URL_info = ${TermExec} 'info %s'
+URL_sh = sh -c '%s'
+
+# extension handlers
+EXT:doc,rtf = libreoffice -writer %s
+EXT:txt,cc,cpp,h,java,html,htm,epl,tex,latex,js,css,xml,xsl,am = vim %s
+EXT:pdf,ps = okular %s

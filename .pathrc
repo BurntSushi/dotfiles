@@ -1,0 +1,45 @@
+# vim: ft=sh sw=2 ts=2 sts=2
+
+prependpath() {
+  paths="$1"
+  toadd="$2"
+  case ":$paths:" in
+    *:"$toadd":*)
+      echo "$paths"
+      ;;
+    *)
+      echo "$toadd${paths:+:$paths}"
+      ;;
+  esac
+}
+
+# Set the Cargo installation directory.
+CARGO_INSTALL_ROOT="$HOME/.local/cargo"
+
+# Setup PATH.
+# shellcheck disable=SC2123
+PATH=""
+# System paths.
+PATH="$(prependpath "$PATH" /sbin)"
+PATH="$(prependpath "$PATH" /bin)"
+PATH="$(prependpath "$PATH" /usr/sbin)"
+PATH="$(prependpath "$PATH" /usr/bin)"
+PATH="$(prependpath "$PATH" /usr/bin/core_perl)"
+PATH="$(prependpath "$PATH" /usr/bin/vendor_perl)"
+PATH="$(prependpath "$PATH" /usr/local/sbin)"
+PATH="$(prependpath "$PATH" /usr/local/bin)"
+PATH="$(prependpath "$PATH" /usr/local/go/bin)"
+# Home specific paths.
+PATH="$(prependpath "$PATH" "$HOME/.local/bin")"
+PATH="$(prependpath "$PATH" "$HOME/.gem/ruby/2.5.0/bin")"
+PATH="$(prependpath "$PATH" "$HOME/go/bin")"
+PATH="$(prependpath "$PATH" "$CARGO_INSTALL_ROOT/bin")"
+PATH="$(prependpath "$PATH" "$HOME/.cargo/bin")"
+# My paths.
+PATH="$(prependpath "$PATH" "$HOME/bin")"
+PATH="$(prependpath "$PATH" "$HOME/bin/x86_64")"
+PATH="$(prependpath "$PATH" "$HOME/rust/ripgrep/target/release")"
+PATH="$(prependpath "$PATH" "$HOME/rust/ripgrep/target/release/examples")"
+PATH="$(prependpath "$PATH" "$HOME/rust/xsv/target/release")"
+
+export PATH CARGO_INSTALL_ROOT

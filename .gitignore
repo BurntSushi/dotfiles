@@ -1,0 +1,55 @@
+# Because I'm paranoid and because I want to see untracked files, I maintain
+# an exhaustive gitignore list. This also makes searching my home directory
+# with ripgrep convenient, since it won't descend into most directories.
+
+# top-level hidden files/directories
+/.Xauthority
+/.aws
+/.bash_history
+/.cache
+/.cargo
+/.debug
+/.docker
+/.fzf*
+/.gist
+/.gitconfig
+/.git-old
+/.gkrellm2
+/.gmrun_history
+/.gnupg
+/.gox11
+/.laptop
+/.lesshst
+/.local
+/.mozilla
+/.old
+/.password-store
+/.pki
+/.pythonhist
+/.pyx11
+/.qgrep
+/.rustup
+/.sane
+/.thumbnails
+/.tig_history
+/.vim-cache
+/.viminfo
+/.wmWeatherReports
+/.zcompdump
+/.zoom
+/.zsh_history
+
+# top-level directories
+/Desktop
+/Downloads
+/clones
+/code
+/data
+/go
+/man
+/rust
+/tmp
+/work
+
+# Files we always want to ignore
+.netrwhist

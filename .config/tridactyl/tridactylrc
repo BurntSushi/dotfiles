@@ -1,0 +1,56 @@
+" vim: filetype=vim
+
+" This wipes all existing settings. This means that if a setting in this file
+" is removed, then it will return to default. In other words, this file serves
+" as an enforced single point of truth for Tridactyl's configuration.
+sanitize tridactyllocal tridactylsync
+
+" Just use a blank page for new tab. It would be nicer to use the standard
+" Firefox homepage, but Tridactyl doesn't support this yet.
+set newtab about:blank
+
+" Use neovim in tmux for editor.
+set editorcmd terminal -e tmux -u new nvim -S /home/andrew/.config/nvim/include/spacing/tridactyl.vim
+
+" Ctrl-F should use the browser's native 'find' functionality.
+unbind <C-f>
+
+" But also support Tridactyl search too.
+bind / fillcmdline find
+bind ? fillcmdline find -?
+bind n findnext 1
+bind N findnext -1
+" Remove search highlighting.
+bind ,<Space> nohlsearch
+" Use sensitive case. Smart case would be nice here, but it doesn't work.
+set findcase sensitive
+
+" Smooth scrolling, yes please. This is still a bit janky in Tridactyl.
+" ... actually, it's just too janky. Disable it. Sigh.
+set smoothscroll false
+
+" The default jump of 10 is a bit much.
+bind j scrollline 5
+bind k scrollline -5
+
+" K and J should move between tabs. x should close them.
+bind J tabprev
+bind K tabnext
+bind x tabclose
+
+" For opening videos in mpv.
+" bind zv hint -W exclaim mpv
+bind zv composite js document.location.href | exclaim_quiet mpv --loop
+
+" Don't run Tridactyl on some web sites because it doesn't work well, or
+" because the web site has its own keybindings.
+autocmd DocStart mail.google.com mode ignore
+autocmd DocStart meet.google.com mode ignore
+autocmd DocStart discordapp.com mode ignore
+
+" Sometimes the status bar in the bottom left corner overlaps the Tridactyl
+" command line, so set an option to move the status bar to the right.
+guiset_quiet hoverlink right
+
+" Set up some shortcuts for running custom scripts.
+bind zz composite jsb tri.native.run('cat /home/andrew/.config/tridactyl/rustdoc-condensed.js') | js -p eval(JS_ARG.content)

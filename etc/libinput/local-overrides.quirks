@@ -1,0 +1,6 @@
+[Touchpad pressure override]
+MatchUdevType=touchpad
+MatchName=*SynPS/2 Synaptics TouchPad
+MatchDMIModalias=dmi:*svnSystem76*pvrdarp6*
+AttrPressureRange=45:44
+AttrPalmPressureThreshold=75

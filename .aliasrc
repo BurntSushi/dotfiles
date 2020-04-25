@@ -1,0 +1,121 @@
+# vim: ft=sh sw=2 ts=2 sts=2
+
+if [ -f ~/.systemd.sh ]; then
+    . ~/.systemd.sh
+fi
+
+# Aliases.
+
+if is-mac; then
+  alias ls='ls -G'
+  alias l='ls -lhG'
+else
+  alias ls='ls -N --color=auto --group-directories-first'
+  alias l='ls -lhN'
+fi
+
+alias y='yay'
+alias p="ps axo pid,cmd | sed 's/^\\s*\\([0-9]\\+\\)\\s\\+/\\1\\t/g' | grep -v grep | grep"
+alias b="bpython2"
+alias diff="colordiff"
+alias less="less -R"
+alias sqlite3="sqlite3 -column -nullvalue 'NULL' -header"
+alias rd="regex-debug"
+alias clr="echo -ne '\\033[0m'"
+alias j="ledger"
+alias ports='lsof -iTCP -sTCP:LISTEN -n -P'
+alias N='nh terminal -d "$PWD" -e tmux new'
+alias image='feh -dFZ'
+alias mpv="mpv --keep-open=yes"
+
+alias g="git"
+alias gs="g status"
+alias gp="g push home master && g push origin master"
+alias gpt="g push home master --tags && g push origin master --tags"
+alias gy="g diffy | less -RFX"
+
+alias grep="grep --color=auto"
+alias egrep="egrep --color=auto"
+alias fgrep="fgrep --color=auto"
+
+# Alias for filtering output of cargo crev to only contain the dependencies
+# in the main crate root.
+alias crev-verify="cargo crev verify | rg --color never -Ff <(cargo tree --no-dev-dependencies --no-indent | cut -d' ' -f1)"
+
+# Temporary work-around to get colors working.
+alias cargo="TERM=xterm cargo"
+
+# Functions.
+man() {
+  env \
+    LESS_TERMCAP_mb=$(printf "\\e[1;31m") \
+    LESS_TERMCAP_md=$(printf "\\e[1;31m") \
+    LESS_TERMCAP_me=$(printf "\\e[0m") \
+    LESS_TERMCAP_se=$(printf "\\e[0m") \
+    LESS_TERMCAP_so=$(printf "\\e[1;44;33m") \
+    LESS_TERMCAP_ue=$(printf "\\e[0m") \
+    LESS_TERMCAP_us=$(printf "\\e[0;32m") \
+    man "$@"
+}
+
+paths() {
+  echo "$1" | sed 's/:/\n/g'
+}
+
+nh() {
+  nohup "$@" > /dev/null 2>&1 &
+}
+
+ssh_reagent() {
+  for agent in /tmp/ssh-*/agent.*; do
+    export SSH_AUTH_SOCK="$agent"
+    if ssh-add -L > /dev/null 2>&1; then
+      return
+    fi
+    unset SSH_AUTH_SOCK
+  done
+  echo "No valid SSH forwarding socket found." >&2
+  exit 1
+}
+
+mkcd() {
+  mkdir -p "$1" && cd "$1" || exit
+}
+
+prependpath() {
+  paths="$1"
+  toadd="$2"
+  case ":$paths:" in
+    *:"$toadd":*)
+      echo "$paths"
+      ;;
+    *)
+      echo "$toadd${paths:+:$paths}"
+      ;;
+  esac
+}
+
+appendpath() {
+  paths="$1"
+  toadd="$2"
+  case ":$paths:" in
+    *:"$toadd":*)
+      echo "$paths"
+      ;;
+    *)
+      echo "${paths:+$paths:}$toadd"
+      ;;
+  esac
+}
+
+rgf() {
+  regex=
+  args=
+  for v in "$@"; do
+    case $v in
+      -*) args+="$v" ;;
+      *) regex="$v" ;;
+    esac
+  done
+  rg --files $args | rg "$regex"
+}

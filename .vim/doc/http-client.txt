@@ -1,0 +1,146 @@
+http-client.txt
+
+       _      _    _                       _  _               _           ~
+      | |    | |  | |                     | |(_)             | |          ~
+      | |__  | |_ | |_  _ __  ______  ___ | | _   ___  _ __  | |_         ~
+      | '_ \ | __|| __|| '_ \|______|/ __|| || | / _ \| '_ \ | __|        ~
+      | | | || |_ | |_ | |_) |      | (__ | || ||  __/| | | || |_         ~
+      |_| |_| \__| \__|| .__/        \___||_||_| \___||_| |_| \__|        ~
+                       | |                                                ~
+                       |_|                                                ~
+
+
+==============================================================================
+CONTENTS                                                  |http-client-contents|
+
+                     Introduction  |http-client-introduction|
+                              Use  |http-client-use|
+                    Configuration  |http-client-configuration|
+                     Installation  |http-client-installation|
+
+==============================================================================
+Introduction                              *http-client* *http-client-introduction*
+
+With vim-http-client, you can make HTTP calls from Vim with the HTTP format
+you already know, rather than learning new command line tools fraught with
+complex flags and escaped quotes. You can also parse the results right in
+Vim, syntax highlighted the way you expect!
+
+==============================================================================
+Use                                                            *http-client-use*
+
+Put your cursor anywhere in a newline-delimited block of text and hit
+`<Leader>tt`. The text will be parsed and executed as a HTTP request, and its
+results will appear in a split. You can also directly invoke the HTTP client
+with :call HTTPClientDoRequest()<cr>. Here's the format of a request: >
+
+    # Comments start with #.
+    # First request.
+    <method> <url>
+    <header-name-1>: <header-value-1>
+    <header-name-2>: <header-value-2>
+    ...
+    <header-name-n>: <header-value-n>
+    <body>
+
+    # Second request.
+    <method> <url>
+    <header-name-1>: <header-value-1>
+    <header-name-2>: <header-value-2>
+    ...
+    <header-name-n>: <header-value-n>
+    <body>
+
+Depending on where you put your cursor, the first or second request will
+execute. You can also substitute variables anywhere in the request: >
+
+    # Second request.
+    # :foo = bar
+    # :asdf = 3
+    POST http://httpbin.org/post
+    { "data": ":foo" }
+
+Each variable lives in a separate commented line. Variables beginning with :
+are request variables only considered in the request block they live in.
+Variables beginning with $ are global variables that affect all requests in
+the entire buffer. Local variables always override global variables. >
+
+    # $endpoint = http://httpbin.org
+
+    GET $endpoint/get
+
+    # :request_var = 3
+    POST $endpoint/post
+
+    GET $endpoint/resource
+
+If you'd like to pass form-encoded data, set your body like this: >
+
+    <key-1>=<value-1>
+    <key-2>=<value-2>
+    ...
+    <key-n>=<value-n>
+
+See `examples/examples.txt` for more examples.
+
+The output appears in a new split. Syntax highlighting is interpreted from the
+Content-Type header of the result. It currently supports XML, JSON, and HTML;
+all others will get ft=text.
+
+==============================================================================
+Configuration                                        *http-client-configuration*
+                                                     *g:http_client_bind_hotkey*
+                                                         *g:http_client_json_ft*
+                                                 *g:http_client_json_escape_utf*
+                                                   *g:http_client_result_vsplit*
+
+g:http_client_bind_hotkey (default 1)
+
+Controls whether or not `<Leader>tt` will run the HTTP client.
+
+g:http_client_json_ft (default 'javascript')
+
+Sets the vim filetype when vim-http-client detects a JSON response. Though
+JSON-specific syntax highlighting provides prettier highlighting than the
+default Javascript highlighting, Javascript highlighting comes with Vim and is
+therefore a safer default. Use this setting to configure the filetype to your
+liking.
+
+g:http_client_json_escape_utf (default 1)
+
+By default json.dumps will escape any utf8 characters beyond ascii range. This
+option (if set to 0) allows you to get the actual special characters instead
+of \uxxxx encoded ones.
+
+g:http_client_result_vsplit (default 1)
+
+By default the request result appears in a vertical split. Setting this option
+to 0 displays the result in a horizontal split.
+
+g:http_client_focus_output_window (default 1)
+
+By default the focus will go to the output window. If set to 0 the focus will
+return to the window with request definitions.
+
+==============================================================================
+Installation                                          *http-client-installation*
+
+vim-http-client requires Vim compiled with python support and the python
+requests library.
+
+To check if you have Python support, try: >
+
+    vim --version | grep +python.
+
+To check if you have the requests library, try: >
+
+    python -c 'import requests'
+
+If you get an error, try pip install requests to get the library. Many distros
+ship Python support with Vim and the requests library with Python.
+
+Once the two are installed, install the plugin into
+~/.vim/plugin/http-client.vim or with your favorite Vim plugin manager.
+
+==============================================================================
+vim:tw=78:sw=4:ts=8:ft=help:norl:

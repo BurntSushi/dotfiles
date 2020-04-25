@@ -1,0 +1,8 @@
+#--max-columns=500
+--max-columns-preview
+--colors=match:bg:0xff,0x7f,0x00
+--colors=match:fg:white
+--colors=line:none
+--colors=line:fg:magenta
+--colors=path:fg:green
+--type-add=got:*_test.go

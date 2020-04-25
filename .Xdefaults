@@ -1,0 +1,87 @@
+#!mouse cursor settings--------------------------------
+#Xcursor.theme: Vanilla-DMZ-AA
+# 
+#!urxvt settings---------------------------------------
+#URxvt.iconFile: /usr/share/icons/Tango/32x32/apps/gnome-terminal.png
+#URxvt.transparent: true
+#URxvt.background: #000000
+#URxvt.foreground: white
+#URxvt.cursorColor: gray
+#URxvt.underlineColor: gray
+#URxvt.font: xft:dina:pixelsize=16:antialias=false
+#URxvt.boldFont: xft:dina:bold:size=14;antialias=false
+#URxvt.scrollBar_right: true
+#URxvt.scrollstyle: plain
+#!URxvt.url-launcher: /usr/bin/chromium
+#URxvt.url-select.launcher: /usr/bin/chromium
+#URxvt.colorUL: #4682B4
+#URxvt.perl-ext-common: default,matcher,url-select
+#URxvt.matcher.button: 1
+#URxvt.underlineURLs:    true
+#URxvt.keysym.M-u:       perl:url-select:select_next
+# 
+#!terminal color settings------------------------------
+#*foreground:     rgb:dd/dd/dd
+#*background:     rgb:22/22/22
+#!black
+#*color0:         rgb:19/19/19
+#*color8:         rgb:25/25/25
+#!red
+#*color1:         rgb:80/32/32
+#*color9:         rgb:98/2b/2b
+#!green
+#*color2:         rgb:5b/76/2f
+#*color10:        rgb:89/b8/3f
+#!brown/yellow
+#*color3:         rgb:aa/99/43
+#*color11:        rgb:ef/ef/60
+#!blue
+#*color4:         rgb:32/4c/80
+#*color12:        rgb:2b/4f/98
+#!magenta
+#*color5:         rgb:70/6c/9a
+#*color13:        rgb:82/6a/b1
+#!cyan
+#*color6:         rgb:92/b1/9e
+#*color14:        rgb:a1/cd/cd
+#!white
+#*color7:         rgb:ff/ff/ff
+#*color15:        rgb:dd/dd/dd
+
+
+#URxvt*font: xft:Bitstream Vera Sans Mono:pixelsize=12
+#URxvt*font: xft:Monospace:pixelsize=14
+#URxvt*depth: 32
+#URxvt*foreground: white
+#URxvt*saveLines: 65535
+#URxvt*scrollBar: false
+#URxvt*background: black
+
+
+#URxvt*background: rgba:0000/0000/0000/cccc
+#URxvt*transparent: true
+#URxvt*shading: 50
+#URxvt*tint: red
+#URxvt*inheritPixmap: true
+#URxvt*borderLess: true
+#URxvt*geometry: 124x24 +0+0
+#URxvt*foreground: black
+
+#Mrxvt.smoothResize: True
+##Mrxvt.opacity: 10
+#Mrxvt.showMenu: False
+#Mrxvt.autohideTabbar: True
+#Mrxvt.scrollBar: False
+#Mrxvt.saveLines: 65535
+#Mrxvt.foreground: white
+#Mrxvt.cursorColor: yellow
+#Mrxvt.cursorBlink: False
+#Mrxvt.xft: True
+#Mrxvt.xftFont: Bitstream Vera Sans Mono
+#Mrxvt.xftSize: 9
+#Mrxvt.Antialias: True
+#Mrxvt.xftHinting: True
+#Mrxvt.xftAutoHint: True
+#Mrxvt.xftGlobalAdvance: True
+#Mrxvt.xftPFont: Bitstream Vera Sans
+#Mrxvt.xftPSize: 8
