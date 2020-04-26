@@ -4,6 +4,10 @@ set number
 " Always expand tabs to spaces.
 set expandtab
 
+" By default, use two space indents and don't wrap automatically.
+set textwidth=0
+runtime! include/spacing/two.vim
+
 " Keep a buffer around even when abandoned.
 " Without this, jump-to-definition in LSP clients seems to complain if the
 " file hasn't been saved. In other words, let us go to other buffers even if
@@ -24,9 +28,12 @@ set incsearch
 " When scrolling, always keep the cursor N lines from the edges.
 set scrolloff=10
 
-" By default, use two space indents and don't wrap automatically.
-set textwidth=0
-runtime! include/spacing/two.vim
+" Convenience for automatic formatting.
+"   t - auto-wrap text by respecting textwidth
+"   c - auto-wrap comments by respecting textwidth
+"   r - auto-insert comment leading after <CR> in insert mode
+"   o - auto-insert comment leading after O in normal mode
+set formatoptions=tcro
 
 " Don't switch window focus when using HTTP client.
 let g:http_client_focus_output_window=0
