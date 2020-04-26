@@ -3,7 +3,6 @@
 # with ripgrep convenient, since it won't descend into most directories.
 
 # top-level hidden files/directories
-/.Xauthority
 /.aws
 /.bash_history
 /.cache
@@ -16,6 +15,7 @@
 /.git-old
 /.gkrellm2
 /.gmrun_history
+/.gnome
 /.gnupg
 /.gox11
 /.laptop
@@ -35,6 +35,7 @@
 /.vim-cache
 /.viminfo
 /.wmWeatherReports
+/.Xauthority
 /.zcompdump
 /.zoom
 /.zsh_history
