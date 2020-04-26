@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ -r "$HOME/.myhostname" ]; then
+  cat "$HOME/.myhostname"
+else
+  hostname
+fi
