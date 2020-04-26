@@ -7,7 +7,16 @@
 
 set -e
 
+if [ -z "$REALLY_DO_MIGRATE" ]; then
+  echo "REALLY_DO_MIGRATE must be set in order to run this script" >&2
+  exit 1
+fi
 OLD="$HOME/tmp/oldhome"
+if [ -r "$OLD" ]; then
+  echo "script has already been run, cannot re-run..." >&2
+  exit 1
+fi
+
 mkdir -p $OLD/{.config,.idesktop,.ssh,.vim,.zsh-complete}
 mv ~/bin ~/.git ~/.idesktop ~/.vim ~/.zsh-complete $OLD/
 mv ~/.config/{ag,alacritty,dunst,gohead,highlight,mpv,nvim,tridactyl,wingo} $OLD/.config/
