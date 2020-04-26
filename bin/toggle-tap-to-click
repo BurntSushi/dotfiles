@@ -3,13 +3,13 @@
 if [ ! -f "$HOME/.laptop" ]; then
   exit 1
 fi
-case "$(hostname)" in
+case "$(myhostname)" in
   krusty)
     device="SynPS/2 Synaptics TouchPad"
     prop="libinput Tapping Enabled"
     ;;
   *)
-    echo "unrecognize machine: $(hostname)" >&2
+    echo "unrecognize machine: $(myhostname)" >&2
     ;;
 esac
 

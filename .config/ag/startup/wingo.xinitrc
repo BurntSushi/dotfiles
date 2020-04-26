@@ -3,7 +3,7 @@
 # vim: ft=sh sw=2 ts=2 sts=2
 
 base="$HOME/.config/ag/startup"
-case "$(hostname)" in
+case "$(myhostname)" in
   Turtle)
     exec "$base/wingo-turtle.xinitrc"
     ;;

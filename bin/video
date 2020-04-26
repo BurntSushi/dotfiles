@@ -48,7 +48,7 @@ if ! gohead set $*; then
 fi
 sleep 1
 
-case `hostname` in
+case $(myhostname) in
 frink)
   ps aux | grep -v grep | grep dzen-workspaces | awk '{print $2}' | xargs -r kill
   killall trayer

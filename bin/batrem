@@ -100,13 +100,13 @@ if __name__ == '__main__':
             '"rem" is specified, only the time remaining is displayed.')
     conf = parser.parse_args()
 
-    host = subprocess.check_output(['hostname']).strip()
+    host = subprocess.check_output(['myhostname']).strip()
     batdir = ''
     ffull = 'energy_full'
     fnow = 'energy_now'
     fpow_now = 'power_now'
 
-    if host in ('Tiger', 'Turtle', 'monty', 'krusty'):
+    if host in ('Turtle', 'monty', 'krusty'):
         batdir = '/sys/class/power_supply/BAT0'
     if host in ('krusty'):
         ffull = 'charge_full'

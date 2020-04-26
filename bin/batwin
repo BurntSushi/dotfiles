@@ -1,6 +1,6 @@
 #!/bin/sh
 
-case "$(hostname)" in
+case "$(myhostname)" in
 monty)
   killall dzen2
   exec batrem -s -i 10 | dzen2 -fn "DejaVu Sans Mono-14" \
@@ -14,7 +14,7 @@ krusty)
     -x 1655 -y 1040 -w 115 -h 40
   ;;
 *)
-  echo "Unrecognized machine '$(hostname)'." >&2
+  echo "Unrecognized machine '$(myhostname)'." >&2
   exit 1
   ;;
 esac
