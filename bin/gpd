@@ -22,6 +22,9 @@ done
 
 branch="$1"
 for remote in home origin; do
+  if ! git remote | grep -q "$remote"; then
+    continue
+  fi
   if [ -z "$force" ]; then
     git push $remote $branch
   else
