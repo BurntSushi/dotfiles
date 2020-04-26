@@ -1,0 +1,51 @@
+#!/usr/bin/env zsh
+
+# This script converts my old HOME setup to my new one. The old setup used two
+# repos: one for $HOME and one for $HOME/bin. The new setup uses just one repo.
+# Basically, we move all of the existing files out of the way (tedious) and
+# then initialize our new repo.
+
+set -e
+
+OLD="$HOME/tmp/oldhome"
+mkdir -p $OLD/{.config,.idesktop,.ssh,.vim,.zsh-complete}
+mv ~/bin ~/.git ~/.idesktop ~/.vim ~/.zsh-complete $OLD/
+mv ~/.config/{ag,alacritty,dunst,highlight,mpv,nvim,tridactyl} $OLD/.config/
+
+files=(
+  .Xdefaults
+  .aliasrc
+  .bash_profile
+  .bashrc
+  .colordiffrc
+  .envrc
+  .gitconfig.blackfoot
+  .gitconfig.default
+  .gmrunrc
+  .ideskrc
+  .inputrc
+  .pathrc
+  .ripgreprc
+  .systemd.sh
+  .tmux.conf
+  .vimrc
+  .vimrc.less
+  .xbindkeys.noauto
+  .xbindkeysrc
+  .xbindkeysrc-smithers
+  .xbindkeysrc-turtle
+  .xmodmaprc
+  .zprofile
+  .zshrc
+)
+for f in $files; do
+  mv "$f" $OLD/
+done
+
+git init
+git remote add origin git@github.com:BurntSushi/dotfiles
+git fetch origin
+mv ~/.ssh/{config,rc} $OLD/.ssh/
+git reset --hard origin/master
+chmod 600 ~/.ssh/config
+git branch --set-upstream-to origin/master master
