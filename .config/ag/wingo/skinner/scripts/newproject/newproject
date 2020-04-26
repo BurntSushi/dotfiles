@@ -1,0 +1,16 @@
+#!/usr/bin/env python2
+
+import pywingo
+
+W = pywingo.Wingo()
+
+prefix = W.Input('Project name: ')
+if len(prefix) == 0:
+    exit(0)
+
+for i in xrange(W.GetNumHeads()):
+    name = '%s%d' % (prefix, i + 1)
+    W.HeadFocus(i)
+    W.AddWorkspace(name)
+    W.Workspace(name)
+

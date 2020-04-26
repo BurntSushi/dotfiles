@@ -1,0 +1,13 @@
+#!/usr/bin/env python2
+
+import pywingo
+
+W = pywingo.Wingo()
+
+cur_head = W.GetHead()
+cur_client = W.GetActive()
+
+next_head = (cur_head + 1) % W.GetNumHeads()
+
+W.HeadFocusWithClient(next_head, cur_client)
+

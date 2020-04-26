@@ -7,8 +7,8 @@ case "$(hostname)" in
   Turtle)
     exec "$base/wingo-turtle.xinitrc"
     ;;
-  Leopard)
-    exec "$base/wingo-leopard.xinitrc"
+  skinner)
+    exec "$base/wingo-skinner.xinitrc"
     ;;
   Jaguar)
     exec "$base/wingo-jaguar.xinitrc"

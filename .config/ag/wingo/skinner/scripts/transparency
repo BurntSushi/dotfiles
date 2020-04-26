@@ -1,0 +1,47 @@
+#!/usr/bin/env python2
+#
+import atexit
+
+import pywingo
+
+# The transparency to use for unfocused and focused clients.
+# 1 is completely opaque and 0 is completely transparent.
+alpha = {
+    'unfocused': 0.85,
+    'focused': 1.0,
+}
+
+# Does the initial connection with Wingo. `W` can now be used to run commands.
+W = pywingo.Wingo()
+
+# Use Python decorators to bind functions to specific events.
+@W.bind('FocusedClient')
+def focused(ev):
+    W.SetOpacity(ev.Id, alpha['focused'])
+
+@W.bind('UnfocusedClient')
+def focused(ev):
+    W.SetOpacity(ev.Id, alpha['unfocused'])
+
+# Set the transparency of all clients upon subscription.
+@W.bind('Subscribed')
+def startup(ev):
+    active = W.GetActive()
+    for cid in W.GetAllNormalClients():
+        if cid == active:
+            W.SetOpacity(cid, alpha['focused'])
+        else:
+            W.SetOpacity(cid, alpha['unfocused'])
+
+# Use the special `atexit.register` decoration in the Python standard
+# library to do any clean up if your program quits.
+@atexit.register
+def shutdown():
+    # If the program quits unexpectedly, return opacity
+    # to normal levels.
+    for cid in W.GetAllNormalClients():
+        W.SetOpacity(cid, 1.0)
+
+# Start the main event loop. This should be the last thing in your program.
+W.loop()
+
