@@ -2,63 +2,7 @@
 
 # vim: tabstop=2 shiftwidth=2 softtabstop=2
 
-. $HOME/bin/x11-go
-
-case "$(hostname)" in
-  Tiger)
-    if [ "$(gohead tabs | cut -f2)" = "vga" ]; then
-      conf="$HOME/.config/alacritty/tiger-big.yml"
-    else
-      conf="$HOME/.config/alacritty/tiger.yml"
-    fi
-    temubin="alacritty --config-file $conf"
-    temubin="$temubin --dimensions 80 30"
-    ;;
-  monty)
-    if [ "$(gohead tabs | cut -f2)" = "vga" ]; then
-      conf="$HOME/.config/alacritty/tiger-big.yml"
-    else
-      conf="$HOME/.config/alacritty/tiger.yml"
-    fi
-    temubin="alacritty --config-file $conf"
-    temubin="$temubin --dimensions 80 30"
-    ;;
-  krusty)
-    if [ "$(gohead tabs | cut -f2)" = "vga" ]; then
-      conf="$HOME/.config/alacritty/tiger-big.yml"
-    else
-      conf="$HOME/.config/alacritty/tiger.yml"
-    fi
-    temubin="alacritty --config-file $conf"
-    temubin="$temubin --dimensions 80 30"
-    ;;
-  Jaguar)
-    conf="$HOME/.config/alacritty/jaguar.yml"
-    temubin="alacritty --config-file $conf"
-    ;;
-  Leopard)
-    conf="$HOME/.config/alacritty/jaguar.yml"
-    temubin="alacritty --config-file $conf"
-    ;;
-  wiggum)
-    conf="$HOME/.config/alacritty/jaguar.yml"
-    temubin="alacritty --config-file $conf"
-    ;;
-  *)
-    if is-work; then
-      if is-laptop; then
-        conf="$HOME/.config/alacritty/work-laptop.yml"
-        temubin="alacritty --config-file $conf"
-      else
-        conf="$HOME/.config/alacritty/work-desktop.yml"
-        temubin="alacritty --config-file $conf"
-      fi
-    else
-      temubin="alacritty"
-    fi
-    ;;
-esac
-
+temubin=alacritty
 dir=
 if [ "$1" = "-d" ]; then
   dir="$2"
