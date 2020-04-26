@@ -26,6 +26,7 @@
 /.local
 /.mozilla
 /.msmtp.log
+/.myhostname
 /.nvimlog
 /.old
 /.parallel
@@ -41,6 +42,7 @@
 /.tig_history
 /.vim-cache
 /.viminfo
+/.wicd
 /.wmWeatherReports
 /.Xauthority
 /.xbindkeysrc
