@@ -7,7 +7,7 @@ dunst &
   xset r rate 200
   xset b 0
   xmodmap $HOME/.xmodmaprc
-  xbindkeys -f $HOME/.xbindkeysrc
+  xbindkeys
   numlockx on
   dpms-settings
   xset m 1 1

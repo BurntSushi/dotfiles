@@ -6,7 +6,7 @@
   xset r rate 200
   xset b 0
   xmodmap $HOME/.xmodmaprc
-  xbindkeys -f $HOME/.xbindkeysrc-media
+  xbindkeys
   numlockx on
   dpms-settings
   no-blanking

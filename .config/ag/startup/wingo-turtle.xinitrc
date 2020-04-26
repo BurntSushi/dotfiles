@@ -7,7 +7,7 @@ dunst &
   xset r rate 200
   xset b 0
   xmodmap $HOME/.xmodmaprc
-  xbindkeys -f $HOME/.xbindkeysrc-turtle
+  xbindkeys
   numlockx on
   dpms-settings
   xset m 2 1
