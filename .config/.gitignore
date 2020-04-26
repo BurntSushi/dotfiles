@@ -1,8 +1,10 @@
 /autostart
+/baloofileinformationrc
 /baloofilerc
 /coc
 /dconf
 /dolphinrc
+/filetypesrc
 /gohead
 /google-chrome
 /gtk-2.0
@@ -10,7 +12,9 @@
 /guvcview2
 /htop
 /hub
+/kdeglobals
 /keybase
+/kiorc
 /knfsshare
 /konsolerc
 /libreoffice
@@ -21,6 +25,7 @@
 /okularpartrc
 /okularrc
 /pulse
+/qt5ct
 /QtProject.conf
 /Unknown Organization
 /vlc
