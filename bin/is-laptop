@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ -f "$HOME/.laptop" ]; then
+if [ -f "$HOME/.islaptop" ]; then
     exit 0
 fi
 exit 1

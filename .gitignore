@@ -19,7 +19,9 @@
 /.gnome
 /.gnupg
 /.gox11
-/.laptop
+/.isheadless
+/.islaptop
+/.iswork
 /.lesshst
 /.local
 /.mozilla

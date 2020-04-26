@@ -58,17 +58,23 @@ install() {
 }
 
 install \
+  "$HOME/.gitconfig" \
+  "$HOME/.config/ag/gitconfig" \
+  "$HOME/work/config/gitconfig"
+install "$HOME/.git/hooks/post-checkout" "$HOME/bin/fix-perms-home"
+
+# Everything below is related to X11, so in headless environments, we quit.
+if is-headless; then
+  exit 0
+fi
+
+install \
   "$HOME/.config/alacritty/alacritty.yml" \
   "$HOME/.config/ag/alacritty/$DEV/alacritty.yml" \
   "$HOME/work/config/alacritty/$DEV/alacritty.yml"
 install "$HOME/.config/gohead" "$HOME/.config/ag/gohead/$DEV"
 install "$HOME/.config/wingo" "$HOME/.config/ag/wingo/$DEV"
 install \
-  "$HOME/.gitconfig" \
-  "$HOME/.config/ag/gitconfig" \
-  "$HOME/work/config/gitconfig"
-install \
   "$HOME/.xbindkeysrc" \
   "$HOME/.config/ag/xbindkeysrc/$DEV" \
   "$HOME/work/config/xbindkeysrc"
-install "$HOME/.git/hooks/post-checkout" "$HOME/bin/fix-perms-home"
