@@ -22,10 +22,14 @@
 /.lesshst
 /.local
 /.mozilla
+/.msmtp.log
+/.nvimlog
 /.old
+/.parallel
 /.password-store
 /.pki
 /.pythonhist
+/.python_history
 /.pyx11
 /.qgrep
 /.rustup
@@ -48,6 +52,7 @@
 /data
 /go
 /man
+/nas
 /rust
 /tmp
 /work
