@@ -7,7 +7,12 @@
 [[ -f ~/.envrc ]] && . ~/.envrc
 
 # Setup umask.
-umask 0002
+# N.B. kent is a shared system, so use more restrictive umask.
+if is-kent; then
+  umask 0077
+else
+  umask 0002
+fi
 
 # Disable beeping.
 setterm --blength 0 > /dev/null 2>&1

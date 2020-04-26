@@ -28,9 +28,6 @@
 "konsole -e 'ssh -Y gopher -t screen -RD'"
   mod4 + d
 
-"konsole -e 'ssh kent -t screen -RD'"
-  mod4 + z
-
 "konsole -e 'bash -c bpython2'"
   mod4 + p
 
