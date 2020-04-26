@@ -10,7 +10,7 @@ set -e
 OLD="$HOME/tmp/oldhome"
 mkdir -p $OLD/{.config,.idesktop,.ssh,.vim,.zsh-complete}
 mv ~/bin ~/.git ~/.idesktop ~/.vim ~/.zsh-complete $OLD/
-mv ~/.config/{ag,alacritty,dunst,highlight,mpv,nvim,tridactyl} $OLD/.config/
+mv ~/.config/{ag,alacritty,dunst,gohead,highlight,mpv,nvim,tridactyl,wingo} $OLD/.config/
 
 files=(
   .Xdefaults
@@ -47,5 +47,4 @@ git remote add origin git@github.com:BurntSushi/dotfiles
 git fetch origin
 mv ~/.ssh/{config,rc} $OLD/.ssh/
 git reset --hard origin/master
-chmod 600 ~/.ssh/config
 git branch --set-upstream-to origin/master master
