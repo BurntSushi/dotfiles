@@ -1,5 +1,5 @@
-#!/usr/bin/env python2
-#
+#!/home/andrew/.pyx11/bin/python
+
 import atexit
 
 import pywingo
