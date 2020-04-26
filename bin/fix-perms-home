@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+
+# Git doesn't track file permissions, so this script "fixes" them. Most files
+# are file with default permissions, so we just handle the select few that
+# aren't. This should only touch files that are tracked by git.
+#
+# To have this run automatically, symlink it as a git hook:
+#
+#     ln -s ~/bin/fix-perms-home ~/.git/hooks/post-checkout
+restricted=(
+  "$HOME/.ssh/config"
+  "$HOME/.msmtprc"
+)
+for f in $restricted; do
+  chmod 0600 "$f"
+done
