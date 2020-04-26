@@ -7,12 +7,6 @@ case "$(myhostname)" in
   Turtle)
     exec "$base/wingo-turtle.xinitrc"
     ;;
-  skinner)
-    exec "$base/wingo-skinner.xinitrc"
-    ;;
-  Jaguar)
-    exec "$base/wingo-jaguar.xinitrc"
-    ;;
   monty)
     exec "$base/wingo-monty.xinitrc"
     ;;
@@ -21,6 +15,12 @@ case "$(myhostname)" in
     ;;
   frink)
     exec "$base/wingo-frink.xinitrc"
+    ;;
+  skinner)
+    exec "$base/wingo-skinner.xinitrc"
+    ;;
+  chalmers)
+    exec "$base/wingo-chalmers.xinitrc"
     ;;
   wiggum)
     exec "$base/wingo-wiggum.xinitrc"

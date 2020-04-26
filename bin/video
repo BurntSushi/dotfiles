@@ -96,7 +96,7 @@ Turtle)
   ;;
 skinner)
   ;;
-Jaguar)
+chalmers)
   ;;
 wiggum)
   pgrep dzen-workspaces | xargs -r kill
