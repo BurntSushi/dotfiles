@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ -f "$HOME/.isremoteold" ]; then
+if [ "$(myhostname)" = kent ]; then
   exit 0
 else
   exit 1

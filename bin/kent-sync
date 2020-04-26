@@ -1,0 +1,5 @@
+#!/bin/sh
+
+rsync --bwlimit=3m -rh --inplace --progress kent:"~/done/\"$1\"" /m/media/stage/
+# rsync -rh --inplace --progress kent:"~/done/\"$1\"" /m/media/stage/
+chmod -R +r /m/media/stage

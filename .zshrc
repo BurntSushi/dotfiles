@@ -10,7 +10,8 @@ is-work && [[ -f ~/work/rc/envrc ]] && . ~/work/rc/envrc
 is-work && [[ -f ~/work/rc/zshrc ]] && . ~/work/rc/zshrc
 
 # Setup umask.
-if is-remote-old; then
+# N.B. kent is a shared system, so use more restrictive umask.
+if is-kent; then
   umask 0077
 else
   umask 0002
