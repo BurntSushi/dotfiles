@@ -38,6 +38,10 @@ install() {
   fi
 
   if [ -h "$dst" ]; then
+    if ! [ -r "$dst" ]; then
+      echo "$dst is a symlink but is not readable, skipping" >&2
+      return 0
+    fi
     return 0
   fi
   if [ -r "$dst" ]; then
