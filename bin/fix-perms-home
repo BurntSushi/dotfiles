@@ -7,10 +7,18 @@
 # To have this run automatically, symlink it as a git hook:
 #
 #     ln -s ~/bin/fix-perms-home ~/.git/hooks/post-checkout
-restricted=(
+
+restricted_files=(
   "$HOME/.ssh/config"
   "$HOME/.msmtprc"
 )
-for f in $restricted; do
+for f in $restricted_files; do
   chmod 0600 "$f"
+done
+
+restricted_dirs=(
+  "$HOME/.zsh-complete"
+)
+for f in $restricted_dirs; do
+  chmod 0700 "$f"
 done
