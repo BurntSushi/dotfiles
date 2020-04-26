@@ -37,7 +37,11 @@ install() {
     src="$srcwork"
   fi
 
+  if [ -h "$dst" ]; then
+    return 0
+  fi
   if [ -r "$dst" ]; then
+    echo "$dst exists but is not a symlink, skipping" >&2
     return 0
   fi
   if ! [ -r "$src" ]; then
