@@ -103,7 +103,9 @@ pkgs() {
     docker espeak ffmpeg jq ripgrep youtube-dl fzf \
     iotop htop linux-tools pkgfile pwgen pv strace tig time tree valgrind \
     vim \
-    git git-crypt aws-cli s3cmd colordiff curl wget ctags darkhttpd pass rsync
+    git git-crypt \
+    aws-cli s3cmd colordiff curl wget ctags darkhttpd pass rsync \
+    nodejs yarn
   pkgfile --update
 }
 
