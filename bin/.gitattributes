@@ -1,3 +1,2 @@
 /remote-old-sync filter=git-crypt-home diff=git-crypt-home
-/is-remote-old filter=git-crypt-home diff=git-crypt-home
 /ssh-add-keys filter=git-crypt-home diff=git-crypt-home
