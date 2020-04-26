@@ -1,0 +1,66 @@
+#!/usr/bin/env zsh
+
+# This script sets various symlinks in my configuration. The intent here is to
+# enable device specific configuration. For example, my laptop has a slightly
+# different alacritty configuration than my desktop. To make this work, all
+# alacritty configuration files are pushed into ~/.config/ag/alacritty instead
+# of ~/.config/alacritty. This script will then symlink
+# ~/.config/alacritty/alacritty.yml to
+# ~/.config/ag/alacritty/$(hostname)/alacritty.yml. This convention is repeated
+# for other configurations such as Wingo.
+#
+# Work-related symlinks are treated somewhat differently as a special case,
+# partially because they are in a separate repository in order to keep work
+# and personal stuff separate (and work stuff private).
+#
+# This script is designed to be idempotent.
+
+set -e
+
+# All device dependent config is usually keyed by hostname. Hostname is what
+# you find in /etc/hostname, unless ~/.myhostname exists, in which case, the
+# latter is used. This permits my accounts on shared systems to use my own
+# names instead of theirs.
+DEV="$(myhostname)"
+
+# Installs (via symlinks) to the destination with one of two possible sources.
+# The first source is the default. The second source is used only when it is
+# non-empty and when this device is a work device. If the destination already
+# exists, then this is a no-op. If the src doesn't exist, then a message
+# is emitted to stderr and success is returned (i.e., it is skipped with a
+# warning).
+install() {
+  dst="$1"
+  src="$2"
+  srcwork="$3"
+  if is-work && [ -n "$srcwork" ]; then
+    src="$srcwork"
+  fi
+
+  if [ -r "$dst" ]; then
+    return 0
+  fi
+  if ! [ -r "$src" ]; then
+    echo "$src does not exist, skipping" >&2
+    return 0
+  fi
+  mkdir -p "$(dirname "$dst")"
+  ln -s "$src" "$dst"
+  echo "installed $src to $dst"
+}
+
+install \
+  "$HOME/.config/alacritty/alacritty.yml" \
+  "$HOME/.config/ag/alacritty/$DEV/alacritty.yml" \
+  "$HOME/work/config/alacritty/$DEV/alacritty.yml"
+install "$HOME/.config/gohead" "$HOME/.config/ag/gohead/$DEV"
+install "$HOME/.config/wingo" "$HOME/.config/ag/wingo/$DEV"
+install \
+  "$HOME/.gitconfig" \
+  "$HOME/.config/ag/gitconfig" \
+  "$HOME/work/config/gitconfig"
+install \
+  "$HOME/.xbindkeysrc" \
+  "$HOME/.config/ag/xbindkeysrc/$DEV" \
+  "$HOME/work/config/xbindkeysrc"
+install "$HOME/.git/hooks/post-checkout" "$HOME/bin/fix-perms-home"
