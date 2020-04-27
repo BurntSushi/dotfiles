@@ -72,7 +72,10 @@ install \
   "$HOME/.config/alacritty/alacritty.yml" \
   "$HOME/.config/ag/alacritty/$DEV/alacritty.yml" \
   "$HOME/work/config/alacritty/$DEV/alacritty.yml"
-install "$HOME/.config/gohead" "$HOME/.config/ag/gohead/$DEV"
+install \
+  "$HOME/.config/gohead" \
+  "$HOME/.config/ag/gohead/$DEV" \
+  "$HOME/work/config/gohead/$DEV"
 install "$HOME/.config/wingo" "$HOME/.config/ag/wingo/$DEV"
 install \
   "$HOME/.xbindkeysrc" \
