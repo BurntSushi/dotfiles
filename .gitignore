@@ -55,6 +55,7 @@
 /.sudo*
 /.thumbnails
 /.tig_history
+/.tox
 /.vault*
 /.vim-cache
 /.viminfo
