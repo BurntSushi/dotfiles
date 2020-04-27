@@ -3,9 +3,15 @@
 /baloofileinformationrc
 /baloofilerc
 /coc
+/configstore
 /dconf
 /dolphinrc
+/evolution
 /filetypesrc
+/freerdp
+/gcloud
+/gnome-initial-setup-done
+/goa-1.0
 /gohead
 /google-chrome
 /gtk-2.0
@@ -13,6 +19,9 @@
 /guvcview2
 /htop
 /hub
+/ibus
+/kactivitymanagerdrc
+/kdeconnect
 /kdeglobals
 /keybase
 /kiorc
@@ -22,13 +31,19 @@
 /menus
 /mimeapps.list
 /mirage
+/monitors.xml*
+/nautilus
 /nitrogen
 /okularpartrc
 /okularrc
 /pulse
 /qt5ct
 /QtProject.conf
+/remmina
+/session
+/totem
 /Unknown Organization
+/user-dirs.*
 /vlc
 /wingo
 /zoomus.conf

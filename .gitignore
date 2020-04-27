@@ -3,10 +3,15 @@
 # with ripgrep convenient, since it won't descend into most directories.
 
 # top-level hidden files/directories
+/.anyconnect
 /.aws
+/.babel.json
 /.bash_history
+/.bazel
 /.cache
 /.cargo
+/.circleci
+/.cisco
 /.debug
 /.docker
 /.fontconfig
@@ -19,29 +24,41 @@
 /.gnome
 /.gnupg
 /.gox11
+/.helm
+/.hushlogin
+/.ICEauthority
 /.isheadless
 /.islaptop
 /.iswork
+/.k5login
+/.kube
 /.lesshst
 /.local
 /.mozilla
 /.msmtp.log
 /.myhostname
+/.node*
+/.npm*
+/.nv
 /.nvimlog
 /.old
 /.parallel
 /.password-store
 /.pki
+/.psql_history
 /.pythonhist
 /.python_history
 /.pyx11
 /.qgrep
 /.rustup
 /.sane
+/.sudo*
 /.thumbnails
 /.tig_history
+/.vault*
 /.vim-cache
 /.viminfo
+/.wget*
 /.wicd
 /.wmWeatherReports
 /.Xauthority
@@ -51,11 +68,12 @@
 /.zsh_history
 
 # top-level directories
-/Desktop
-/Downloads
 /clones
 /code
 /data
+/Desktop
+/diffeo
+/Downloads
 /go
 /man
 /nas
