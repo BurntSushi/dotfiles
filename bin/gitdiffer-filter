@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if cmd-exists delta; then
+  exec delta --color-only
+else
+  exec cat
+fi

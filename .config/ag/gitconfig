@@ -24,4 +24,8 @@
 [url "git@github.com:"]
   insteadOf = https://github.com/
 [gui]
-	gcwarning = false
+  gcwarning = false
+[core]
+  pager = gitdiffer
+[interactive]
+  diffFilter = gitdiffer

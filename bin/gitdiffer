@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if cmd-exists delta; then
+  exec delta --theme GitHub
+else
+  exec less
+fi
