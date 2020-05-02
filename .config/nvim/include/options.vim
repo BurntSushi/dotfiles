@@ -18,6 +18,25 @@ set hidden
 " instead of needing to use the '+' or '*' registers explicitly.
 set clipboard+=unnamedplus
 
+" Prefer xsel over xclip. With xclip, pasting into gmail/gdocs results in
+" stripping all newlines. But with xsel, it works correctly.
+" See: https://github.com/neovim/neovim/issues/5853
+if executable('xsel')
+  " This is copied directly from runtime/autoload/provider/clipboard.vim.
+  let g:clipboard = {
+        \   'name': 'myxsel',
+        \   'copy': {
+        \      '+': 'xsel --nodetach --input --clipboard',
+        \      '*': 'xsel --nodetach --input --primary',
+        \    },
+        \   'paste': {
+        \      '+': 'xsel --output --clipboard',
+        \      '*': 'xsel --output --primary',
+        \   },
+        \   'cache_enabled': 1,
+        \ }
+endif
+
 " There's no need to do syntax highlighting past this many columns. The default
 " of 3000 is a bit and degrades performance.
 set synmaxcol=200

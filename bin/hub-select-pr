@@ -1,5 +1,5 @@
 #!/bin/sh
 
 url="$(grep "/$1 " | awk '{print $1}')"
-echo "$url" | xclip -selection clipboard
+echo "$url" | xcp
 echo "$url"

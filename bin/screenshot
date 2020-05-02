@@ -8,4 +8,9 @@ fi
 file="$1"
 sleep 3
 echo "select a window!"
-exec scrot -s "$file"
+scrot -s "$file"
+
+sound=/usr/share/sounds/freedesktop/stereo/screen-capture.oga
+if [ -r "$sound" ]; then
+  ogg123 "$sound"
+fi

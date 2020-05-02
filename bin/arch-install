@@ -126,6 +126,7 @@ xpkgs() {
     nitrogen \
     numlockx \
     xclip \
+    xsel \
     xdotool \
     trayer \
     freerdp \

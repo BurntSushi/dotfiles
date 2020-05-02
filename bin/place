@@ -23,7 +23,7 @@ bat_width=115
 # Determine the width of the pager based on the width of the system tray and
 # battery indicator. If it's a laptop, include the battery indicator. Otherwise,
 # leave it out.
-if [ -f "$HOME/.laptop" ]; then
+if is-laptop; then
   pager_width=$((mwidth - bat_width - tray_width))
 else
   pager_width=$((mwidth - tray_width))
@@ -46,7 +46,7 @@ killall trayer
         --SetDockType true &)
 
 # If this is a laptop, kill the battery notifier and restart it too.
-if [ -f "$HOME/.laptop" ]; then
+if is-laptop; then
   # shellcheck disable=SC2009
   ps aux | grep -v grep | grep batrem | awk '{print $2}' | xargs -r kill
   (batrem -s -i 10 | \
