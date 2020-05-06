@@ -1,4 +1,5 @@
 {
+  "diagnostic.enable": false,
   "diagnostic.virtualText": false,
   "diagnostic.joinMessageLines": true,
   "diagnostic.checkCurrentLine": true,
@@ -8,5 +9,6 @@
   "signature.enable": false,
   "coc.preferences.snippets.enable": false,
   "rust-analyzer.diagnostics.enable": false,
+  "rust-analyzer.inlayHints.chainingHints": false,
   "rust-analyzer.serverPath": "/home/andrew/bin/rust-analyzer-wrapper"
 }
