@@ -1,12 +1,9 @@
 #!/bin/sh
 
-if [ $# -gt 1 ]; then
-  echo "Usage: $(basename "$0") [path]" >&2
-  exit 1
-fi
-
 path="$1"
 if [ -z "$path" ]; then
   path="."
+else
+  shift
 fi
-cargo install -f --path "$path"
+cargo install -f --path "$path" "$@"
