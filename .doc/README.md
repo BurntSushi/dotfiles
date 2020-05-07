@@ -20,7 +20,7 @@ this:
 mkdir -p tmp/old
 mv .bashrc .bash_profile other things tmp/old
 git init
-git remoe add origin https://github.com/BurntSushi/dotfiles
+git remote add origin https://github.com/BurntSushi/dotfiles
 git pull origin master --ff-only
 git branch --set-upstream-to origin/master master
 chmod 0600 "$HOME/.ssh/config"
