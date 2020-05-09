@@ -1,8 +1,24 @@
 #!/bin/sh
 
-bin="$CARGO_INSTALL_ROOT/bin/rust-analyzer"
-if [ -n "$RA_LOG_STDERR" ]; then
-  exec "$bin" 2> "$RA_LOG_STDERR"
+runra() {
+  bin="$1"
+  if [ -n "$RA_LOG_STDERR" ]; then
+    exec "$bin" 2> "$RA_LOG_STDERR"
+  else
+    exec "$bin"
+  fi
+}
+
+usr_bin="/usr/bin/rust-analyzer"
+cargo_bin="$CARGO_INSTALL_ROOT/bin/rust-analyzer"
+coc_bin="$HOME/.config/coc/extensions/coc-rust-analyzer-data/rust-analyzer"
+if [ -x "$cargo_bin" ]; then
+  runra "$cargo_bin"
+elif [ -x "$usr_bin" ]; then
+  runra "$usr_bin"
+elif [ -x "$coc_bin" ]; then
+  runra "$coc_bin"
 else
-  exec "$bin"
+  echo "rust-analyzer binary not found" >&2
+  exit 1
 fi
