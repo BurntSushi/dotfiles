@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if cmd-exists delta; then
+  /usr/bin/diff -u "$@" | delta --theme GitHub
+elif cmd-exists colordiff; then
+  colordiff "$@"
+else
+  /usr/bin/diff "$@"
+fi

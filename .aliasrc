@@ -17,7 +17,6 @@ fi
 alias y='yay'
 alias p="ps axo pid,cmd | sed 's/^\\s*\\([0-9]\\+\\)\\s\\+/\\1\\t/g' | grep -v grep | grep"
 alias b="bpython2"
-alias diff="colordiff"
 alias less="less -R"
 alias sqlite3="sqlite3 -column -nullvalue 'NULL' -header"
 alias rd="regex-debug"
