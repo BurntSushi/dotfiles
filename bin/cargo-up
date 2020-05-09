@@ -6,7 +6,7 @@ function update_version {
   manifest="$1"
   semver="$2"
 
-  sed -i "s/^version = \".*\"\s\+#:version$/version = \"$semver\"  #:version/g" "$manifest"
+  sed -i 's/^version = ".*"\s\+#:version$/version = "'$semver'"  #:version/g' "$manifest"
 }
 
 function current_version {
@@ -27,6 +27,19 @@ function pkg_name {
   grep -E '^name = "[^"]+"$' "$manifest" \
     | head -n1 \
     | grep -Po '(?<=name = ")[^"]+'
+}
+
+function tag_name {
+  manifest="$1"
+  version="$2"
+
+  root="$(git rev-parse --show-toplevel)"
+  if [ "$root/Cargo.toml" = "$(realpath "$manifest")" ]; then
+    echo "$version"
+  else
+    pkg="$(pkg_name "$manifest")"
+    echo "$pkg-$version"
+  fi
 }
 
 release=yes
@@ -72,18 +85,13 @@ if ! grep -q '#:version' "$manifest"; then
 fi
 
 update_version "$manifest" "$semver"
+tag="$(tag_name "$manifest" "$semver")"
 pkg="$(pkg_name "$manifest")"
-prefix="$pkg-"
-# prefix="$(basename $(dirname "$manifest"))-"
-if [ "$prefix" = ".-" ]; then
-  prefix=
-fi
-tagname="$prefix$semver"
 if [ -f Cargo.toml ] && grep -E -q '\[\[bin\]\]' Cargo.toml; then
   cargo update -p "$pkg"
 fi
-git commit -a -m "$tagname"
-git tag -s -a "$tagname" -m "$tagname"
+git commit -a -m "$tag"
+git tag -s -a "$tag" -m "$tag"
 
 if [ -n "$release" ]; then
   (
@@ -94,7 +102,7 @@ if [ -n "$release" ]; then
     for remote in origin github home; do
       if git remote | grep -q "$remote"; then
         git push "$remote" master
-        git push "$remote" "$tagname"
+        git push "$remote" "$tag"
       fi
     done
   fi
