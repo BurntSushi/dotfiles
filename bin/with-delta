@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# This command creates a temporary directory, copies cdiff to it as diff and
+# then adds that temporary directory to the leading part of PATH. In effect,
+# this causes the sub-command executed to use `delta` for diffing. We do this
+# because always using delta doesn't seem to work (e.g., `pass` breaks).
+
+if ! cmd-exists delta; then
+  echo "delta diff tool not installed" >&2
+  exit 1
+fi
+
+dir="$(mktemp -d)"
+trap 'rm -rf "$dir"' EXIT
+
+cp "$HOME/bin/cdiff" "$dir/diff"
+PATH="$dir:$PATH" "$@"
