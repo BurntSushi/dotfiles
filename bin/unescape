@@ -1,0 +1,19 @@
+#!/usr/bin/env python3
+
+import argparse
+import sys
+
+if __name__ == '__main__':
+    p = argparse.ArgumentParser(
+        description='Automatically unescape text on stdin. This is useful '
+                    'for prettifying stack traces in logs that have been '
+                    'squashed into a single line.'
+    )
+    _ = p.parse_args()
+
+    inp = sys.stdin
+    for line in inp:
+        line = line.replace('\\r', '\r')
+        line = line.replace('\\n', '\n')
+        line = line.replace('\\t', '\t')
+        print(line, end='')
