@@ -1,0 +1,12 @@
+#!/bin/bash
+
+out="$(rg "$@" --json | jq -r \
+  'select(.type == "match")
+    | [.data.path.text, .data.line_number]
+    | map(tostring) | join(" ")' -r)"
+{
+  while read -r path line; do
+    printf "%s\n" "$(git log -n1 -s -L "$line",$((line + 1)):"$path" --pretty=format:"%an")" &
+  done < <(echo "$out")
+  wait
+} | sort | uniq -c | sort -nrk1
