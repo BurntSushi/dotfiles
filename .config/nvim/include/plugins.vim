@@ -7,6 +7,9 @@ Plug 'rust-lang/rust.vim'
 " Bulk renaming of files in vim.
 Plug 'qpkorr/vim-renamer'
 
+" Convenient HTTP interactions within vim. Use \tt to run an HTTP request.
+Plug 'aquach/vim-http-client'
+
 " TOML syntax support.
 Plug 'cespare/vim-toml'
 
