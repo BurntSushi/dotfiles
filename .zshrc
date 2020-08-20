@@ -53,20 +53,10 @@ zstyle ':completion:*' group-name ''
 autoload -Uz compinit
 # Only check for changes to completion once a day. If you need to force a
 # recheck, just delete ~/.zcompdump.
-#
-# Also, seemingly, work machines running Ubuntu always needs 'compinit' for
-# this to work, so never do the optimization there.
-if [[
-    -f ~/.zcompdump
-    && "$(date +'%j')" == "$(stat -c '%y' ~/.zcompdump | date +'%j')"
-  ]]; then
-  if is-work; then
-    compinit
-  else
-    compinit -C
-  fi
-else
+if is-zcompdump-outdated; then
   compinit
+else
+  compinit -C
 fi
 
 # Use Emacs keybindings for now.

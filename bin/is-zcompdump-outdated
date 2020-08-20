@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+
+if ! [ -f ~/.zcompdump ]; then
+  exit 0
+fi
+# Seemingly, work machines running Ubuntu always needs 'compinit' for this to
+# work, so never do the optimization there.
+if is-work; then
+  exit 0
+fi
+
+# Grrr to differences in 'stat' between BSD and GNU.
+if is-mac; then
+  if [[ "$(date +'%j')" == "$(stat -f '%m' ~/.zcompdump | date +'%j')" ]]; then
+    exit 1
+  fi
+  exit 0
+else
+  if [[ "$(date +'%j')" == "$(stat -c '%y' ~/.zcompdump | date +'%j')" ]]; then
+    exit 1
+  fi
+  exit 0
+fi
