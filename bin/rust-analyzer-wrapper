@@ -12,13 +12,18 @@ runra() {
 usr_bin="/usr/bin/rust-analyzer"
 cargo_bin="$CARGO_INSTALL_ROOT/bin/rust-analyzer"
 coc_bin="$HOME/.config/coc/extensions/coc-rust-analyzer-data/rust-analyzer"
+bin=""
 if [ -x "$cargo_bin" ]; then
-  runra "$cargo_bin"
+  bin="$cargo_bin"
 elif [ -x "$usr_bin" ]; then
-  runra "$usr_bin"
+  bin="$usr_bin"
 elif [ -x "$coc_bin" ]; then
-  runra "$coc_bin"
+  bin="$coc_bin"
 else
   echo "rust-analyzer binary not found" >&2
   exit 1
 fi
+
+
+echo "choice: $bin" >&2
+runra "$bin"
