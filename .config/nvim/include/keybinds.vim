@@ -33,11 +33,11 @@ noremap <Leader>- :call Divider('-')<CR>
 noremap <Leader>~ :call Divider('~')<CR>
 
 " Shortcut for reloading neovim config.
-noremap <F2> :source ~/.vimrc<CR>
+noremap <F2> :source ~/.config/nvim/init.vim<CR>
 " Apparently this is necessary to fix broken syntax highlighting sometimes.
 noremap <F10> :syntax sync fromstart<CR>
 " Shortcut for enabling text mode.
-noremap <F12> :source ~/.vim/text.vim<CR>
+noremap <F12> :source ~/.config/nvim/include/spacing/text.vim<CR>
 
 " Shortcut for writing current file with 'sudo'.
 command! W w !sudo tee % > /dev/null
