@@ -41,5 +41,7 @@ PATH="$(prependpath "$PATH" "$HOME/bin/x86_64")"
 PATH="$(prependpath "$PATH" "$HOME/rust/ripgrep/target/release")"
 PATH="$(prependpath "$PATH" "$HOME/rust/ripgrep/target/release/examples")"
 PATH="$(prependpath "$PATH" "$HOME/rust/xsv/target/release")"
+# macOS paths
+PATH="$(prependpath "$PATH" "$HOME/tmp/nvim-osx64/bin")"
 
 export PATH CARGO_INSTALL_ROOT
