@@ -22,7 +22,7 @@
 "terminal-tmux-remote frink"
   mod4 + h
 
-"terminal -e ssh -A mac -t /usr/local/bin/tmux -u new -A -s remote"
+"terminal -e ssh -A lisa -t /usr/local/bin/tmux -u new -A -s remote"
   mod4 + m
 
 "terminal-tmux-remote bs"
