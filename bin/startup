@@ -1,16 +1,21 @@
 #!/bin/sh
 
-xrdb $HOME/.Xresources
 xsetroot -cursor_name left_ptr
 setxkbmap -option terminate:ctrl_alt_bksp
 xset r rate 200
 xset b 0
-xmodmap $HOME/.xmodmaprc
 numlockx on
 dpms-settings
 autobright
 
-if pgrep xbindkeys; then
+if [ -f "$HOME/.Xresources" ]; then
+  xrdb "$HOME/.Xresources"
+fi
+if [ -f "$HOME/.xmodmaprc" ]; then
+  xmodmap "$HOME/.xmodmaprc"
+fi
+
+if pgrep xbindkeys > /dev/null 2>&1; then
   killall xbindkeys
 fi
 xbindkeys
