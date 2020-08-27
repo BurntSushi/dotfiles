@@ -98,7 +98,7 @@ skinner)
   ;;
 chalmers)
   ;;
-wiggum)
+wiggum|otto)
   pgrep dzen-workspaces | xargs -r kill
   killall trayer
   (sleep 1 && \

@@ -29,7 +29,7 @@ case "$(myhostname)" in
     system76-darter-set-kbd-backlight
     system76-darter-configure-touchpad
     ;;
-  chalmers|skinner|wiggum)
+  chalmers|skinner|wiggum|otto)
     no-blanking
     xset m 3 1
     ;;

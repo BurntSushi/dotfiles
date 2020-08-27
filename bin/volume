@@ -31,6 +31,14 @@ case "$(myhostname)" in
       mute) pactl set-sink-mute "$sink" toggle ;;
     esac
     ;;
+  otto)
+    sink="alsa_output.pci-0000_00_1f.3.hdmi-stereo"
+    case $1 in
+      up) pactl set-sink-mute "$sink" false && pactl set-sink-volume "$sink" +2% ;;
+      down) pactl set-sink-mute "$sink" false && pactl set-sink-volume "$sink" -2% ;;
+      mute) pactl set-sink-mute "$sink" toggle ;;
+    esac
+    ;;
   *)
     case "$(hostname)" in
       *)      control='Master' mcontrol='Master' ;;
