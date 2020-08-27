@@ -18,9 +18,9 @@
 #   yayinit
 #   yaypkgs
 #   yayxpkgs (if installing graphics)
+#   gpginit
 #   homeinit
 #   xenvinit (if installing graphics)
-#   gpginit
 #   sshinit
 #   scannerinit
 #   autologin (for media PCs)
@@ -240,7 +240,10 @@ xenvinit() {
 }
 
 gpginit() {
-  rscp nas:/m/data/andrew/keys/*.key.* /tmp/
+  rsync \
+    --archive --recursive --human-readable --partial --inplace --progress \
+    -e 'ssh -p 7704' \
+    andrew@home.burntsushi.net:/m/data/andrew/keys/*.key.* /tmp/
   gpg --import /tmp/jamslam@gmail.com.key.priv
   gpg --import /tmp/kbrady39@gmail.com.key.priv
   echo "use 'gpg --edit-key {email}' to trust each key completely"
