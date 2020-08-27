@@ -25,4 +25,7 @@ case "$(myhostname)" in
   wiggum)
     exec "$base/wingo-wiggum.xinitrc"
     ;;
+  otto)
+    exec "$base/wingo-otto.xinitrc"
+    ;;
 esac
