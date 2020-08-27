@@ -10,6 +10,7 @@
 #   xpkgs (if installing graphics)
 #   userinit
 #   kaitinit (optional)
+#   wifiinit (optional)
 #   grubinit
 #
 # At this point, log in as the user created above.
@@ -149,6 +150,10 @@ userinit() {
   echo "make sure '%wheel ALL=(ALL) NOPASSWD: ALL' is in sudoers"
 }
 
+wifiinit() {
+  pacman --noconfirm -S networkmanager network-manager-applet
+}
+
 kaitinit() {
   sudo useradd -g users -u 1002 -m -s /bin/bash \
     -G disk,lp,wheel,log,dbus,network,video,audio,optical,storage,scanner,power \
@@ -283,6 +288,7 @@ case "$1" in
   xpkgs) shift ; xpkgs "$@" ;;
   userinit) shift ; userinit "$@" ;;
   kaitinit) shift ; kaitinit "$@" ;;
+  wifiinit) shift ; wifiinit "$@" ;;
   grubinit) shift ; grubinit "$@" ;;
   yayinit) shift ; yayinit "$@" ;;
   yaypkgs) shift ; yaypkgs "$@" ;;
