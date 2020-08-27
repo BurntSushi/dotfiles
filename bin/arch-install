@@ -152,6 +152,7 @@ userinit() {
 
 wifiinit() {
   pacman --noconfirm -S networkmanager network-manager-applet
+  systemctl enable NetworkManager
 }
 
 kaitinit() {
