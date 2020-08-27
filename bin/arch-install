@@ -90,7 +90,7 @@ pkgs() {
     alsa-utils \
     aspell aspell-en hunspell hunspell-en_US \
     python python-pip python-setuptools python-virtualenv bpython \
-    python2 python2-pip python2-setuptools python2-virtualenv bpython2 \
+    python2 python2-pip python2-setuptools python2-virtualenv \
     flake8 \
     go go-tools \
     rustup \
