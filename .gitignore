@@ -55,6 +55,7 @@
 /.rustup
 /.sane
 /.sudo*
+/.sqlite_history
 /.thumbnails
 /.tig_history
 /.tox
