@@ -3,6 +3,7 @@
 # with ripgrep convenient, since it won't descend into most directories.
 
 # top-level hidden files/directories
+/.ansible
 /.anyconnect
 /.aws
 /.babel.json
@@ -14,6 +15,7 @@
 /.cisco
 /.debug
 /.docker
+/.eclipse
 /.fontconfig
 /.fzf*
 /.gist
@@ -44,6 +46,10 @@
 /.nv
 /.nvimlog
 /.old
+/.p2
+/.p4enviro
+/.p4tickets
+/.p4trust
 /.parallel
 /.password-store
 /.pki
@@ -52,6 +58,7 @@
 /.python_history
 /.pyx11
 /.qgrep
+/.rpmdb
 /.rustup
 /.sane
 /.sudo*
@@ -83,6 +90,7 @@
 /man
 /nas
 /rust
+/sf
 /tmp
 /wallpaper
 /work
