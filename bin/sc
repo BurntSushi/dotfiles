@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ $# != 1 ]; then
+  echo "Usage: $(basename "$0") <name>" >&2
+  exit 1
+fi
+
+d="/tmp/screenshots"
+mkdir -p "$d"
+scrot -s "$d/$1"
+
+sound=/usr/share/sounds/freedesktop/stereo/screen-capture.oga
+if [ -r "$sound" ]; then
+  ogg123 "$sound"
+fi
