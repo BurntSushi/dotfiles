@@ -1,6 +1,0 @@
-#!/bin/sh
-
-# RFC 3986, please.
-x=$(python2 -c "import urllib; print urllib.quote('$1', safe='~'),")
-echo $x
-printf "%s" $x | xcp

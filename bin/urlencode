@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# RFC 3986, please.
+exec python3 -c "
+import sys
+import urllib.parse
+
+stdin = sys.stdin.read()
+print(urllib.parse.quote(stdin, safe='~'), end='')
+"
