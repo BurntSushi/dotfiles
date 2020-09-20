@@ -1,0 +1,12 @@
+[package]
+name = "setup-system-links"
+version = "0.0.1"
+authors = ["Andrew Gallant <jamslam@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+anyhow = "1.0.32"
+bstr = "0.2.13"
+clap = { version = "2.33.0", default-features = false }
+same-file = "1.0.6"
+walkdir = "2.3.1"

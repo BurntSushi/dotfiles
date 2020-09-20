@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# This is a systemd hook script that is run whenever
+# suspend/resume takes place. It should be symlinked into
+# /usr/lib/systemd/system-sleep.
+
+# To see logs from this script, use:
+#
+#   journalctl -b -u systemd-suspend.service
+
+# $1 is 'pre' (going to sleep) or 'post' (waking up)
+# $2 is 'suspend', 'hibernate' or 'hybrid-sleep'
+case "$1/$2" in
+  pre/*)
+    if lsmod | grep -q thunderbolt; then
+      sudo rmmod thunderbolt
+    fi
+    ;;
+  post/*)
+    /home/andrew/bin/system76-darter-set-kbd-backlight
+    sudo modprobe thunderbolt
+    ;;
+esac

@@ -1,0 +1,1 @@
+options snd-hda-intel model=headset-mode-no-hp-mic patch=system76-audio-patch

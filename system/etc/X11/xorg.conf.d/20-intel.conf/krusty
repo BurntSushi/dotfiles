@@ -1,0 +1,14 @@
+Section "Device"
+  Identifier "Intel Graphics"
+  Driver "intel"
+
+  Option "AccelMethod" "sna"
+  Option "TearFree" "true"
+  Option "DRI" "2"
+
+#  Option "DRI" "2" 
+#  Option "VSync" "false"
+#  Option "SwapbuffersWait" "true"
+#  Option "NoAccel" "true"
+#  Option "DRI" "false"
+EndSection
