@@ -60,3 +60,11 @@ if cmd-exists apt; then
     fi
   done
 fi
+
+# install ~/bin programs that need to be compiled
+if cmd-exists cargo; then
+  for d in "$HOME/bin/rust/"*/; do
+    echo "===== compiling and installing $(basename "$d")"
+    cargo install --force --path "$d"
+  done
+fi
