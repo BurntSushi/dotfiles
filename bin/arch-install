@@ -87,13 +87,13 @@ pkgs() {
     asp \
     sudo \
     vi \
-    alsa-utils \
+    alsa-utils vorbis-tools \
     aspell aspell-en hunspell hunspell-en_US \
     python python-pip python-setuptools python-virtualenv bpython \
     python2 python2-pip python2-setuptools python2-virtualenv \
     flake8 \
     go go-tools \
-    rustup \
+    rustup rust-analyzer \
     grub efibootmgr \
     iputils inetutils whois bind-tools dhcpcd \
     cups \
