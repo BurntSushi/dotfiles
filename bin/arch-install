@@ -108,6 +108,7 @@ pkgs() {
     aws-cli s3cmd colordiff curl wget ctags darkhttpd pass rsync \
     nodejs yarn
   pkgfile --update
+  rustup toolchain install stable
 }
 
 xpkgs() {
