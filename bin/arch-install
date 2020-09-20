@@ -108,8 +108,6 @@ pkgs() {
     aws-cli s3cmd colordiff curl wget ctags darkhttpd pass rsync \
     nodejs yarn
   pkgfile --update
-  rustup toolchain install stable
-  rustup default stable
 }
 
 xpkgs() {
@@ -217,10 +215,14 @@ yayxpkgs() {
 
 homeinit() {
   cd "$HOME" || exit 1
+
+  rustup toolchain install stable
+  rustup default stable
+
   curl https://burntsushi.net/stuff/setup-home > /tmp/setup-home.sh
   sh /tmp/setup-home.sh
   git clone andrew@home.burntsushi.net:/m/git/password-store .password-store
-  (cd .password-store && configure-git)
+  (cd .password-store && "$HOME/bin/configure-git")
 
   mkdir -p .gnupg
   {

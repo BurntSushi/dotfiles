@@ -35,6 +35,9 @@ export PATH="$HOME/bin:$PATH"
 # Configure $HOME and $HOME/bin git checkouts.
 (cd "$HOME" && configure-git)
 
+# Build utilities.
+setup-utilities
+
 # Install ripgrep
 if ! cmd-exists rg; then
   CARGO_BIN="$HOME/.local/cargo/bin"
@@ -59,13 +62,5 @@ if cmd-exists apt; then
     if ! cmd-exists "$p"; then
       sudo apt install -y "$p"
     fi
-  done
-fi
-
-# install ~/bin programs that need to be compiled
-if cmd-exists cargo; then
-  for d in "$HOME/bin/rust/"*/; do
-    echo "===== compiling and installing $(basename "$d")"
-    cargo install --force --path "$d"
   done
 fi

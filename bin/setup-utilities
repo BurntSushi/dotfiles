@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# This script builds all ~/bin utilities that require compilation.
+if cmd-exists cargo; then
+  for d in "$HOME/bin/rust/"*/; do
+    echo "===== compiling and installing $(basename "$d")"
+    cargo +stable install --force --path "$d"
+  done
+fi
