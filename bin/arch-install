@@ -109,6 +109,7 @@ pkgs() {
     nodejs yarn
   pkgfile --update
   rustup toolchain install stable
+  rustup default stable
 }
 
 xpkgs() {
