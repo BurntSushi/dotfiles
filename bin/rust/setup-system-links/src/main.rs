@@ -173,6 +173,9 @@ impl Link {
     /// Write the equivalent Unix command we would execute to backup the config
     /// file if we were running for real.
     fn dry_backup<W: Write>(&self, mut wtr: W, dir: &Path) -> io::Result<()> {
+        if !self.dst.exists() {
+            return Ok(());
+        }
         let backup_dst = dir.join(self.relative_dst());
         // OK since self.dst is guaranteed to be non-empty.
         let parent = backup_dst.parent().unwrap();
@@ -211,6 +214,10 @@ impl Link {
 
     /// Backup the destination to the directory given.
     fn backup<W: Write>(&self, wtr: W, dir: &Path) -> anyhow::Result<()> {
+        if !self.dst.exists() {
+            return Ok(());
+        }
+
         let backup_dst = dir.join(self.relative_dst());
         // OK since self.dst is guaranteed to be non-empty.
         let parent = backup_dst.parent().unwrap();
