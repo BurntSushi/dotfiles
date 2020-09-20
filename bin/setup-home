@@ -24,6 +24,7 @@ if [ ! -d "$HOME/.git" ]; then
   git pull origin master --ff-only
   git branch --set-upstream-to origin/master master
   chmod 600 "$HOME/.ssh/config"
+  git-crypt unlock
 else
   git pull origin master --ff-only
 fi
