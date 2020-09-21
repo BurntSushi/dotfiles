@@ -8,15 +8,17 @@ about a config before wiping a machine.
 
 The general scheme is:
 
-  $HOME/etc/path/to/config-file-as-directory/{default,krusty,...}
+```
+$HOME/system/etc/path/to/config-file-as-directory/{default,krusty,...}
+```
 
-Where `/etc/path/to/config-file-as-directory` is a directory that refers to a
-concrete file path in the /etc directory. Inside this directory is an optional
-file named `default`, along with other optional files named by hostname, e.g.,
-`krusty`. If a hostname file is present, then that file is symlinked to the
-corresponding config file location. Otherwise the `default` file is. If no
-files are present, then no symlinks are created. Thus, if you want to keep a
-configuration checked into git but disable it, then rename it from `{name}` to
-`{name}.disable`.
+Where `/etc/path/to/config-file-as-directory` is a directory that refers
+to a concrete file path in the `/etc` directory. Inside this directory is
+an optional file named `default`, along with other optional files named by
+hostname, e.g., `krusty`. If a hostname file is present, then that file is
+symlinked to the corresponding config file location. Otherwise the `default`
+file is. If no files are present, then no symlinks are created. Thus, if you
+want to keep a configuration checked into git but disable it, then rename it
+from `{name}` to `{name}.disable`.
 
-symlinks are created by ~/bin/setup-system-links.
+symlinks are created by `setup-system-links`.
