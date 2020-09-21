@@ -4,6 +4,9 @@ call plug#begin(stdpath('data') . '/plugged')
 " but it has useful settings for indentation and what not.
 Plug 'rust-lang/rust.vim'
 
+" Plugin for interacting with Jinga template files.
+Plug 'Glench/Vim-Jinja2-Syntax'
+
 " Bulk renaming of files in vim.
 Plug 'qpkorr/vim-renamer'
 
