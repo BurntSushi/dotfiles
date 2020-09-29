@@ -258,7 +258,10 @@ sshinit() {
 }
 
 scannerinit() {
-  brsaneconfig4 -a name=Brother model=DCP-7065DN ip=192.168.1.150
+  # Old black & white printer.
+  # brsaneconfig4 -a name=Brother model=DCP-7065DN ip=192.168.1.150
+  # New color printer.
+  brsaneconfig4 -a name=BrotherColor model=MFC-L3770CDW ip=192.168.1.151
 }
 
 autologin() {
