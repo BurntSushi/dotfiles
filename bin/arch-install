@@ -181,7 +181,7 @@ yayinit() {
 yaypkgs() {
   yay --noconfirm -S \
     neovim-git neovim-plug-git python-neovim-git python2-neovim-git \
-    brother-dcp7065dn \
+    brother-mfc-l3770cdw \
     brscan4 \
     ngrok \
     par \
