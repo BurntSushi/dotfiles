@@ -16,7 +16,8 @@ fi
 
 # Disable beeping.
 setterm --blength 0 > /dev/null 2>&1
-# Dunno what this does.
+# Disable software flow control (Ctrl+Q/Ctrl+S)
+# See: https://unix.stackexchange.com/questions/545045/what-is-the-difference-between-ixon-and-ixoff-tty-attributes
 stty -ixon
 
 # Various completion and history settings.
