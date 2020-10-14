@@ -1,8 +1,7 @@
 #!/bin/sh
 
-
 path="$(git rev-parse --show-toplevel)/.git/COMMIT_EDITMSG"
-if [ $1 = "copy" ]; then
+if [ "$1" = "copy" ]; then
   xcp < "$path"
 else
   echo "$path"
