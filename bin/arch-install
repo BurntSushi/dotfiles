@@ -24,7 +24,6 @@
 #   sshinit
 #   scannerinit
 #   autologin (for media PCs)
-#   nmmedia (for media PCs)
 
 INSTALL_DIR=/mnt
 
@@ -274,24 +273,6 @@ ExecStart=-/usr/bin/agetty --autologin andrew --noclear %I $TERM
 EOF
 }
 
-nmmedia() {
-  script="/etc/NetworkManager/dispatcher.d/10-media.sh"
-  sudo tee "$script" > /dev/null <<EOF
-#!/bin/sh
-
-status="\$2"
-case "\$status" in
-  up)
-    sudo -i -u andrew zsh -c '. ~/.zshrc && media'
-    ;;
-  down)
-    sudo -i -u andrew zsh -c '. ~/.zshrc && media down'
-    ;;
-esac
-EOF
-  sudo chmod 0755 "$script"
-}
-
 case "$1" in
   bootstrap) shift ; bootstrap "$@" ;;
   rootinit) shift ; rootinit "$@" ;;
@@ -311,7 +292,6 @@ case "$1" in
   sshinit) shift ; sshinit "$@" ;;
   scannerinit) shift ; scannerinit "$@" ;;
   autologin) shift ; autologin "$@" ;;
-  nmmedia) shift ; nmmedia "$@" ;;
   *)
     echo "unrecognized command" >&2
     exit 1

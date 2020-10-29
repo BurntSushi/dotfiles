@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# We only care about the network status.
+status="$2"
+
+# Look for an existing ssh agent and connect to that. We do this so that the
+# 'media' script below---which will mount my NAS over sshfs---will be able to
+# use any loaded SSH keys.
+for agent in /tmp/ssh-*/agent.*; do
+  export SSH_AUTH_SOCK="$agent"
+  if ssh-add -L > /dev/null 2>&1; then
+    break
+  fi
+  unset SSH_AUTH_SOCK
+done
+
+# Log some stuff for debugging when this script fails.
+log="/tmp/nm.log"
+{
+  echo "==============================="
+  date
+  echo "$@"
+  ssh-add -l
+} >> "$log"
+case "$status" in
+  up)
+    sudo -E -u andrew zsh -c '. ~/.zshrc && media' 2>&1 | tee -a "$log"
+    ;;
+  down)
+    sudo -E -u andrew zsh -c '. ~/.zshrc && media down' 2>&1 | tee -a "$log"
+    ;;
+esac
