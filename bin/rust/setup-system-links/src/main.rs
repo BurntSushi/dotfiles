@@ -47,7 +47,7 @@ impl Links {
             let dent = result.with_context(|| {
                 format!("{}: failed to walk directory", system.display())
             })?;
-            if !dent.file_type().is_file() {
+            if dent.file_type().is_dir() {
                 continue;
             }
 
