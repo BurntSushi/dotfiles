@@ -1,18 +1,37 @@
 #!/bin/sh
 
-# Simple script to copy to X11 clipboard. Uses xsel if available, and falls
-# back to xclip. xsel is preferred because I found that copying using xclip
-# and pasting into certain textareas (gmail, google docs) resulted in all
-# newlines being stripped. But using xsel worked correctly.
+# Simple script to copy to X11 clipboard (or paste to stdout when -o is given).
+# Uses xsel if available, and falls back to xclip. xsel is preferred because
+# I found that copying using xclip and pasting into certain textareas (gmail,
+# google docs) resulted in all newlines being stripped. But using xsel worked
+# correctly.
 #
 # Similarly, we configure neovim to use xsel if available.
 #
 # See also: https://github.com/neovim/neovim/issues/5853
 
+paste=
+while true; do
+  case "$1" in
+    -o|--output) paste=yes; shift; ;;
+    -*) usage; exit 1 ;;
+    -h|--help) usage; exit 0 ;;
+    *) break
+  esac
+done
+
 if cmd-exists xsel; then
-  xsel -i --clipboard
+  if [ -z "$paste" ]; then
+    xsel -i --clipboard
+  else
+    xsel -o --clipboard
+  fi
 elif cmd-exists xclip; then
-  xclip -selection clipboard
+  if [ -z "$paste" ]; then
+    xclip -selection clipboard
+  else
+    xclip -o -selection clipboard
+  fi
 else
   echo "neither xsel (preferred) nor xclip are installed" >&2
   exit 1
