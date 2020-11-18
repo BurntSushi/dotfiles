@@ -26,16 +26,20 @@
 /.gnome
 /.gnupg
 /.gox11
+/.gsutil
 /.helm
+/.honu
 /.hushlogin
 /.ICEauthority
 /.isheadless
 /.islaptop
 /.iswork
+/.java
 /.k5login
 /.kube
 /.lesshst
 /.local
+/.m2
 /.macromedia
 /.minecraft
 /.mozilla
@@ -45,6 +49,7 @@
 /.npm*
 /.nv
 /.nvimlog
+/.o4
 /.old
 /.p2
 /.p4enviro
@@ -61,8 +66,13 @@
 /.rpmdb
 /.rustup
 /.sane
-/.sudo*
+/.sfdcEclipse-tmp
+/.sfm
+/.sqldeveloper
+/.*.sqlite3.db
 /.sqlite_history
+/.sudo*
+/.swt
 /.thumbnails
 /.tig_history
 /.tox
@@ -74,6 +84,7 @@
 /.wmWeatherReports
 /.Xauthority
 /.xbindkeysrc
+/.xsel.log
 /.yarnrc
 /.zcompdump
 /.zoom
@@ -97,3 +108,7 @@
 
 # Files we always want to ignore
 .netrwhist
+
+# Various other junk... Sigh.
+/Corda
+/sdb
