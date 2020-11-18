@@ -2,6 +2,8 @@
   email = jamslam@gmail.com
   name = Andrew Gallant
   signingkey = jamslam@gmail.com
+[init]
+  defaultBranch = master
 [rerere]
   enabled = true
 [commit]
