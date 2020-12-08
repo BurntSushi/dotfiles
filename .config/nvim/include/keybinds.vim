@@ -19,6 +19,17 @@ nmap <Leader>g <S-v><Leader>g
 vnoremap <Leader>h !par T8 'B=.,?_A_a' 79qr<CR>
 nmap <Leader>h <S-v><Leader>h
 
+" Conveniences for base64 encoding/decoding. For encoding, we strip the
+" trailing newline to make inline base64 encoding work as one would expect.
+:vnoremap <Leader>d64 c<C-R>=system('base64 --decode', @")<CR><ESC>
+:vnoremap <Leader>e64 c<C-R>=system('base64 \| head -c -1', @")<CR><ESC>
+" Similarly, another keybinding for JSON prettifying. Note that this is
+" line oriented and won't respect more precise selections.
+:vnoremap <Leader>j !jq .<CR>
+
+" :vnoremap <Leader>d64 !base64 --decode<CR>
+" :vnoremap <Leader>e64 !base64<CR>
+
 " Convenience keybinding for writing the current date.
 noremap <Leader>d :read !date +"\%B \%-d, \%Y"<CR>
 
