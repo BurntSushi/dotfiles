@@ -1,0 +1,146 @@
+#!/usr/bin/env python
+
+'''
+This program takes as an input an asset allocation for an investment
+portfolio, along with an amount that one wants to contribute to that
+portfolio, and returns how that contribution should be divided between
+the assets in order to maintain the asset allocation ratios.
+
+For example, let's say we have a portfolio made up of the following
+funds: VMATX, VTIAX and VTSAX. We want bonds (VMATX) set at 30% with
+the remainder split between international (VTIAX) and US (VTSAX)
+stocks. Let's say our existing portfolio is $100 with the following
+holdings:
+
+VMATX - $28
+VTIAX - $35.50
+VTSAX - $36.50
+
+VMATX is a little below our desired allocation while VTIAX and VTSAX
+are a little above. Now let's say we want to contribute $20. How do we
+split that between our holdings in a way that rebalances and maintains
+our desired asset allocation? This command will do just that:
+
+$ alloc-assets 20 vmatx:28:0.30 vtiax:35.50 vtsax:36.50
+asset(vmatx) = 8.0
+asset(vtiax) = 6.5
+asset(vtsax) = 5.5
+
+So add $8 to VMATX, $6.50 to VTIAX and $5.50 to VTSAX.
+'''
+
+from collections import namedtuple
+import sys
+
+
+class Asset(namedtuple('Asset', ['id', 'name', 'amount', 'ratio'])):
+    @staticmethod
+    def parse(id, asset):
+        '''
+        Parse an asset in the format [name:]amount[:ratio]. If
+        amount:ratio doesn't parse as a valid pair of floats, then the
+        name:amount format is attempted. Missing values are filled with
+        None.
+        '''
+        pieces = asset.split(':')
+        name, amount, ratio = None, None, None
+        if len(pieces) == 1:
+            amount = float(pieces[0])
+        elif len(pieces) == 2:
+            try:
+                amount = float(pieces[0])
+                ratio = float(pieces[1])
+            except ValueError:
+                name = pieces[0]
+                amount = float(pieces[1])
+        elif len(pieces) == 3:
+            name = pieces[0]
+            amount = float(pieces[1])
+            ratio = float(pieces[2])
+        else:
+            raise ValueError('expected asset format of '
+                             '[asset-name:]asset-amount[:asset-ratio]')
+        return Asset(id=id, name=name, amount=amount, ratio=ratio)
+
+    @staticmethod
+    def fill_ratios(assets):
+        '''
+        Returns a new list of assets with all ratios set to non-None
+        values. The new ratios are determined by dividing the total
+        number of unknown ratios by the remaining asset allocation.
+        '''
+        unknown_count = sum(1 for a in assets if a.ratio is None)
+        if unknown_count == 0:
+            return assets[:]
+
+        known_ratio_sum = sum(a.ratio for a in assets if a.ratio is not None)
+        new_ratio = (1 - known_ratio_sum) / unknown_count
+
+        new = []
+        for a in assets:
+            if a.ratio is None:
+                new.append(a.with_ratio(new_ratio))
+            else:
+                new.append(a)
+        return new
+
+    def with_ratio(self, ratio):
+        return self._replace(ratio=ratio)
+
+    def __str__(self):
+        if self.name is None:
+            return f'asset({self.id})'
+        return f'asset({self.name})'
+
+
+def is_approx_zero(number):
+    return -0.01 <= number <= 0.01
+
+
+def eprint(*args, **kwargs):
+    kwargs['file'] = sys.stderr
+    print(*args, **kwargs)
+
+
+if __name__ == '__main__':
+    if len(sys.argv) < 3 or '-h' in sys.argv or '--help' in sys.argv:
+        eprint('Usage: alloc-assets <contrib> '
+               '<[asset-name:]asset-amount[:asset-ratio]> ...')
+        sys.exit(1)
+
+    contrib = 0.0
+    assets = []
+    try:
+        contrib = float(sys.argv[1])
+    except ValueError as e:
+        eprint(f'invalid contrib amount: {e}')
+        sys.exit(1)
+    for i, arg in enumerate(sys.argv[2:]):
+        try:
+            asset = Asset.parse(i, arg)
+        except ValueError as e:
+            eprint(f'invalid asset({i}): {e}')
+            sys.exit(1)
+        assets.append(asset)
+
+    assets = Asset.fill_ratios(assets)
+    ratio_sum = sum(a.ratio for a in assets)
+    if not is_approx_zero(abs(1.0 - ratio_sum)):
+        eprint(f'ratios must sum to 1, but they sum to {ratio_sum}')
+        sys.exit(1)
+
+    total_cur = sum(a.amount for a in assets)
+    total_new = total_cur + contrib
+    remaining = contrib
+    # Allocate our total contribution iteratively. Give as much as we can to
+    # the smallest existing allocations.
+    for a in sorted(assets, key=lambda a: a.amount):
+        expected = a.ratio * total_new
+        diff = expected - a.amount
+        if diff < 0:
+            continue
+        toadd = min(remaining, diff)
+        remaining = remaining - toadd
+        print(f'{a} = {toadd}')
+        if is_approx_zero(remaining):
+            break
