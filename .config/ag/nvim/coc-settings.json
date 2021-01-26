@@ -10,5 +10,6 @@
   "coc.preferences.snippets.enable": false,
   "rust-analyzer.diagnostics.enable": false,
   "rust-analyzer.inlayHints.chainingHints": false,
+  "rust-analyzer.inlayHints.typeHints": false,
   "rust-analyzer.serverPath": "/home/andrew/bin/rust-analyzer-wrapper"
 }
