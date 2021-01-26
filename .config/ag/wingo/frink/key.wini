@@ -6,28 +6,28 @@ Mod4-Shift-s := Script (Input "Script command:")
 Mod4-c := Close (GetActive)
 Mod4-x := ToggleMaximize (GetActive)
 Mod4-i := ToggleIconify (GetActive)
-Mod1-up := ToggleStackAbove (GetActive)
-Mod1-down := ToggleStackBelow (GetActive)
+# Mod1-up := ToggleStackAbove (GetActive)
+# Mod1-down := ToggleStackBelow (GetActive)
 Mod1-f := ToggleFloating (GetActive)
 
 Mod1-Shift-t := Move (GetActive) 0.2 0.2
 Mod1-Shift-t := Resize (GetActive) 0.6 0.6
 
-Mod4-left := Move (GetActive) 0 0
+Mod4-left := Move (GetActive) 0.00001 0
 Mod4-left := Resize (GetActive) 0.5 1.0
-Mod4-Shift-left := Move (GetActive) 0 0
+Mod4-Shift-left := Move (GetActive) 0.00001 0
 Mod4-Shift-left := Resize (GetActive) 0.25 1.0
 Mod4-right := Move (GetActive) 0.5 0
 Mod4-right := Resize (GetActive) 0.5 1.0
 Mod4-Shift-right := Move (GetActive) 0.75 0
 Mod4-Shift-right := Resize (GetActive) 0.25 1.0
-Mod4-up := Move (GetActive) 0 0
+Mod4-up := Move (GetActive) 0.00001 0
 Mod4-up := Resize (GetActive) 1.0 0.5
-Mod4-Shift-up := Move (GetActive) 0 0
+Mod4-Shift-up := Move (GetActive) 0.00001 0
 Mod4-Shift-up := Resize (GetActive) 1.0 0.25
-Mod4-down := Move (GetActive) 0 0.5
+Mod4-down := Move (GetActive) 0.00001 0.5
 Mod4-down := Resize (GetActive) 1.0 0.5
-Mod4-Shift-down := Move (GetActive) 0 0.75
+Mod4-Shift-down := Move (GetActive) 0.00001 0.75
 Mod4-Shift-down := Resize (GetActive) 1.0 0.25
 
 Mod1-a := AutoTile (GetWorkspace)
