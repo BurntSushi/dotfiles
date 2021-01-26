@@ -42,3 +42,7 @@ inoremap <silent><expr> <S-TAB>
   \ coc#refresh()
 " Make <CR> confirm completion.
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+
+" Forcefully disable ALE, which seems to be starting despite me not
+" configuring it for Rust...
+let g:ale_enabled = 0
