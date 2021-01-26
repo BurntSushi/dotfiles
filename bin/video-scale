@@ -15,4 +15,4 @@ if [ -z "$output" ]; then
   output="$d/${noext}_${vertical}p.${ext}"
 fi
 exec ffmpeg -y \
-  -i "$input" -vf "scale=-1:$vertical" -c:v libx264 -c:a copy "$output"
+  -i "$input" -vf "scale=-1:$vertical" -c:v libx264 -c:a copy -vsync 0 "$output"
