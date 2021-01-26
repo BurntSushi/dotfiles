@@ -8,6 +8,7 @@
 /configstore
 /dconf
 /dolphinrc
+/emaildefaults
 /enchant
 /evolution
 /filetypesrc
@@ -25,6 +26,7 @@
 /hub
 /ibus
 /jgit
+/k3brc
 /kactivitymanagerdrc
 /kdeconnect
 /kdeglobals
