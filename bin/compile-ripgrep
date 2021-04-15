@@ -38,7 +38,7 @@ while [ $# -gt 0 ]; do
     esac
 done
 
-export RUSTFLAGS="-C target-cpu=native"
+# export RUSTFLAGS="-C target-cpu=native"
 # export RUSTFLAGS="-C target-cpu=native -C link-arg=-fuse-ld=lld"
 # export RUSTFLAGS="--cfg regex_disable_auto_optimizations --cfg regex_runtime_teddy_ssse3"
 if [ -n "$debug" ]; then
