@@ -1,0 +1,22 @@
+#!/bin/zsh
+
+# This script alerts me if the total combined voltage exceeds a certain
+# threshold. I wrote this script (and installed Sense), since we had
+# collected some very rough and patchy evidence that we were getting voltage
+# spikes into the house. While Sense has some support for notifications, it
+# doesn't make voltage data easy to track over time or get notified if it
+# spikes. Thankfully, they do have an unofficial API that we scrape using
+# homeaut-sense-realtime-log. We then read from that log periodically via this
+# script, which is meant to be setup as a cronjob.
+
+export HOME=/home/andrew
+. $HOME/.zshrc
+
+LOG=/m/log/alert-voltage.log
+
+alerts="$(homeaut-sense-realtime-alert)"
+if [ -n "$alerts" ]; then
+  date
+  echo "$alerts" | cmail --subject "home voltage alert"
+  echo ===============================
+fi 2>&1 | tee -a "$LOG"

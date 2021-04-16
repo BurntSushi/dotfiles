@@ -1,0 +1,60 @@
+#!/usr/bin/env /home/andrew/clones/sense/ve/bin/python
+
+import csv
+import json
+import subprocess
+import time
+
+import sense_energy
+
+LOG_CSV_FILE = '/m/data/home/sense/realtime.csv'
+USERNAME = 'jamslam@gmail.com'
+PASS_PATH = 'home/sense'
+FIELDS = ['timestamp', 'voltage1', 'voltage2', 'hertz', 'watts', 'raw']
+LOG_EVERY = 1000
+BACKOFF = 300  # seconds to wait if a timeout occurs
+DIALECT = csv.unix_dialect
+DIALECT.quoting = csv.QUOTE_MINIMAL
+
+
+def get_password():
+    stdout = subprocess.check_output(['pass', 'home/sense'])
+    return stdout.decode('utf-8').splitlines()[0].strip()
+
+
+def loop(wtr):
+    last_log = time.time()
+
+    sense = sense_energy.Senseable()
+    sense.authenticate(USERNAME, get_password())
+    sense.update_realtime()
+    for i, v in enumerate(sense.get_realtime_stream()):
+        voltage = v.get('voltage', [0.0, 0.0])
+        wtr.writerow({
+            'timestamp': time.time(),
+            'voltage1': voltage[0],
+            'voltage2': voltage[1],
+            'hertz': v.get('hz', 0.0),
+            'watts': v.get('w', 0.0),
+            'raw': json.dumps(v),
+        })
+        if i == 0 or i % LOG_EVERY != 0:
+            continue
+        diff = time.time() - last_log
+        print(f'logged {LOG_EVERY} events in {diff:0.03} seconds')
+        last_log = time.time()
+
+
+if __name__ == '__main__':
+    print(f'{LOG_CSV_FILE}: writing Sense realtime data events to log')
+    with open(LOG_CSV_FILE, mode='a', buffering=1) as out:
+        wtr = csv.DictWriter(
+            out,
+            fieldnames=FIELDS,
+            dialect=DIALECT,
+        )
+        while True:
+            try:
+                loop(wtr)
+            except sense_energy.sense_exceptions.SenseAPITimeoutException:
+                time.sleep(BACKOFF)
