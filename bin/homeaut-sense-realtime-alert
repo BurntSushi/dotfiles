@@ -7,19 +7,19 @@ import time
 LOG_CSV_FILE = '/m/data/home/sense/realtime.csv'
 TIME_WINDOW_SECONDS = 90 * 60
 
-VOLTAGE_DIFF_THRESHOLD = 2.0
-VOLTAGE_MAX_THRESHOLD = 249.0
+VOLTAGE_DIFF_THRESHOLD = 2.5
+VOLTAGE_MAX_THRESHOLD = 252.0
 
 if __name__ == '__main__':
     now = time.time()
     with open(LOG_CSV_FILE) as f:
         for row in csv.DictReader(f):
-            if now - float(row['timestamp']) > TIME_WINDOW_SECONDS:
+            if now - float(row['ts']) > TIME_WINDOW_SECONDS:
                 continue
-            v1 = float(row['voltage1'])
-            v2 = float(row['voltage2'])
+            total = float(row['volt'])
+            v1 = float(row['volt1'])
+            v2 = float(row['volt2'])
             diff = abs(v1 - v2)
-            total = v1 + v2
             if diff >= VOLTAGE_DIFF_THRESHOLD:
                 print(f'voltage difference {diff} is high')
             if total >= VOLTAGE_MAX_THRESHOLD:

@@ -10,9 +10,9 @@ import sense_energy
 LOG_CSV_FILE = '/m/data/home/sense/realtime.csv'
 USERNAME = 'jamslam@gmail.com'
 PASS_PATH = 'home/sense'
-FIELDS = ['timestamp', 'voltage1', 'voltage2', 'hertz', 'watts', 'raw']
+FIELDS = ['ts', 'datetime', 'volt', 'volt1', 'volt2', 'hertz', 'watts', 'raw']
 LOG_EVERY = 1000
-BACKOFF = 300  # seconds to wait if a timeout occurs
+BACKOFF = 10  # seconds to wait if a timeout occurs
 DIALECT = csv.unix_dialect
 DIALECT.quoting = csv.QUOTE_MINIMAL
 
@@ -22,18 +22,29 @@ def get_password():
     return stdout.decode('utf-8').splitlines()[0].strip()
 
 
-def loop(wtr):
+def timestamp_to_datetime(ts):
+    # I remember in the Python 2 days, doing this required a third party
+    # package and it was a huge pain. Maybe Python 3 has solved it, but this
+    # is just so much simpler.
+    cmd = ['date', '-d', f'@{ts}']
+    return subprocess.check_output(cmd).decode('utf-8').strip()
+
+
+def loop(wtr, password):
     last_log = time.time()
 
     sense = sense_energy.Senseable()
-    sense.authenticate(USERNAME, get_password())
+    sense.authenticate(USERNAME, password)
     sense.update_realtime()
     for i, v in enumerate(sense.get_realtime_stream()):
+        ts = time.time()
         voltage = v.get('voltage', [0.0, 0.0])
         wtr.writerow({
-            'timestamp': time.time(),
-            'voltage1': voltage[0],
-            'voltage2': voltage[1],
+            'ts': ts,
+            'datetime': timestamp_to_datetime(ts),
+            'volt': voltage[0] + voltage[1],
+            'volt1': voltage[0],
+            'volt2': voltage[1],
             'hertz': v.get('hz', 0.0),
             'watts': v.get('w', 0.0),
             'raw': json.dumps(v),
@@ -46,6 +57,7 @@ def loop(wtr):
 
 
 if __name__ == '__main__':
+    password = get_password()
     print(f'{LOG_CSV_FILE}: writing Sense realtime data events to log')
     with open(LOG_CSV_FILE, mode='a', buffering=1) as out:
         wtr = csv.DictWriter(
@@ -55,6 +67,11 @@ if __name__ == '__main__':
         )
         while True:
             try:
-                loop(wtr)
+                loop(wtr, password)
             except sense_energy.sense_exceptions.SenseAPITimeoutException:
+                print(
+                    f'WebSocket Sense API timeout, sleeping for {BACKOFF} '
+                    f'seconds before starting again',
+                )
                 time.sleep(BACKOFF)
+                print('starting main loop again...')
