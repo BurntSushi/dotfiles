@@ -1,12 +1,14 @@
 #!/bin/bash
 
+WORKDIR=/tmp/sense-voltage-plot
 EVENTS=/m/data/home/sense/realtime.csv
 interval="$1"
 if [ -z "$interval" ]; then
   interval=$((60 * 60 * 8))
 fi
 
-mkcd /tmp/sense-voltage-plot
+mkdir -p "$WORKDIR"
+cd "$WORKDIR" || exit
 
 now="$(date +'%s')"
 begin="$((now - interval))"
