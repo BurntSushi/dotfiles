@@ -13,8 +13,24 @@ cd "$WORKDIR" || exit
 now="$(date +'%s')"
 begin="$((now - interval))"
 
+# Select just the timestamp and voltage data from our events, then filter it
+# to only look at the past interval and exclude any blips that didn't log
+# voltage data. Finally, subtract our timezone offset since gnuplot doesn't
+# handle timezones.
+#
+# For the CONVFMT trick, see:
+# https://unix.stackexchange.com/questions/57006/awk-high-precision-arithmetic
+# Without it, awk prints the result of floating point arithmetic like this
+#
+#   1.61866e+09
+#
+# instead of the desired
+#
+#   1618658551.1843472
 xsv select ts,volt "$EVENTS" \
-  | awk -F, '$2 > 0 && $1 > '$begin' { print $0 }' > plot.csv
+  | awk -F, '$2 > 0 && $1 > '$begin' { print $0 }' \
+  | awk -v CONVFMT=%.17g -F, '{ print ($1 - (60 * 60 * 4))","$2 }' \
+  > plot.csv
 
 cat > voltage-over-time.gnuplot <<EOF
 set datafile separator ','
