@@ -1,0 +1,25 @@
+#!/bin/bash
+
+EVENTS=/m/data/home/sense/realtime.csv
+interval="$1"
+if [ -z "$interval" ]; then
+  interval=$((60 * 60 * 8))
+fi
+
+mkcd /tmp/sense-voltage-plot
+
+now="$(date +'%s')"
+begin="$((now - interval))"
+
+xsv select ts,volt "$EVENTS" \
+  | awk -F, '$2 > 0 && $1 > '$begin' { print $0 }' > plot.csv
+
+cat > voltage-over-time.gnuplot <<EOF
+set datafile separator ','
+set xdata time # tells gnuplot the x axis is time data
+set timefmt "%s.%N" # specify our time string format
+set format x "%b %d %H:%M" # otherwise it will show only MM:SS
+set xtics rotate by -45
+plot 'plot.csv' using 1:2 with lines, '' using 1:3 with lines
+EOF
+gnuplot -p voltage-over-time.gnuplot
