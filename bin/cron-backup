@@ -16,4 +16,5 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-cmail backup $no_aws_progress --sync /m/data 2>&1 | tee -a "$LOG"
+period=$((60 * 60))
+cmail -p "$period" backup $no_aws_progress --sync /m/data 2>&1 | tee -a "$LOG"
