@@ -7,8 +7,8 @@ import time
 LOG_CSV_FILE = '/m/data/home/sense/realtime.csv'
 TIME_WINDOW_SECONDS = 90 * 60
 
-VOLTAGE_DIFF_THRESHOLD = 2.5
-VOLTAGE_MAX_THRESHOLD = 252.0
+VOLTAGE_DIFF_THRESHOLD = 5.0
+VOLTAGE_MAX_THRESHOLD = 252.9
 
 if __name__ == '__main__':
     now = time.time()
