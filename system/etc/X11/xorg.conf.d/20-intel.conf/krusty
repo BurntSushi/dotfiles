@@ -4,7 +4,7 @@ Section "Device"
 
 #  Option "AccelMethod" "sna"
   Option "TearFree" "true"
-  Option "DRI" "2"
+  Option "DRI" "3"
 
 #  Option "DRI" "2"
 #  Option "VSync" "false"
