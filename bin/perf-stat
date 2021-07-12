@@ -1,5 +1,25 @@
 #!/bin/bash
 
+# TODO: Can we incooperate info about front-end stalls somehow?
+#
+# From: https://news.ycombinator.com/item?id=27813048
+#
+# Very often people are looking at icache misses instead of something more
+# precise when regarding perf effects due to code size/layout, etc. That more
+# precise thing is frontend stalls: you only care about misses when they cause
+# stalls; otherwise they are overlapped with actual work being done by the
+# execution units.
+#
+# You can measure frontend stalls on many recent intel chips by
+#
+# IDQ_UOPS_NOT_DELIVERED.CORE
+#
+# https://perfmon-events.intel.com/
+#
+# Neoverse N1 from Arm has STALL_FRONTEND; see
+#
+# https://developer.arm.com/documentation/PJDOC-466751330-547673/r4p1
+
 events="instructions,context-switches,major-faults,minor-faults"
 events+=",cpu-cycles,bus-cycles,ref-cycles"
 events+=",stalled-cycles-backend,stalled-cycles-frontend"
