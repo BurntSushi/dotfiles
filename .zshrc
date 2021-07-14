@@ -177,6 +177,12 @@ for p in $zshauto; do
     break
   fi
 done
+# zsh-autosuggestions recently started enabling "async" retrieval of
+# suggestions by default. But in my experience, this actually changes the
+# behavior of hitting up-arrow to the point where it actually misses items in
+# my history. No clue why, but disabling async reverts zsh-autosuggestions back
+# into a working state.
+unset ZSH_AUTOSUGGEST_USE_ASYNC
 
 # Enable syntax highlighting in the terminal. This must come last.
 zshsyntax=(
