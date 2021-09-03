@@ -2,6 +2,7 @@
 
 # Recommended steps:
 #
+#   encrypt (if encrypting disk, recommended for laptop)
 #   bootstrap before entering chroot
 #   copy this script into INSTALL_DIR
 #   rootinit after entering chroot
@@ -18,6 +19,10 @@
 #   yayinit
 #   yaypkgs
 #   yayxpkgs (if installing graphics)
+#
+# At this point, reboot to disk, as dealing with GPG off the
+# live disk seems to have issues.
+#
 #   gpginit
 #   homeinit
 #   xenvinit (if installing graphics)
@@ -26,6 +31,18 @@
 #   autologin (for media PCs)
 
 INSTALL_DIR=/mnt
+
+encrypt() {
+  if [ $# != 1 ]; then
+    echo "Usage: $(basename "$0") encrypt <device>" >&2
+    exit 1
+  fi
+  device="$1"
+
+  cryptsetup -y -v luksFormat "$device"
+  cryptsetup open "$device" cryptroot
+  echo "partition should be at /dev/mapper/cryptroot"
+}
 
 bootstrap() {
   pacstrap "$INSTALL_DIR" base base-devel linux linux-firmware
@@ -103,7 +120,7 @@ pkgs() {
     docker espeak ffmpeg jq ripgrep youtube-dl fzf \
     iotop htop linux-tools pkgfile pwgen pv strace tig time tree valgrind \
     vim \
-    git git-crypt \
+    git git-crypt tk \
     aws-cli s3cmd colordiff curl wget ctags darkhttpd pass rsync \
     nodejs yarn
   pkgfile --update
@@ -128,6 +145,8 @@ xpkgs() {
     xclip \
     xsel \
     xdotool \
+    wmctrl \
+    scrot \
     trayer \
     freerdp \
     gmrun \
@@ -249,8 +268,8 @@ gpginit() {
     --archive --recursive --human-readable --partial --inplace --progress \
     -e 'ssh -p 7704' \
     andrew@home.burntsushi.net:/m/data/andrew/keys/*.key.* /tmp/
-  gpg --import /tmp/jamslam@gmail.com.key.priv
-  gpg --import /tmp/kbrady39@gmail.com.key.priv
+  gpg --pinentry-mode loopback --import /tmp/jamslam@gmail.com.key.priv
+  gpg --pinentry-mode loopback --import /tmp/kbrady39@gmail.com.key.priv
   echo "use 'gpg --edit-key {email}' to trust each key completely"
 }
 
