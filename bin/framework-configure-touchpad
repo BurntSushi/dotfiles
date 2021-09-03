@@ -1,0 +1,16 @@
+#!/bin/sh
+
+device="PIXA3854:00 093A:0274 Touchpad"
+
+# The default is a little too slow.
+xinput set-prop "$device" "libinput Accel Speed" 0.25
+# This is the secret sauce for switching from "click on a certain area on the
+# devicepad to get middle or right click" to "use two finger click for right
+# click and three finger click for middle click." The former was the default
+# and was totally alient to me.
+xinput set-prop "$device" "libinput Click Method Enabled" 0 1
+# These are all default values, but were things I was experimenting with before
+# I figured out that 'Click Method' was what I wanted to tweak.
+xinput set-prop "$device" "libinput Middle Emulation Enabled" 0
+xinput set-prop "$device" "libinput Left Handed Enabled" 0
+xinput set-prop "$device" "libinput Tapping Enabled" 0
