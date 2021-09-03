@@ -13,6 +13,9 @@ case "$(myhostname)" in
   krusty)
     exec "$base/wingo-krusty.xinitrc"
     ;;
+  kang)
+    exec "$base/wingo-kang.xinitrc"
+    ;;
   frink)
     exec "$base/wingo-frink.xinitrc"
     ;;

@@ -1,0 +1,118 @@
+$OPACITY_UP := Shell "transset-df -p --max 1.0 --inc 0.05"
+$OPACITY_DOWN := Shell "transset-df -p --min 0.1 --dec 0.05"
+
+[Root]
+1 := Focus ":mouse:"
+
+[Client]
+1 := FocusRaise ":mouse:"
+
+[Frame]
+Mod4-1 := MouseMove
+Mod4-3 := MouseResize "Infer"
+Mod4-4 up := $OPACITY_UP
+Mod4-5 up := $OPACITY_DOWN
+
+[FullIcon]
+1 := MouseMove
+1 := FocusRaise ":mouse:"
+3 := MouseResize "Infer"
+Mod4-4 up := $OPACITY_UP
+Mod4-5 up := $OPACITY_DOWN
+
+[FullTitleText]
+1 := MouseMove
+1 := FocusRaise ":mouse:"
+3 := MouseResize "Infer"
+Mod4-4 up := $OPACITY_UP
+Mod4-5 up := $OPACITY_DOWN
+
+[FullTitleBar]
+1 := MouseMove
+1 := FocusRaise ":mouse:"
+3 := MouseResize "Infer"
+Mod4-4 up := $OPACITY_UP
+Mod4-5 up := $OPACITY_DOWN
+
+[FullClose]
+1 up := Close ":mouse:"
+Mod4-4 up := $OPACITY_UP
+Mod4-5 up := $OPACITY_DOWN
+
+[FullMaximize]
+1 up := ToggleMaximize ":mouse:"
+Mod4-4 up := $OPACITY_UP
+Mod4-5 up := $OPACITY_DOWN
+
+[FullMinimize]
+1 up := ToggleIconify ":mouse:"
+Mod4-4 up := $OPACITY_UP
+Mod4-5 up := $OPACITY_DOWN
+
+[FullTop]
+1 := MouseResize "Top"
+1 down := FocusRaise ":mouse:"
+
+[FullTitleBottom]
+1 down := FocusRaise ":mouse:"
+
+[FullBottom]
+1 := MouseResize "Bottom"
+1 down := FocusRaise ":mouse:"
+
+[FullLeft]
+1 := MouseResize "Left"
+1 down := FocusRaise ":mouse:"
+
+[FullRight]
+1 := MouseResize "Right"
+1 down := FocusRaise ":mouse:"
+
+[FullTopLeft]
+1 := MouseResize "TopLeft"
+1 down := FocusRaise ":mouse:"
+
+[FullTopRight]
+1 := MouseResize "TopRight"
+1 down := FocusRaise ":mouse:"
+
+[FullBottomLeft]
+1 := MouseResize "BottomLeft"
+1 down := FocusRaise ":mouse:"
+
+[FullBottomRight]
+1 := MouseResize "BottomRight"
+1 down := FocusRaise ":mouse:"
+
+[BordersTop]
+1 := MouseResize "Top"
+1 down := FocusRaise ":mouse:"
+
+[BordersBottom]
+1 := MouseResize "Bottom"
+1 down := FocusRaise ":mouse:"
+
+[BordersLeft]
+1 := MouseResize "Left"
+1 down := FocusRaise ":mouse:"
+
+[BordersRight]
+1 := MouseResize "Right"
+1 down := FocusRaise ":mouse:"
+
+[BordersTopLeft]
+1 := MouseResize "TopLeft"
+1 down := FocusRaise ":mouse:"
+
+[BordersTopRight]
+1 := MouseResize "TopRight"
+1 down := FocusRaise ":mouse:"
+
+[BordersBottomLeft]
+1 := MouseResize "BottomLeft"
+1 down := FocusRaise ":mouse:"
+
+[BordersBottomRight]
+1 := MouseResize "BottomRight"
+1 down := FocusRaise ":mouse:"
+
