@@ -11,14 +11,21 @@ mx=$2
 my=$3
 mwidth=$4
 mheight=$5
+font="Cousine-18"
 
 # Calculate the height of the "panel" and the y position of the "panel."
 height=40
 y=$((mheight - height + my))
 
+# Bump font size for some machines.
+if [ "$(myhostname)" = "kang" ]; then
+  font="Cousine-25"
+  height=50
+fi
+
 # Width constants for the system tray and battery indicator.
 tray_width=150
-bat_width=115
+bat_width=160
 
 # Determine the width of the pager based on the width of the system tray and
 # battery indicator. If it's a laptop, include the battery indicator. Otherwise,
@@ -38,7 +45,7 @@ killall trayer
 # (pager-multihead -x $mx -y $y --width $pager_width --height $height &)
 
 ($HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces \
-  | dzen2 -dock -xs 2 -h 40 -fn 'Cousine-18' -ta l -bg '#ffffff' -y 1170) &
+  | dzen2 -dock -xs 2 -h "$height" -fn "$font" -ta l -bg '#ffffff' -y "$y") &
 (trayer --widthtype pixel --width $tray_width \
         --heighttype pixel --height $height \
         --edge bottom --align right \
@@ -50,6 +57,6 @@ if is-laptop; then
   # shellcheck disable=SC2009
   ps aux | grep -v grep | grep batrem | awk '{print $2}' | xargs -r kill
   (batrem -s -i 10 | \
-    dzen2 -fn "DejaVu Sans Mono-14" -fg white -bg black \
+    dzen2 -fn "Cousine-18" -fg white -bg black \
       -x $((mx + pager_width)) -y $y -w $bat_width -h $height &)
 fi
