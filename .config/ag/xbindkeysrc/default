@@ -79,5 +79,8 @@
 "brightness dec"
   XF86MonBrightnessDown
 
+"systemctl suspend"
+  XF86AudioMedia
+
 "toggle-tap-to-click"
   mod1 + mod4 + c
