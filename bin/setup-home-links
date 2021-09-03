@@ -59,7 +59,7 @@ install() {
 
 install \
   "$HOME/.gitconfig" \
-  "$HOME/.config/ag/gitconfig" \
+  "$HOME/.config/ag/gitconfig/$DEV" \
   "$HOME/work/config/gitconfig"
 install "$HOME/.git/hooks/post-checkout" "$HOME/bin/fix-perms-home"
 install \
