@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 from __future__ import absolute_import, division, print_function
 
@@ -39,9 +39,12 @@ def output():
     charged = '%d' % (100 * (now / full))
 
     # If the battery isn't discharging, just report 'AC' instead of
-    # the time remaining.
+    # the time remaining. We also consider it on A/C when the charge is
+    # a very high percentage of a full charge. This is because it appears
+    # that sometimes the status is 'Discharging' even when plugged into
+    # AC. (For Framework laptop.)
     status = open(os.path.join(batdir, 'status')).read().strip()
-    if status != 'Discharging':
+    if status != 'Discharging' or (now / full) > 0.995:
         print('%s%% AC' % charged)
         sys.stdout.flush()
         return
@@ -100,15 +103,14 @@ if __name__ == '__main__':
             '"rem" is specified, only the time remaining is displayed.')
     conf = parser.parse_args()
 
-    host = subprocess.check_output(['myhostname']).strip()
+    host = subprocess.check_output(['myhostname']).decode('utf-8').strip()
     batdir = ''
     ffull = 'energy_full'
     fnow = 'energy_now'
     fpow_now = 'power_now'
 
-    if host in ('Turtle', 'monty', 'krusty'):
-        batdir = '/sys/class/power_supply/BAT0'
-    if host in ('krusty'):
+    batdir = subprocess.check_output(['batpath']).decode('utf-8').strip()
+    if host in ('krusty', 'kang'):
         ffull = 'charge_full'
         fnow = 'charge_now'
         fpow_now = 'current_now'
@@ -117,7 +119,7 @@ if __name__ == '__main__':
         eprint('Battery directory "%s" is not accessible.' % batdir)
         sys.exit(1)
 
-    if conf.interval > 0:
+    if conf.interval is not None and conf.interval > 0:
         while True:
             output()
             time.sleep(conf.interval)

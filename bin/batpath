@@ -1,0 +1,11 @@
+#!/bin/sh
+
+for name in BAT0 BAT1; do
+  dir="/sys/class/power_supply/$name"
+  if [ -f "$dir/status" ]; then
+    echo "$dir"
+    exit 0
+  fi
+done
+echo "no battery detected" >&2
+exit 1
