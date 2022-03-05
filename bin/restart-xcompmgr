@@ -2,8 +2,11 @@
 
 # See: https://github.com/chjj/compton/wiki/vsync-guide
 
-killall xcompmgr --wait
-exec xcompmgr
+killall picom --wait
+exec picom --backend glx \
+  --vsync \
+  --fade-in-step 1.0 \
+  --fade-out-step 1.0
 
 # killall compton --wait
 # exec compton --backend glx --vsync
