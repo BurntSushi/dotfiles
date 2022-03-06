@@ -257,10 +257,10 @@ xenvinit() {
   go get -v github.com/BurntSushi/wingo/...
   go get -v github.com/BurntSushi/gohead/...
 
-  virtualenv2 "$HOME/.pyx11"
+  virtualenv "$HOME/.pyx11"
   # shellcheck disable=SC1091
   . "$HOME/.pyx11/bin/activate"
-  pip install pywingo
+  pip install git+https://github.com/wingowm/pywingo
 }
 
 gpginit() {
