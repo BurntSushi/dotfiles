@@ -4,7 +4,7 @@ if ! is-laptop; then
   exit 1
 fi
 case "$(myhostname)" in
-  krusty)
+  kodos|krusty)
     device="SynPS/2 Synaptics TouchPad"
     prop="libinput Tapping Enabled"
     ;;

@@ -8,7 +8,7 @@ case "$(myhostname)" in
       mute) i3-volume -p -n -m ;;
     esac
     ;;
-  krusty|kang)
+  krusty|kang|kodos)
     case $1 in
       up)   i3-volume -p -n -i 10 ;;
       down) i3-volume -p -n -d 10 ;;

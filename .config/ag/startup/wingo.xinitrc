@@ -16,6 +16,9 @@ case "$(myhostname)" in
   kang)
     exec "$base/wingo-kang.xinitrc"
     ;;
+  kodos)
+    exec "$base/wingo-kodos.xinitrc"
+    ;;
   frink)
     exec "$base/wingo-frink.xinitrc"
     ;;
