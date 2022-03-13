@@ -6,11 +6,13 @@ temubin=alacritty
 dir=
 if [ "$1" = "-d" ]; then
   dir="$2"
-  echo "$dir" >> /tmp/terminal.log
+  echo "$dir" >> "/tmp/terminal-$USER.log"
   shift 2
 fi
+
+logfile="/tmp/alacritty-$USER.log"
 if [ -z "$dir" ]; then
-  exec $temubin "$@" >> /tmp/alacritty.log 2>&1
+  exec $temubin "$@" >> "$logfile" 2>&1
 else
-  exec $temubin --working-directory "$dir" "$@" >> /tmp/alacritty.log 2>&1
+  exec $temubin --working-directory "$dir" "$@" >> "$logfile" 2>&1
 fi
