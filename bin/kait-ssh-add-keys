@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -e
+
+show_status() {
+    name="$1"
+    if [ -t 1 ]; then
+        echo "$name key added"
+    else
+        notify-send "$name key added"
+    fi
+}
+
+add_key() {
+    name="$1"
+    org="$2"
+    if ssh-add-key "$name" "$org" 2>/dev/null; then
+        show_status "$name"
+    fi
+}
+
+add_key kodos kait

@@ -4,7 +4,7 @@
 # run.  Advanced users may wish to specify all system modules
 # in this array.  For instance:
 #     MODULES=(piix ide_disk reiserfs)
-MODULES=(i915)
+MODULES=()
 
 # BINARIES
 # This setting includes any additional binaries a given user may
@@ -49,12 +49,12 @@ FILES=()
 #
 ##   NOTE: If you have /usr on a separate partition, you MUST include the
 #    usr, fsck and shutdown hooks.
-# HOOKS=(base udev plymouth autodetect modconf block plymouth-encrypt filesystems keyboard fsck)
-HOOKS=(base udev autodetect modconf block encrypt filesystems keyboard fsck)
+HOOKS=(base udev autodetect keymap consolefont modconf block encrypt filesystems keyboard fsck)
 
 # COMPRESSION
-# Use this to compress the initramfs image. By default, gzip compression
+# Use this to compress the initramfs image. By default, zstd compression
 # is used. Use 'cat' to create an uncompressed image.
+#COMPRESSION="zstd"
 #COMPRESSION="gzip"
 #COMPRESSION="bzip2"
 #COMPRESSION="lzma"

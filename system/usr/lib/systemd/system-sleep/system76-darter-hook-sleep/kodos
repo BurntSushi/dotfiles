@@ -17,7 +17,7 @@ case "$1/$2" in
     fi
     ;;
   post/*)
-    /home/andrew/bin/system76-darter-set-kbd-backlight
+    /home/kait/bin/system76-darter-set-kbd-backlight
     sudo modprobe thunderbolt
     ;;
 esac

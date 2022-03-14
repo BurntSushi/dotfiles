@@ -24,9 +24,10 @@ case "$(myhostname)" in
   monty)
     xset m 2 1
     ;;
-  krusty|kodos)
+  kodos)
     system76-darter-set-kbd-backlight
     system76-darter-configure-touchpad
+    kait-ssh-add-keys
     ;;
   kang)
     framework-configure-touchpad

@@ -3,8 +3,7 @@
 GRUB_DEFAULT=0
 GRUB_TIMEOUT=0
 GRUB_DISTRIBUTOR="Arch"
-# GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=0 audit=0 ec_sys.write_support=1 cryptdevice=UUID=82fb86df-0215-48c2-a05c-3f92b240a2c7:cryptroot root=/dev/mapper/cryptroot splash rd.udev.log_priority=0 rd.systemd.show_status=0 vt.global_cursor_default=0"
-GRUB_CMDLINE_LINUX_DEFAULT="loglevel=0 audit=0 ec_sys.write_support=1 cryptdevice=UUID=82fb86df-0215-48c2-a05c-3f92b240a2c7:cryptroot root=/dev/mapper/cryptroot rd.udev.log_priority=0 rd.systemd.show_status=0 vt.global_cursor_default=0 dev.i915.perf_stream_paranoid=0"
+GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet cryptdevice=UUID=cd3df3c5-6378-43cd-97ca-937b3ed8cb94:cryptroot root=/dev/mapper/cryptroot"
 GRUB_CMDLINE_LINUX=""
 
 # Preload both GPT and MBR modules so that they are not missed
@@ -52,4 +51,13 @@ GRUB_DISABLE_RECOVERY=true
 
 # Uncomment to make GRUB remember the last selection. This requires
 # setting 'GRUB_DEFAULT=saved' above.
-#GRUB_SAVEDEFAULT="true"
+#GRUB_SAVEDEFAULT=true
+
+# Uncomment to disable submenus in boot menu
+#GRUB_DISABLE_SUBMENU=y
+
+# Probing for other operating systems is disabled for security reasons. Read
+# documentation on GRUB_DISABLE_OS_PROBER, if still want to enable this
+# functionality install os-prober and uncomment to detect and include other
+# operating systems.
+#GRUB_DISABLE_OS_PROBER=false
