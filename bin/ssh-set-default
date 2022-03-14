@@ -5,7 +5,7 @@ set -e
 name="$1"
 org="$2"
 if [ -z "$name" ]; then
-    echo "Usage: $(basename "$0") <ssh-key-name>" >&2
+    echo "Usage: $(basename "$0") <ssh-key-name> [<org-name>]" >&2
     exit 1
 fi
 if [ -z "$org" ]; then
