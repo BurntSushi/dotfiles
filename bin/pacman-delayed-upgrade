@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# From: https://wiki.archlinux.org/title/Pacman/Package_signing#Upgrade_system_regularly
+pacman -Sy archlinux-keyring && pacman -Su
