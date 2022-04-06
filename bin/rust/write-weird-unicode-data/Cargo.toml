@@ -1,0 +1,13 @@
+[package]
+name = "write-weird-unicode-data"
+version = "0.0.1"
+authors = ["Andrew Gallant <jamslam@gmail.com>"]
+edition = "2018"
+
+[[bin]]
+name = "write-weird-unicode-data"
+path = "main.rs"
+
+[dependencies]
+anyhow = "1.0.32"
+clap = { version = "2.33.0", default-features = false }
