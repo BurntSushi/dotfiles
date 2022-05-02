@@ -15,6 +15,7 @@ env:
   TERM: xterm-256color
 
 window:
+  opacity: 1.0
   dynamic_title: true
 
   # Window dimensions in character columns and lines
@@ -174,9 +175,6 @@ colors:
 bell:
   animation: EaseOutExpo
   duration: 0
-
-# Background opacity
-background_opacity: 1.0
 
 # Mouse bindings
 #
