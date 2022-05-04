@@ -207,8 +207,7 @@ yaypkgs() {
     neovim-git neovim-plug-git python-neovim-git \
     brscan4 \
     ngrok \
-    vim-fzf-git vim-go-git vim-plug-git \
-    vim-renamer-git vim-syntastic-git vim-toml-git \
+    vim-plug-git \
     zsh-autosuggestions \
     zsh-completions \
     zsh-syntax-highlighting \
