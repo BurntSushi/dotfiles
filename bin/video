@@ -49,7 +49,7 @@ fi
 sleep 1
 
 case $(myhostname) in
-frink)
+duff|frink)
   ps aux | grep -v grep | grep dzen-workspaces | awk '{print $2}' | xargs -r kill
   killall trayer
   (sleep 1 && \

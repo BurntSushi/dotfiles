@@ -36,7 +36,7 @@ case "$(myhostname)" in
     no-blanking
     xset m 3 1
     ;;
-  frink)
+  duff|frink)
     xset m 1 1
     xinput --set-prop 'Logitech Anywhere MX' 'libinput Accel Speed' -0.75
     xinput --set-prop 'pointer:Logitech MX Anywhere 2' 'libinput Accel Speed' -0.75

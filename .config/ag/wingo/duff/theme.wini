@@ -1,0 +1,65 @@
+$THIN_COLOR := 0x585a5d
+$BLUE := 0x3366ff
+$ORANGE := 0xff7f00
+$GREY := 0xdfdcdf
+$PURPLE := 0xff00ff
+
+[Prompt]
+bg_color := 0x8e8e8e
+border_color := 0x585a5d
+border_size := 10
+padding := 15
+font := /usr/share/fonts/TTF/DejaVuSansMono.ttf
+font_size := 17
+font_color := 0xffffff
+select_active_color := 0x4c4c4c
+select_active_bg_color := 0xffffff
+select_group_bg_color := 0x8e8e8e
+select_group_font := /usr/share/fonts/TTF/DejaVuSansMono-Bold.ttf
+select_group_font_size := 25
+select_group_font_color := 0xffffff
+cycle_icon_size := 100
+cycle_icon_border_size := 10
+cycle_icon_transparency := 30
+
+[Misc]
+default_icon := ./data/wingo.png
+
+[Full]
+font := /usr/share/fonts/TTF/DejaVuSansMono-Bold.ttf
+font_size := 17
+a_font_color := 0xffffff
+i_font_color := 0x000000
+
+title_size := 30
+a_title_color := 0xd66b00 0xff9123
+i_title_color := 0xffffff
+
+close := ./data/close.png
+a_close_color := 0xffffff
+i_close_color := 0x000000
+
+maximize := ./data/maximize.png
+a_maximize_color := 0xffffff
+i_maximize_color := 0x000000
+
+minimize := ./data/minimize.png
+a_minimize_color := 0xffffff
+i_minimize_color := 0x000000
+
+border_size := 4
+a_border_color := $THIN_COLOR
+i_border_color := $THIN_COLOR
+
+[Borders]
+border_size := 4
+a_thin_color := $THIN_COLOR
+i_thin_color := $THIN_COLOR
+a_border_color := $ORANGE
+i_border_color := $GREY
+
+[Slim]
+border_size := 1
+a_border_color := 0x000000
+i_border_color := 0x000000
+

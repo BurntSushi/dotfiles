@@ -5,7 +5,7 @@ case "$(myhostname)" in
     echo "cannot mount media on nas; the nas IS the media!" >&2
     exit 1
     ;;
-  frink)
+  duff|frink)
     if [ ! $1 ] || [ $1 != down ]; then
       sudo mount nas:/m /m
     else

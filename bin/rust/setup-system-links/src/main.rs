@@ -40,7 +40,7 @@ impl Links {
     /// the system configuration directory and this machine's hostname.
     fn discover(system: &Path, hostname: &str) -> anyhow::Result<Links> {
         // Collect all leaf files in ~/system, creating a map, e.g.,
-        // etc/default/grub |--> {default, krusty, frink, ...}
+        // etc/default/grub |--> {default, duff, frink, ...}
         // Note that the key lack the leading slash. We add that below.
         let mut all: BTreeMap<PathBuf, BTreeSet<String>> = BTreeMap::new();
         for result in WalkDir::new(system) {

@@ -19,6 +19,9 @@ case "$(myhostname)" in
   kodos)
     exec "$base/wingo-kodos.xinitrc"
     ;;
+  duff)
+    exec "$base/wingo-duff.xinitrc"
+    ;;
   frink)
     exec "$base/wingo-frink.xinitrc"
     ;;
