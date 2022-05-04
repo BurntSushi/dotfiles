@@ -122,7 +122,8 @@ pkgs() {
     vim \
     git git-crypt tk \
     aws-cli s3cmd colordiff curl wget ctags darkhttpd pass rsync \
-    nodejs yarn
+    nodejs yarn \
+    terminus-font
   pkgfile --update
 }
 
