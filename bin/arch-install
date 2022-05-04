@@ -122,8 +122,7 @@ pkgs() {
     vim \
     git git-crypt tk \
     aws-cli s3cmd colordiff curl wget ctags darkhttpd pass rsync \
-    nodejs yarn \
-    terminus-font
+    nodejs yarn
   pkgfile --update
 }
 
@@ -208,7 +207,8 @@ yaypkgs() {
     neovim-git neovim-plug-git python-neovim-git \
     brscan4 \
     ngrok \
-    vim-plug-git \
+    vim-fzf-git vim-go-git vim-plug-git \
+    vim-renamer-git vim-syntastic-git vim-toml-git \
     zsh-autosuggestions \
     zsh-completions \
     zsh-syntax-highlighting \
@@ -247,7 +247,7 @@ homeinit() {
   curl https://burntsushi.net/stuff/setup-home > /tmp/setup-home.sh
   sh /tmp/setup-home.sh
   if ! [ -d .password-store ]; then
-    git clone andrew@home.burntsushi.net:7704/m/git/password-store .password-store
+    git clone ssh://andrew@home.burntsushi.net:7704/m/git/password-store .password-store
   fi
   (cd .password-store && "$HOME/bin/configure-git")
 
@@ -263,8 +263,8 @@ xenvinit() {
 
   # shellcheck disable=SC1091
   . "$HOME/bin/x11-go"
-  go get -v github.com/BurntSushi/wingo/...
-  go get -v github.com/BurntSushi/gohead/...
+  go install -v github.com/BurntSushi/wingo/...@latest
+  go install -v github.com/BurntSushi/gohead/...@latest
 
   virtualenv "$HOME/.pyx11"
   # shellcheck disable=SC1091
