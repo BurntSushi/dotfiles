@@ -23,8 +23,8 @@ if [ ! -d "$HOME/.git" ]; then
   git remote add origin 'https://github.com/BurntSushi/dotfiles'
   git pull origin master --ff-only
   git branch --set-upstream-to origin/master master
-  chmod 600 "$HOME/.ssh/config"
   git-crypt unlock
+  chmod 600 "$HOME/.ssh/config"
 else
   git pull origin master --ff-only
 fi

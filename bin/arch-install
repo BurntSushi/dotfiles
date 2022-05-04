@@ -117,7 +117,7 @@ pkgs() {
     pdftk \
     unzip \
     cronie openssh openssl sshfs sshuttle gnupg tmux nfs-utils enscript \
-    docker espeak ffmpeg jq ripgrep youtube-dl fzf \
+    docker ffmpeg jq ripgrep youtube-dl fzf \
     iotop htop linux-tools pkgfile pwgen pv strace tig time tree valgrind \
     vim \
     git git-crypt tk \
@@ -197,13 +197,17 @@ yayinit() {
 }
 
 yaypkgs() {
+  # It looks like these need to be manually installed:
+  #
+  #   brother-mfc-l3770cdw
+  #   par
+  #
+  # The AUR packages appear borked.
   yay --noconfirm -S \
     neovim-git neovim-plug-git python-neovim-git \
-    brother-mfc-l3770cdw \
     brscan4 \
     ngrok \
-    par \
-    vim-fzf-git vim-go-git vim-ledger-git vim-plug-git \
+    vim-fzf-git vim-go-git vim-plug-git \
     vim-renamer-git vim-syntastic-git vim-toml-git \
     zsh-autosuggestions \
     zsh-completions \
@@ -213,15 +217,18 @@ yaypkgs() {
 }
 
 yayxpkgs() {
+  # It looks like gkrellm has finally gone the way of the dodo. This is what
+  # I used to install:
+  #
+  #   gkrellm
+  #   gkleds
+  #   gkrellsun
+  #   gkrellweather
   yay --noconfirm -S \
     dzen2-xft-xpm-xinerama-git \
     google-chrome \
     mirage \
     idesk \
-    gkrellm \
-    gkleds \
-    gkrellsun \
-    gkrellweather \
     nerd-fonts-hack \
     ttf-oxygen \
     ttf-dejavu \
@@ -239,7 +246,9 @@ homeinit() {
 
   curl https://burntsushi.net/stuff/setup-home > /tmp/setup-home.sh
   sh /tmp/setup-home.sh
-  git clone andrew@home.burntsushi.net:/m/git/password-store .password-store
+  if ! [ -d .password-store ]; then
+    git clone andrew@home.burntsushi.net:7704/m/git/password-store .password-store
+  fi
   (cd .password-store && "$HOME/bin/configure-git")
 
   mkdir -p .gnupg
@@ -294,6 +303,7 @@ EOF
 }
 
 case "$1" in
+  encrypt) shift ; encrypt "$@" ;;
   bootstrap) shift ; bootstrap "$@" ;;
   rootinit) shift ; rootinit "$@" ;;
   x) shift ; x "$@" ;;
