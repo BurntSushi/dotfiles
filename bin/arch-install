@@ -122,7 +122,8 @@ pkgs() {
     vim \
     git git-crypt tk \
     aws-cli s3cmd colordiff curl wget ctags darkhttpd pass rsync \
-    nodejs yarn
+    nodejs yarn \
+    terminus-font
   pkgfile --update
 }
 
@@ -207,8 +208,7 @@ yaypkgs() {
     neovim-git neovim-plug-git python-neovim-git \
     brscan4 \
     ngrok \
-    vim-fzf-git vim-go-git vim-plug-git \
-    vim-renamer-git vim-syntastic-git vim-toml-git \
+    vim-plug-git \
     zsh-autosuggestions \
     zsh-completions \
     zsh-syntax-highlighting \
