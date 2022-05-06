@@ -2,7 +2,7 @@
 
 startup &
 media
-video middle
+video left middle right
 nitrogen --restore
 # (sleep 2 && compton --backend glx --vsync opengl-swc) &
 gkrellm &
