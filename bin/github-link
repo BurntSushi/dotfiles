@@ -4,8 +4,26 @@
 # generates a github permalink for it (including line numbers, if given). If no
 # github remote could be found, then it exits with an error.
 #
-# This is handy to use with 'xcp', e.g., 'github-link foo.rs 20 30 | xcp'.
+# The clipboard functionality is handy. For example,
+#
+#   github-link --clip foo.rs 20 30
+#
+# will automatically put the URL on your clipboard. (You'll need 'xcp' from
+# this repo as well.)
 
+usage() {
+  echo "Usage: $(basename "$0") <path> [<lineno1> [<lineno2>]]"
+}
+
+clip=
+while true; do
+  case "$1" in
+    -c|--clip) clip=1; shift; ;;
+    -*) usage >&2; exit 1 ;;
+    -h|--help) usage; exit 0 ;;
+    *) break
+  esac
+done
 path="$1"
 lineno1="$2"
 lineno2="$3"
@@ -39,4 +57,8 @@ fi
 if [ -n "$lineno2" ]; then
   url="$(printf "%s-L%s" "$url" "$lineno2")"
 fi
-echo "$url"
+if [ -n "$clip" ]; then
+  printf "%s" "$url" | xcp
+else
+  printf "%s\n" "$url"
+fi
