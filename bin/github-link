@@ -1,0 +1,42 @@
+#!/bin/sh
+
+# This is a handly little script that accepts a file path and automatically
+# generates a github permalink for it (including line numbers, if given). If no
+# github remote could be found, then it exits with an error.
+#
+# This is handy to use with 'xcp', e.g., 'github-link foo.rs 20 30 | xcp'.
+
+path="$1"
+lineno1="$2"
+lineno2="$3"
+if [ -z "$path" ] || [ $# -gt 3 ]; then
+  echo "Usage: $(basename "$0") <path> [<lineno1> [<lineno2>]]" >&2
+  exit 1
+fi
+
+dir="$(dirname "$path")"
+gitroot="$(cd "$dir" && git rev-parse --show-toplevel)"
+if ! git -C "$gitroot" remote -v | grep -q -F 'github.com'; then
+  echo "git repo at '$gitroot' has no github remote" >&2
+  exit 1
+fi
+commit="$(cd "$gitroot" && git rev-parse HEAD)"
+urlbase="$(
+  cd "$gitroot" && git remote -v \
+    | grep -F github.com \
+    | grep fetch \
+    | awk '{print $2}' \
+    | sed 's/^git@//g' \
+    | sed 's/^.*github\.com/github.com/g' \
+    | sed 's/^github\.com:/github.com\//g'
+)"
+urlpath="$(realpath --relative-to "$gitroot" "$path")"
+
+url="$(printf "https://%s/blob/%s/%s" "$urlbase" "$commit" "$urlpath")"
+if [ -n "$lineno1" ]; then
+  url="$(printf "%s#L%s" "$url" "$lineno1")"
+fi
+if [ -n "$lineno2" ]; then
+  url="$(printf "%s-L%s" "$url" "$lineno2")"
+fi
+echo "$url"
