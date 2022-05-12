@@ -9,6 +9,7 @@ runtime! include/lang.vim
 
 runtime! include/autos.vim
 runtime! include/comment.vim
+runtime! include/githublink.vim
 runtime! include/keybinds.vim
 runtime! include/options.vim
 runtime! include/style.vim
