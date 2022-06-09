@@ -19,8 +19,8 @@ clip=
 while true; do
   case "$1" in
     -c|--clip) clip=1; shift; ;;
-    -*) usage >&2; exit 1 ;;
     -h|--help) usage; exit 0 ;;
+    -*) usage >&2; exit 1 ;;
     *) break
   esac
 done
