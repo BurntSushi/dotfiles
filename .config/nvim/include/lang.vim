@@ -160,6 +160,7 @@ au FileType htmldjango
 au FileType css
   \ let b:Comment="/*"
   \ | let b:EndComment="*/"
+  \ | runtime! include/spacing/two.vim
 
 au FileType vim
   \ let b:Comment='"'
