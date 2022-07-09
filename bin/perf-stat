@@ -20,15 +20,229 @@
 #
 # https://developer.arm.com/documentation/PJDOC-466751330-547673/r4p1
 
-events="instructions,context-switches,major-faults,minor-faults"
-events+=",cpu-cycles,bus-cycles,ref-cycles"
-events+=",stalled-cycles-backend,stalled-cycles-frontend"
-events+=",L1-icache-load-misses"
-events+=",branches,branch-misses,cache-references,cache-misses"
-events+=",mem-loads,mem-stores"
-events+=",L1-dcache-loads,L1-dcache-load-misses,L1-dcache-prefetch-misses"
-events+=",L1-dcache-stores,L1-dcache-store-misses"
-events+=",LLC-loads,LLC-load-misses,LLC-prefetch-misses"
-events+=",LLC-stores,LLC-store-misses"
+case "$(myhostname)" in
+  duff)
+    events="context-switches"
+    events+=",major-faults"
+    events+=",minor-faults"
+    events+=",page-faults"
+    events+=",cpu_core/instructions/"
+    events+=",cpu_core/cpu-cycles/"
+    events+=",cpu_core/bus-cycles/"
+    events+=",cpu_core/ref-cycles/"
+    events+=",cpu_core/branch-misses/"
+    events+=",cpu_core/branch-instructions/"
+    events+=",cpu_core/branch-load-misses/"
+    events+=",cpu_core/branch-loads/"
+    events+=",cpu_core/cache-misses/"
+    events+=",cpu_core/cache-references/"
+    events+=",cpu_core/mem-loads/"
+    events+=",cpu_core/mem-loads-aux/"
+    events+=",cpu_core/mem-stores/"
+    events+=",cpu_core/L1-dcache-load-misses/"
+    events+=",cpu_core/L1-dcache-loads/"
+    events+=",cpu_core/L1-dcache-stores/"
+    events+=",cpu_core/L1-icache-load-misses/"
+    events+=",cpu_core/L1-icache-loads/"
+    events+=",cpu_core/LLC-load-misses/"
+    events+=",cpu_core/LLC-loads/"
+    events+=",cpu_core/LLC-stores/"
+    events+=",cpu_core/LLC-store-misses/"
+    events+=",cpu_core/dTLB-load-misses/"
+    events+=",cpu_core/dTLB-loads/"
+    events+=",cpu_core/dTLB-stores/"
+    events+=",cpu_core/iTLB-load-misses/"
+    ;;
+  *)
+    events="instructions,context-switches,major-faults,minor-faults"
+    events+=",cpu-cycles,bus-cycles,ref-cycles"
+    events+=",stalled-cycles-backend,stalled-cycles-frontend"
+    events+=",L1-icache-load-misses"
+    events+=",branches,branch-misses,cache-references,cache-misses"
+    events+=",mem-loads,mem-stores"
+    events+=",L1-dcache-loads,L1-dcache-load-misses,L1-dcache-prefetch-misses"
+    events+=",L1-dcache-stores,L1-dcache-store-misses"
+    events+=",LLC-loads,LLC-load-misses,LLC-prefetch-misses"
+    events+=",LLC-stores,LLC-store-misses"
+    ;;
+esac
 
 perf stat -B -e "$events" sh -c "$(printf " %q" "$@")"
+
+  # branch-instructions OR branches                    [Hardware event]
+  # branch-misses                                      [Hardware event]
+  # bus-cycles                                         [Hardware event]
+  # cache-misses                                       [Hardware event]
+  # cache-references                                   [Hardware event]
+  # cpu-cycles OR cycles                               [Hardware event]
+  # instructions                                       [Hardware event]
+  # ref-cycles                                         [Hardware event]
+  # alignment-faults                                   [Software event]
+  # bpf-output                                         [Software event]
+  # cgroup-switches                                    [Software event]
+  # context-switches OR cs                             [Software event]
+  # cpu-clock                                          [Software event]
+  # cpu-migrations OR migrations                       [Software event]
+  # dummy                                              [Software event]
+  # emulation-faults                                   [Software event]
+  # major-faults                                       [Software event]
+  # minor-faults                                       [Software event]
+  # page-faults OR faults                              [Software event]
+  # task-clock                                         [Software event]
+  # duration_time                                      [Tool event]
+  # L1-dcache-loads                                    [Hardware cache event]
+  # L1-dcache-stores                                   [Hardware cache event]
+  # L1-icache-load-misses                              [Hardware cache event]
+  # LLC-load-misses                                    [Hardware cache event]
+  # LLC-loads                                          [Hardware cache event]
+  # LLC-store-misses                                   [Hardware cache event]
+  # LLC-stores                                         [Hardware cache event]
+  # branch-load-misses                                 [Hardware cache event]
+  # branch-loads                                       [Hardware cache event]
+  # cpu_atom/L1-icache-loads/                          [Hardware cache event]
+  # cpu_core/L1-dcache-load-misses/                    [Hardware cache event]
+  # cpu_core/node-load-misses/                         [Hardware cache event]
+  # cpu_core/node-loads/                               [Hardware cache event]
+  # dTLB-load-misses                                   [Hardware cache event]
+  # dTLB-loads                                         [Hardware cache event]
+  # dTLB-store-misses                                  [Hardware cache event]
+  # dTLB-stores                                        [Hardware cache event]
+  # iTLB-load-misses                                   [Hardware cache event]
+  # branch-instructions OR cpu_atom/branch-instructions/ [Kernel PMU event]
+  # branch-instructions OR cpu_core/branch-instructions/ [Kernel PMU event]
+  # branch-misses OR cpu_atom/branch-misses/           [Kernel PMU event]
+  # branch-misses OR cpu_core/branch-misses/           [Kernel PMU event]
+  # bus-cycles OR cpu_atom/bus-cycles/                 [Kernel PMU event]
+  # bus-cycles OR cpu_core/bus-cycles/                 [Kernel PMU event]
+  # cache-misses OR cpu_atom/cache-misses/             [Kernel PMU event]
+  # cache-misses OR cpu_core/cache-misses/             [Kernel PMU event]
+  # cache-references OR cpu_atom/cache-references/     [Kernel PMU event]
+  # cache-references OR cpu_core/cache-references/     [Kernel PMU event]
+  # cpu-cycles OR cpu_atom/cpu-cycles/                 [Kernel PMU event]
+  # cpu-cycles OR cpu_core/cpu-cycles/                 [Kernel PMU event]
+  # instructions OR cpu_atom/instructions/             [Kernel PMU event]
+  # instructions OR cpu_core/instructions/             [Kernel PMU event]
+  # mem-loads OR cpu_atom/mem-loads/                   [Kernel PMU event]
+  # mem-loads OR cpu_core/mem-loads/                   [Kernel PMU event]
+  # mem-loads-aux OR cpu_core/mem-loads-aux/           [Kernel PMU event]
+  # mem-stores OR cpu_atom/mem-stores/                 [Kernel PMU event]
+  # mem-stores OR cpu_core/mem-stores/                 [Kernel PMU event]
+  # ref-cycles OR cpu_atom/ref-cycles/                 [Kernel PMU event]
+  # ref-cycles OR cpu_core/ref-cycles/                 [Kernel PMU event]
+  # slots OR cpu_core/slots/                           [Kernel PMU event]
+  # topdown-bad-spec OR cpu_atom/topdown-bad-spec/     [Kernel PMU event]
+  # topdown-bad-spec OR cpu_core/topdown-bad-spec/     [Kernel PMU event]
+  # topdown-be-bound OR cpu_atom/topdown-be-bound/     [Kernel PMU event]
+  # topdown-be-bound OR cpu_core/topdown-be-bound/     [Kernel PMU event]
+  # topdown-br-mispredict OR cpu_core/topdown-br-mispredict/ [Kernel PMU event]
+  # topdown-fe-bound OR cpu_atom/topdown-fe-bound/     [Kernel PMU event]
+  # topdown-fe-bound OR cpu_core/topdown-fe-bound/     [Kernel PMU event]
+  # topdown-fetch-lat OR cpu_core/topdown-fetch-lat/   [Kernel PMU event]
+  # topdown-heavy-ops OR cpu_core/topdown-heavy-ops/   [Kernel PMU event]
+  # topdown-mem-bound OR cpu_core/topdown-mem-bound/   [Kernel PMU event]
+  # topdown-retiring OR cpu_atom/topdown-retiring/     [Kernel PMU event]
+  # topdown-retiring OR cpu_core/topdown-retiring/     [Kernel PMU event]
+  # cstate_core/c1-residency/                          [Kernel PMU event]
+  # cstate_core/c6-residency/                          [Kernel PMU event]
+  # cstate_core/c7-residency/                          [Kernel PMU event]
+  # cstate_pkg/c10-residency/                          [Kernel PMU event]
+  # cstate_pkg/c2-residency/                           [Kernel PMU event]
+  # cstate_pkg/c3-residency/                           [Kernel PMU event]
+  # cstate_pkg/c6-residency/                           [Kernel PMU event]
+  # cstate_pkg/c7-residency/                           [Kernel PMU event]
+  # cstate_pkg/c8-residency/                           [Kernel PMU event]
+  # cstate_pkg/c9-residency/                           [Kernel PMU event]
+  # intel_bts//                                        [Kernel PMU event]
+  # intel_pt//                                         [Kernel PMU event]
+  # msr/aperf/                                         [Kernel PMU event]
+  # msr/cpu_thermal_margin/                            [Kernel PMU event]
+  # msr/mperf/                                         [Kernel PMU event]
+  # msr/pperf/                                         [Kernel PMU event]
+  # msr/smi/                                           [Kernel PMU event]
+  # msr/tsc/                                           [Kernel PMU event]
+  # power/energy-cores/                                [Kernel PMU event]
+  # power/energy-pkg/                                  [Kernel PMU event]
+  # uncore_clock/clockticks/                           [Kernel PMU event]
+  # uncore_imc_free_running_0/data_read/               [Kernel PMU event]
+  # uncore_imc_free_running_0/data_total/              [Kernel PMU event]
+  # uncore_imc_free_running_0/data_write/              [Kernel PMU event]
+  # uncore_imc_free_running_1/data_read/               [Kernel PMU event]
+  # uncore_imc_free_running_1/data_total/              [Kernel PMU event]
+  # uncore_imc_free_running_1/data_write/              [Kernel PMU event]
+  # rNNN                                               [Raw hardware event descriptor]
+  # cpu/t1=v1[,t2=v2,t3 ...]/modifier                  [Raw hardware event descriptor]
+  # mem:<addr>[/len][:access]                          [Hardware breakpoint]
+  # sdt_libc:cond_broadcast                            [SDT event]
+  # sdt_libc:cond_destroy                              [SDT event]
+  # sdt_libc:cond_init                                 [SDT event]
+  # sdt_libc:cond_signal                               [SDT event]
+  # sdt_libc:cond_wait                                 [SDT event]
+  # sdt_libc:lll_lock_wait                             [SDT event]
+  # sdt_libc:lll_lock_wait_private                     [SDT event]
+  # sdt_libc:longjmp                                   [SDT event]
+  # sdt_libc:longjmp_target                            [SDT event]
+  # sdt_libc:memory_arena_new                          [SDT event]
+  # sdt_libc:memory_arena_retry                        [SDT event]
+  # sdt_libc:memory_arena_reuse                        [SDT event]
+  # sdt_libc:memory_arena_reuse_free_list              [SDT event]
+  # sdt_libc:memory_arena_reuse_wait                   [SDT event]
+  # sdt_libc:memory_calloc_retry                       [SDT event]
+  # sdt_libc:memory_heap_free                          [SDT event]
+  # sdt_libc:memory_heap_less                          [SDT event]
+  # sdt_libc:memory_heap_more                          [SDT event]
+  # sdt_libc:memory_heap_new                           [SDT event]
+  # sdt_libc:memory_malloc_retry                       [SDT event]
+  # sdt_libc:memory_mallopt                            [SDT event]
+  # sdt_libc:memory_mallopt_arena_max                  [SDT event]
+  # sdt_libc:memory_mallopt_arena_test                 [SDT event]
+  # sdt_libc:memory_mallopt_free_dyn_thresholds        [SDT event]
+  # sdt_libc:memory_mallopt_mmap_max                   [SDT event]
+  # sdt_libc:memory_mallopt_mmap_threshold             [SDT event]
+  # sdt_libc:memory_mallopt_mxfast                     [SDT event]
+  # sdt_libc:memory_mallopt_perturb                    [SDT event]
+  # sdt_libc:memory_mallopt_top_pad                    [SDT event]
+  # sdt_libc:memory_mallopt_trim_threshold             [SDT event]
+  # sdt_libc:memory_memalign_retry                     [SDT event]
+  # sdt_libc:memory_realloc_retry                      [SDT event]
+  # sdt_libc:memory_sbrk_less                          [SDT event]
+  # sdt_libc:memory_sbrk_more                          [SDT event]
+  # sdt_libc:memory_tcache_double_free                 [SDT event]
+  # sdt_libc:memory_tunable_tcache_count               [SDT event]
+  # sdt_libc:memory_tunable_tcache_max_bytes           [SDT event]
+  # sdt_libc:memory_tunable_tcache_unsorted_limit      [SDT event]
+  # sdt_libc:mutex_acquired                            [SDT event]
+  # sdt_libc:mutex_clocklock_entry                     [SDT event]
+  # sdt_libc:mutex_destroy                             [SDT event]
+  # sdt_libc:mutex_entry                               [SDT event]
+  # sdt_libc:mutex_init                                [SDT event]
+  # sdt_libc:mutex_release                             [SDT event]
+  # sdt_libc:mutex_timedlock_acquired                  [SDT event]
+  # sdt_libc:mutex_timedlock_entry                     [SDT event]
+  # sdt_libc:pthread_create                            [SDT event]
+  # sdt_libc:pthread_join                              [SDT event]
+  # sdt_libc:pthread_join_ret                          [SDT event]
+  # sdt_libc:pthread_start                             [SDT event]
+  # sdt_libc:rdlock_acquire_read                       [SDT event]
+  # sdt_libc:rdlock_entry                              [SDT event]
+  # sdt_libc:rwlock_destroy                            [SDT event]
+  # sdt_libc:rwlock_unlock                             [SDT event]
+  # sdt_libc:setjmp                                    [SDT event]
+  # sdt_libc:wrlock_acquire_write                      [SDT event]
+  # sdt_libc:wrlock_entry                              [SDT event]
+  # sdt_libgcc:unwind                                  [SDT event]
+  # sdt_rtld:init_complete                             [SDT event]
+  # sdt_rtld:init_start                                [SDT event]
+  # sdt_rtld:lll_lock_wait                             [SDT event]
+  # sdt_rtld:lll_lock_wait_private                     [SDT event]
+  # sdt_rtld:longjmp                                   [SDT event]
+  # sdt_rtld:longjmp_target                            [SDT event]
+  # sdt_rtld:map_complete                              [SDT event]
+  # sdt_rtld:map_start                                 [SDT event]
+  # sdt_rtld:reloc_complete                            [SDT event]
+  # sdt_rtld:reloc_start                               [SDT event]
+  # sdt_rtld:setjmp                                    [SDT event]
+  # sdt_rtld:unmap_complete                            [SDT event]
+  # sdt_rtld:unmap_start                               [SDT event]
+#
+# Metric Groups:
+#
