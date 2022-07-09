@@ -22,7 +22,7 @@ fi
 
 set -ex
 if [ -z "$rolledup" ]; then
-  hub pr checkout "$pr" "$rollupbranch"
+  gh pr checkout "$pr" --branch "$rollupbranch"
   git rebase "$branch"
 fi
 if git rev-parse --abbrev-ref HEAD | grep -q '^tmp/rollup/'; then
