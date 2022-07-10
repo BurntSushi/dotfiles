@@ -23,5 +23,5 @@ spaceforyoupo.com {
 }
 
 www.spaceforyoupo.com {
-	redir https://spaceforyoupo.com{uri}
+  redir https://spaceforyoupo.com{uri}
 }
