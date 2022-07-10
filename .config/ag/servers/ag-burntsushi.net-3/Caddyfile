@@ -1,0 +1,27 @@
+(logger) {
+  log {
+    level info
+    format console {
+      time_format rfc3339
+    }
+    output file {args.0} {
+      roll_size 200MiB
+      roll_uncompressed
+      roll_local_time
+    }
+  }
+}
+
+{
+  import logger ./log/caddy.log
+}
+
+spaceforyoupo.com {
+  root * ./spaceforyoupo.com/site
+  file_server
+  import logger ./spaceforyoupo.com/log/access.log
+}
+
+www.spaceforyoupo.com {
+	redir https://spaceforyoupo.com{uri}
+}
