@@ -1,3 +1,14 @@
 #!/bin/sh
 
-exec youtube-dl --extract-audio --audio-format mp3 "$@"
+cmd=
+for x in yt-dlp youtube-dl; do
+  if cmd-exists "$x"; then
+    cmd="$x"
+    break
+  fi
+done
+if [ -z "$cmd" ]; then
+  echo "could not find any youtube downloader program" >&2
+  exit 1
+fi
+exec "$cmd" --extract-audio --audio-format mp3 "$@"
