@@ -1,3 +1,16 @@
+// Install:
+//
+//   cargo install --git https://github.com/BurntSushi/dotfiles find-invalid-utf8
+//
+// Usage:
+//
+//   find-invalid-utf8
+//   find-invalid-utf8 path/to/directory-or-file
+//
+// To parallelize, use 'xargs':
+//
+//   find ./ -print0 | xargs -0 -n1 -P8 find-invalid-utf8
+
 use std::{ffi::OsString, fs::File, io::BufRead, path::Path};
 
 use anyhow::Context;
