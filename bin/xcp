@@ -14,8 +14,8 @@ paste=
 while true; do
   case "$1" in
     -o|--output) paste=yes; shift; ;;
-    -*) usage; exit 1 ;;
     -h|--help) usage; exit 0 ;;
+    -*) usage; exit 1 ;;
     *) break
   esac
 done
