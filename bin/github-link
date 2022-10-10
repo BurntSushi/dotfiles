@@ -43,6 +43,7 @@ urlbase="$(
   cd "$gitroot" && git remote -v \
     | grep -F github.com \
     | grep fetch \
+    | grep origin \
     | awk '{print $2}' \
     | sed 's/^git@//g' \
     | sed 's/^.*github\.com/github.com/g' \
