@@ -119,3 +119,10 @@ rgf() {
   done
   rg --files $args | rg "$regex"
 }
+
+paste() {
+  local file=${1:-/dev/stdin}
+  url="$(curl --data-binary @${file} https://paste.rs)"
+  echo "$url"
+  echo "$url" | xcp
+}
