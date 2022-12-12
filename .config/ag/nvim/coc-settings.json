@@ -20,7 +20,9 @@
   "rust-analyzer.inlayHints.enable": false,
   "rust-analyzer.inlayHints.chainingHints": false,
   "rust-analyzer.inlayHints.typeHints": false,
+  "rust-analyzer.inlayHints.parameterHints.enable": false,
+  "rust-analyzer.inlayHints.closingBraceHints.enable": false,
   "rust-analyzer.cargo.loadOutDirsFromCheck": true,
   "rust-analyzer.procMacro.enable": true,
-  "rust-analyzer.serverPath": "/home/andrew/bin/rust-analyzer-wrapper"
+  "rust-analyzer.server.path": "/home/andrew/bin/rust-analyzer-wrapper"
 }

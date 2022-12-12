@@ -3,9 +3,9 @@
 runra() {
   bin="$1"
   if [ -n "$RA_LOG_STDERR" ]; then
-    exec "$bin" 2> "$RA_LOG_STDERR"
+    "$bin" 2> "$RA_LOG_STDERR"
   else
-    exec "$bin"
+    "$bin"
   fi
 }
 
