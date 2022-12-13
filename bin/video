@@ -60,7 +60,7 @@ duff|frink)
     --SetDockType true) &
   (sleep 1 && \
     $HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces \
-    | dzen2 -dock -xs 2 -h 40 -fn 'Cousine-18' -ta l -bg '#ffffff' -y 1170) &
+    | dzen2 -dock -xs 3 -h 40 -fn 'Cousine-18' -ta l -bg '#ffffff' -y 1170) &
   ;;
 Tiger)
   if array_exists laptop "$*"; then
