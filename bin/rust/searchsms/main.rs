@@ -1,9 +1,26 @@
-#![allow(warnings)]
+/*!
+This is a simple program that parses XML dumps from the "SMS Backup & Restore"
+Android app. It converts both SMS and MMS messages into readable text along
+with some obvious structured data (contact names, phone numbers and dates).
+
+This doesn't try to display threaded discussions and also skips any media
+entirely. It's just a simple conversion from XML to something more readable and
+searchable by a human.
+
+Use it like this:
+
+    searchsms '.*' sms-*.xml > sms.txt
+
+Where '.*' is a regex that is applied to the body of every message. Any message
+that doesn't match is skipped. The -c/--contact flag applies a regex to each
+contact and the -r/--reverse flag prints messages in reverse chronological
+order.
+*/
 
 use std::path::{Path, PathBuf};
 
 use anyhow::Context;
-use chrono::{DateTime, FixedOffset, Local, NaiveDateTime, TimeZone};
+use chrono::{DateTime, Local, NaiveDateTime, TimeZone};
 use regex::Regex;
 use roxmltree::{Document, Node};
 
@@ -74,11 +91,17 @@ struct Message {
     date: DateTime<Local>,
     /// A readable date string devoid of timezone info. It's probably just
     /// "naive local time."
+    ///
+    /// We currently don't use this because 'date' appears sufficient.
+    #[allow(dead_code)]
     date_readable: Option<NaiveDateTime>,
     /// From what I can tell, this is equivalent to 'date', but with
     /// milliseconds always set to `0`. (Its units is still milliseconds for
     /// 'sms' but apparently seconds for 'mms'. It appears to always be in
     /// UTC.
+    ///
+    /// We currently don't use this because 'date' appears sufficient.
+    #[allow(dead_code)]
     date_sent: Option<DateTime<Local>>,
 }
 
@@ -395,6 +418,7 @@ fn output_human(
         }
         writeln!(wtr, "{}", msg.contacts.join(", "))?;
         writeln!(wtr, "PHONE: {}", msg.addresses.join(", "))?;
+        writeln!(wtr, "STAMP: {}", msg.timestamp)?;
         writeln!(wtr, " DATE: {}", msg.date.format("%Y-%m-%d %H:%M:%S"))?;
         writeln!(wtr, "")?;
         writeln!(wtr, "{}", textwrap::wrap(&msg.body, 79).join("\n"))?;
