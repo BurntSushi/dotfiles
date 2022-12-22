@@ -1,1 +1,1 @@
-options snd-hda-intel model=dell-headset-multi
+options snd-hda-intel index=0 model=dell-headset-multi
