@@ -22,19 +22,23 @@ au FileType conf
   \ | set indentexpr=
   \ | set smartindent
 
+" https://stackoverflow.com/questions/191201/indenting-comments-to-match-code-in-vim
 au FileType toml
   \ let b:Comment="#"
   \ | let b:EndComment=""
   \ | runtime! include/spacing/two.vim
   \ | set indentexpr=
   \ | set smartindent
+  \ | inoremap # X#
 
+" https://stackoverflow.com/questions/191201/indenting-comments-to-match-code-in-vim
 au FileType yaml
   \ let b:Comment="#"
   \ | let b:EndComment=""
   \ | runtime! include/spacing/two.vim
   \ | set indentexpr=
   \ | set smartindent
+  \ | inoremap # X#
 
 au FileType java
   \ let b:Comment="//"
