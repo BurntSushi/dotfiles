@@ -43,7 +43,7 @@ case "$(myhostname)" in
     events+=",cpu_core/L1-dcache-loads/"
     events+=",cpu_core/L1-dcache-stores/"
     events+=",cpu_core/L1-icache-load-misses/"
-    events+=",cpu_core/L1-icache-loads/"
+    # events+=",cpu_core/L1-icache-loads/"
     events+=",cpu_core/LLC-load-misses/"
     events+=",cpu_core/LLC-loads/"
     events+=",cpu_core/LLC-stores/"
