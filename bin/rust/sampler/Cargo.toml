@@ -1,0 +1,16 @@
+[package]
+name = "sampler"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.69"
+bstr = "1.2.0"
+fastrand = "1.9.0"
+regex = "1.7.1"
+
+[[bin]]
+name = "sampler"
+path = "main.rs"
