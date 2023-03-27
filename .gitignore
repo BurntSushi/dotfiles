@@ -16,6 +16,7 @@
 /.cisco
 /.debug
 /.docker
+/.dotnet
 /.eclipse
 /.falcon.*
 /.fceux
@@ -52,6 +53,7 @@
 /.myhostname
 /.node*
 /.npm*
+/.nuget
 /.nv
 /.nvimlog
 /.o4
@@ -80,6 +82,7 @@
 /.stack
 /.sudo*
 /.swt
+/.templateengine
 /.thumbnails
 /.tig_history
 /.tox
