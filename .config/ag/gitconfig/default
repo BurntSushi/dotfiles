@@ -27,6 +27,8 @@
   insteadOf = https://github.com/
 [gui]
   gcwarning = false
+	fontui = -family \"Noto Sans\" -size 12 -weight normal -slant roman -underline 0 -overstrike 0
+	fontdiff = -family \"Noto Sans Mono\" -size 12 -weight normal -slant roman -underline 0 -overstrike 0
 [core]
   pager = gitdiffer
 [interactive]
