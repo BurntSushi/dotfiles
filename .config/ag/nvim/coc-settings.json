@@ -15,7 +15,8 @@
   "rust-analyzer.diagnostics.disabled": [
     "inactive-code",
     "incorrect-ident-case",
-    "unresolved-macro-call"
+    "unresolved-macro-call",
+    "unresolved-proc-macro"
   ],
   "rust-analyzer.lens.enable": false,
   "rust-analyzer.inlayHints.enable": false,
