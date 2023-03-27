@@ -40,6 +40,16 @@ au FileType yaml
   \ | set smartindent
   \ | inoremap # X#
 
+au FileType perl
+  \ let b:Comment="#"
+  \ | let b:EndComment=""
+  \ | runtime! include/spacing/four.vim
+
+au FileType cs
+  \ let b:Comment="//"
+  \ | let b:EndComment=""
+  \ | runtime! include/spacing/four.vim
+
 au FileType java
   \ let b:Comment="//"
   \ | let b:EndComment=""
