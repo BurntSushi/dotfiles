@@ -161,15 +161,24 @@ add-zsh-hook -Uz preexec preexec
 if [[ -f ~/.fzf.zsh ]]; then
   . ~/.fzf.zsh
 else
-  fzf="/usr/share/fzf"
-  [[ -d "$fzf" ]] && . "$fzf/key-bindings.zsh" && . "$fzf/completion.zsh"
+  fzf=(
+    /usr/share/fzf
+    /usr/share/doc/fzf/examples
+  )
+  for p in $fzf; do
+    if [[ -d "$p" ]]; then
+      . "$p/key-bindings.zsh" && . "$p/completion.zsh"
+      break
+    fi
+  done
 fi
 
 # Enable auto suggestions when typing commands.
 zshauto=(
-  /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-  /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
   "$HOME/clones/install/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+  /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+  /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 )
 for p in $zshauto; do
   if [[ -f "$p" ]]; then
