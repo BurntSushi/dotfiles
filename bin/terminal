@@ -2,15 +2,20 @@
 
 # vim: tabstop=2 shiftwidth=2 softtabstop=2
 
+logfile="/tmp/terminal-$USER.log"
 temubin=alacritty
 dir=
+if is-work; then
+  # For whatever reason, alacritty crashes every time
+  # I try to maximize it in GNOME.
+  temubin=gnome-terminal
+fi
 if [ "$1" = "-d" ]; then
   dir="$2"
-  echo "$dir" >> "/tmp/terminal-$USER.log"
+  echo "$dir" >> "$logfile"
   shift 2
 fi
 
-logfile="/tmp/alacritty-$USER.log"
 if [ -z "$dir" ]; then
   exec $temubin "$@" >> "$logfile" 2>&1
 else
