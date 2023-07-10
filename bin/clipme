@@ -6,6 +6,8 @@ elif [ "$1" = "snowman" ]; then
     toclip="☃"
 elif [ "$1" = "sherlock-ru" ]; then
     toclip="Шерлок Холмс"
+elif [ "$1" = "poo" ]; then
+    toclip="💩"
 else
     echo "$(basename "$0") (shrug | snowman | sherlock-ru)" >&2
     exit 1
