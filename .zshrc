@@ -176,6 +176,7 @@ fi
 # Enable auto suggestions when typing commands.
 zshauto=(
   "$HOME/clones/install/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
   /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
   /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
   /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -195,6 +196,7 @@ unset ZSH_AUTOSUGGEST_USE_ASYNC
 
 # Enable syntax highlighting in the terminal. This must come last.
 zshsyntax=(
+  /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
   /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
