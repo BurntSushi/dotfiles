@@ -30,7 +30,7 @@ _rg() {
     [[ $_RG_COMPLETE_LIST_ARGS == (1|t*|y*) ]] ||
     # (--[imnp]* => --ignore*, --messages, --no-*, --pcre2-unicode)
     [[ $PREFIX$SUFFIX == --[imnp]* ]] ||
-    zstyle -t ":complete:$curcontext:*" complete-all
+    zstyle -t ":completion:${curcontext}:" complete-all
   then
     no=
   fi
@@ -319,6 +319,7 @@ _rg() {
     '(-q --quiet)'{-q,--quiet}'[suppress normal output]'
     '--regex-size-limit=[specify upper size limit of compiled regex]:regex size (bytes)'
     '*'{-u,--unrestricted}'[reduce level of "smart" searching]'
+    '--stop-on-nonmatch[stop on first non-matching line after a matching one]'
 
     + operand # Operands
     '(--files --type-list file regexp)1: :_guard "^-*" pattern'
@@ -432,9 +433,13 @@ _rg_types() {
   local -a expl
   local -aU _types
 
-  _types=( ${(@)${(f)"$( _call_program types rg --type-list )"}%%:*} )
+  _types=( ${(@)${(f)"$( _call_program types $words[1] --type-list )"}//:[[:space:]]##/:} )
 
-  _wanted types expl 'file type' compadd -a "$@" - _types
+  if zstyle -t ":completion:${curcontext}:types" extra-verbose; then
+    _describe -t types 'file type' _types
+  else
+    _wanted types expl 'file type' compadd "$@" - ${(@)_types%%:*}
+  fi
 }
 
 _rg "$@"
