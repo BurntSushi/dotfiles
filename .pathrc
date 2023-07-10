@@ -13,9 +13,6 @@ prependpath() {
   esac
 }
 
-# Set the Cargo installation directory.
-CARGO_INSTALL_ROOT="$HOME/.local/cargo"
-
 # Setup PATH.
 # shellcheck disable=SC2123
 PATH=""
@@ -43,5 +40,22 @@ PATH="$(prependpath "$PATH" "$HOME/rust/ripgrep/target/release/examples")"
 PATH="$(prependpath "$PATH" "$HOME/rust/xsv/target/release")"
 # macOS paths
 PATH="$(prependpath "$PATH" "$HOME/tmp/nvim-osx64/bin")"
+# These come from my m2 mac mini.
+PATH="$(prependpath "$PATH" "/opt/homebrew/bin")"
+PATH="$(prependpath "$PATH" "/opt/homebrew/sbin")"
 
-export PATH CARGO_INSTALL_ROOT
+export PATH
+
+# Set the Cargo installation directory.
+export CARGO_INSTALL_ROOT="$HOME/.local/cargo"
+
+# If homebrew was installed in /opt, then it wants all these vars set to
+# point it in the right direction.
+if [ -r "/opt/homebrew" ]; then
+  export HOMEBREW_PREFIX="/opt/homebrew";
+  export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
+  export HOMEBREW_REPOSITORY="/opt/homebrew";
+  export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
+  export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+fi
+
