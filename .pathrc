@@ -32,7 +32,7 @@ PATH="$(prependpath "$PATH" "$HOME/.gem/ruby/2.5.0/bin")"
 PATH="$(prependpath "$PATH" "$HOME/go/bin")"
 PATH="$(prependpath "$PATH" "$CARGO_INSTALL_ROOT/bin")"
 PATH="$(prependpath "$PATH" "$HOME/.cargo/bin")"
-PATH="$(prependpath "$PATH" "$HOME/.local/.cargo/bin")"
+PATH="$(prependpath "$PATH" "$HOME/.local/cargo/bin")"
 # My paths.
 PATH="$(prependpath "$PATH" "$HOME/bin")"
 PATH="$(prependpath "$PATH" "$HOME/bin/x86_64")"
