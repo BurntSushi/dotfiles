@@ -64,7 +64,7 @@ install \
 install "$HOME/.git/hooks/post-checkout" "$HOME/bin/fix-perms-home"
 install \
   "$HOME/.config/nvim/coc-settings.json" \
-  "$HOME/.config/ag/nvim/coc-settings.json" \
+  "$HOME/.config/ag/nvim/$DEV" \
   "$HOME/work/config/nvim/coc-settings.json"
 
 # Everything below is related to X11, so in headless environments, we quit.
