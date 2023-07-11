@@ -5,4 +5,8 @@ if [ -z "$1" ]; then
 fi
 host="$1"
 
-exec terminal -e ssh -AY "$host" -t '. ~/.pathrc ; tmux' -u new -A -s remote
+if is-work; then
+  exec gnome-terminal -- ssh -AY "$host" -t '. ~/.pathrc ; tmux' -u new -A -s remote
+else
+  exec terminal -e ssh -AY "$host" -t '. ~/.pathrc ; tmux' -u new -A -s remote
+fi
