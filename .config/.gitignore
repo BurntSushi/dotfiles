@@ -5,6 +5,7 @@
 /baloofilerc
 /broot
 /caddy
+/cef_user_data
 /coc
 /configstore
 /dconf
@@ -29,12 +30,13 @@
 /htop
 /hub
 /ibus
+/JetBrains
 /jgit
 /k3brc
 /kactivitymanagerdrc
-/kde.org
 /kdeconnect
 /kdeglobals
+/kde.org
 /keybase
 /kiorc
 /knfsshare
@@ -49,6 +51,7 @@
 /nitrogen
 /okularpartrc
 /okularrc
+/Perforce
 /pulse
 /qimgv
 /qt5ct
@@ -64,4 +67,5 @@
 /user-dirs.*
 /vlc
 /wingo
+/yad.conf
 /zoomus.conf

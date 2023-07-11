@@ -123,3 +123,27 @@
 # Various other junk... Sigh.
 /Corda
 /sdb
+/.DBcreds
+/.bootstrap*
+/.chatter
+/.conda
+/.curlrc.insecure
+/Documents
+/Pictures
+/apps
+/blt
+/logs
+/tools
+/.xmlresolver.org
+/.tls
+/.p4merge
+/.p4qt
+/.netrc
+/.install4j_jre
+/.jfrog
+/.gimlet-home
+/.sshcreds
+/.solrcli.logs
+/.perforce-install
+/.smartbear
+/jmeter.log
