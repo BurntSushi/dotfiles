@@ -83,6 +83,7 @@
 /.sudo*
 /.swt
 /.templateengine
+/.terminfo
 /.thumbnails
 /.tig_history
 /.tox
@@ -100,6 +101,7 @@
 /.zoom
 /.zsh
 /.zsh_history
+/.zsh_sessions
 
 # top-level directories
 /clones
@@ -128,8 +130,6 @@
 /.chatter
 /.conda
 /.curlrc.insecure
-/Documents
-/Pictures
 /apps
 /blt
 /logs
@@ -147,3 +147,12 @@
 /.perforce-install
 /.smartbear
 /jmeter.log
+
+# More junk and macOS shit.
+/Documents
+/Pictures
+/Library
+/Movies
+/Music
+/Public
+/.CFUserTextEncoding
