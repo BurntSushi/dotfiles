@@ -5,4 +5,4 @@ if [ -z "$1" ]; then
 fi
 host="$1"
 
-exec terminal -- ssh -AY "$host" -t tmux -u new -A -s remote
+exec terminal -e ssh -AY "$host" -t '. ~/.pathrc ; tmux' -u new -A -s remote
