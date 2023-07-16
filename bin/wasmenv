@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# This script is meant to be sourced, like so:
+#
+#   . wasmenv
+#
+# It will set various environment variables that make it possible to run and
+# test WASM targets for Rust. (I got these steps from memchr's CI for doing the
+# same, and that was contributed by Alex Crichton.)
+#
+# Note that this requires that the `wasm32-wasi` target is installed. i.e.,
+#
+#   rustup target add wasm32-wasi
+
+export CARGO_BUILD_TARGET=wasm32-wasi
+export RUSTFLAGS=-Ctarget-feature=+simd128
+export CARGO_TARGET_WASM32_WASI_RUNNER="wasmtime run --wasm-features simd --"
