@@ -88,6 +88,7 @@
 /.tig_history
 /.tox
 /.vault*
+/.vcpkg
 /.vim-cache
 /.viminfo
 /.wget*
