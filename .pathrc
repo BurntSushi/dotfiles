@@ -36,6 +36,7 @@ PATH="$(prependpath "$PATH" "$HOME/.local/cargo/bin")"
 # My paths.
 PATH="$(prependpath "$PATH" "$HOME/bin")"
 PATH="$(prependpath "$PATH" "$HOME/bin/x86_64")"
+PATH="$(prependpath "$PATH" "$HOME/bin/aarch64")"
 PATH="$(prependpath "$PATH" "$HOME/rust/ripgrep/target/release")"
 PATH="$(prependpath "$PATH" "$HOME/rust/ripgrep/target/release/examples")"
 PATH="$(prependpath "$PATH" "$HOME/rust/xsv/target/release")"
