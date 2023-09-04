@@ -59,5 +59,8 @@ if [ -r "/opt/homebrew" ]; then
   export HOMEBREW_REPOSITORY="/opt/homebrew";
   export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
   export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+  # This apparently tells C/C++ compiles where to find header files?
+  # Not sure if it's appropriate to set this unconditionally, alas...
+  export CPATH="/opt/homebrew/include"
 fi
 
