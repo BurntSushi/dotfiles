@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -e
+
+if [ $# -lt 1 ]; then
+  echo "Usage: $(basename "$0") <dir> [<dependency> ...]" >&2
+  exit 1
+fi
+dir="$1"
+shift
+
+mkdir -p "$dir"
+cd "$dir"
+
+name="$(basename "$(realpath .)")"
+cat > main.rs <<EOF
+fn main() -> anyhow::Result<()> {
+    println!("Hello, world!");
+    Ok(())
+}
+EOF
+cat > .gitignore <<EOF
+/target
+/Cargo.lock
+EOF
+cat > rustfmt.toml <<EOF
+max_width = 79
+use_small_heuristics = "max"
+EOF
+cat > Cargo.toml <<EOF
+[package]
+publish = false
+name = "$name"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[[bin]]
+name = "$name"
+path = "main.rs"
+EOF
+cargo add anyhow
+for dependency; do
+  cargo add "$dependency"
+done

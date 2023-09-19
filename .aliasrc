@@ -81,6 +81,12 @@ mkcd() {
   mkdir -p "$1" && cd "$1" || exit
 }
 
+mkrust() {
+  dir="$1"
+  setup-simple-rust-binary "$@" || exit 1
+  cd "$dir" || exit 1
+}
+
 prependpath() {
   paths="$1"
   toadd="$2"
