@@ -131,3 +131,11 @@ paste() {
   echo "$url"
   echo "$url" | xcp
 }
+
+o() {
+  files="$(fzf --print0 --preview "bat --theme ansi --color always {}")"
+  if [ -z "$files" ]; then
+    return
+  fi
+  echo -n "$files" | xargs -0 -o "$EDITOR"
+}
