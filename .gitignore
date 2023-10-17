@@ -17,6 +17,7 @@
 /.debug
 /.docker
 /.dotnet
+/.dub
 /.eclipse
 /.falcon.*
 /.fceux
@@ -81,6 +82,7 @@
 /.ssr
 /.stack
 /.sudo*
+/.swiftpm
 /.swt
 /.templateengine
 /.terminfo
