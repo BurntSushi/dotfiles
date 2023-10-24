@@ -1,0 +1,17 @@
+#!/bin/sh
+
+if [ $# != 1 ]; then
+  echo "Usage: $(basename "$0") <path-to-sound>" >&2
+  exit 1
+fi
+if ! cmd-exists ogg123; then
+  echo "ogg123 must be installed" >&2
+  exit 1
+fi
+path="$1"
+if ! [ -f "$path" ]; then
+  echo "$path does not exist" >&2
+  exit 1
+fi
+sink="$(audio-default-sink-name)"
+exec ogg123 -d pulse -o "sink:$sink" "$path" > /dev/null 2>&1

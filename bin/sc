@@ -8,8 +8,4 @@ fi
 d="/tmp/screenshots"
 mkdir -p "$d"
 scrot -s "$d/$1"
-
-sound=/usr/share/sounds/freedesktop/stereo/screen-capture.oga
-if [ -r "$sound" ]; then
-  ogg123 "$sound"
-fi
+exec audio-play /usr/share/sounds/freedesktop/stereo/screen-capture.oga
