@@ -25,6 +25,9 @@
 "terminal-tmux-remote duff"
   mod1 + mod4 + h
 
+"terminal-tmux-astral duff"
+  mod1 + mod4 + a
+
 "terminal -e ssh -A lisa -t /usr/local/bin/tmux -u new -A -s remote"
   mod4 + m
 
