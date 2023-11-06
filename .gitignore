@@ -71,6 +71,7 @@
 /.python_history
 /.pyx11
 /.qgrep
+/.raku
 /.rpmdb
 /.rustup
 /.sane
@@ -101,6 +102,7 @@
 /.xsel.log
 /.yarnrc
 /.zcompdump
+/.zef
 /.zoom
 /.zsh
 /.zsh_history
