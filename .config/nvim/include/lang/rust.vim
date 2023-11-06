@@ -11,8 +11,12 @@ syntax sync fromstart
 " 'recommended style' uses 99-column lines. No thanks.
 let g:rust_recommended_style = 0
 
-" Always run rustfmt is applicable and always use stable.
-let g:rustfmt_autosave_if_config_present = 1
+" Always run rustfmt always use stable. Back in the days of yore,
+" I used to only run rustfmt if a rustfmt.toml file was present.
+" I think I did that because I didn't want to use rustfmt in all
+" cases back then. But I've evolved.
+let g:rustfmt_autosave = 1
+let g:rustfmt_autosave_if_config_present = 0
 let g:rustfmt_command = "rustfmt +stable"
 
 " Make CTRL-T work correctly with goto-definition.
