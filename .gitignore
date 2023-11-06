@@ -109,6 +109,7 @@
 /.zsh_sessions
 
 # top-level directories
+/astral
 /clones
 /code
 /data
