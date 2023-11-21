@@ -46,6 +46,9 @@ PATH="$(prependpath "$PATH" "$HOME/tmp/nvim-osx64/bin")"
 PATH="$(prependpath "$PATH" "/opt/homebrew/bin")"
 PATH="$(prependpath "$PATH" "/opt/homebrew/sbin")"
 
+# Some Astral paths.
+PATH="$(prependpath "$PATH" "$HOME/astral/ruff/target/release")"
+
 export PATH
 
 # Set the Cargo installation directory.
