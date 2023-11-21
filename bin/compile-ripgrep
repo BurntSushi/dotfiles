@@ -46,29 +46,36 @@ if [ -n "$debug" ]; then
     --manifest-path "$checkout/Cargo.toml" \
     --features "$features" \
     $target_flag
+  if [ -z "$target" ]; then
+    bin="$checkout/target/debug/rg"
+  else
+    bin="$checkout/target/$target/debug/rg"
+  fi
 else
   cargo build "$@" \
     --manifest-path "$checkout/Cargo.toml" \
     --features "$features" \
     --release \
     $target_flag
+  if [ -z "$target" ]; then
+    bin="$checkout/target/release/rg"
+  else
+    bin="$checkout/target/$target/release/rg"
+  fi
 fi
 if [ -z "$custom" ]; then
   if [ -d "$HOME/man" ]; then
-    manfile="$(
-      find "$checkout/target" -name rg.1 -print0 \
-        | xargs -0 ls -t \
-        | head -n1
-    )"
-    if [ -f "$manfile" ]; then
-      mkdir -p "$HOME/man/man1"
-      cp "$manfile" "$HOME/man/man1/rg.1"
-    fi
+    mkdir -p "$HOME/man/man1"
+    "$bin" --generate man > "$HOME/man/man1/rg.1"
   fi
   if [ -d "$HOME/.zsh-complete" ]; then
-      cp "$checkout/complete/_rg" "$HOME/.zsh-complete/_rg"
+    "$bin" --generate complete-zsh > "$HOME/.zsh-complete/_rg"
   fi
-  if [ -n "$target" ] && [ -z "$debug" ]; then
-      cp "$checkout/target/$target/release/rg" "$checkout/target/release/rg"
+  if [ -n "$target" ]; then
+      if [ -n "$debug" ]; then
+          cp "$bin" "$checkout/target/debug/rg"
+      else
+          cp "$bin" "$checkout/target/release/rg"
+      fi
   fi
 fi
