@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 from __future__ import absolute_import, division, print_function
 import argparse
@@ -67,7 +67,7 @@ for f in args.files:
             fileErrors[f].append((i, line[:C], errorColor(line[C:])))
 
 someErrors = False
-for f, errors in fileErrors.iteritems():
+for f, errors in fileErrors.items():
     # File heading
     if not errors:
         continue
@@ -76,7 +76,7 @@ for f, errors in fileErrors.iteritems():
     print(errorColor('%s has lines exceeding %d columns:' % (f, C)))
 
     # Some formatting: find the longest string in 'filename[line#]'
-    labelMax = max(map(lambda (i, g, b): len(labelFmt % (f, i)), errors))
+    labelMax = max(map(lambda x: len(labelFmt % (f, x[0])), errors))
     for (i, good, bad) in errors:
         label = (labelFmt % (f, i)).ljust(labelMax)
         print('%s%s%s' % (label, good, bad))
