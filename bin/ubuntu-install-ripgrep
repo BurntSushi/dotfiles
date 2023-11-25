@@ -11,7 +11,7 @@ if [ "$curvers" = "$latestvers" ]; then
     exit 0
 fi
 
-name="ripgrep_${latestvers}_amd64.deb"
+name="ripgrep_${latestvers}-1_amd64.deb"
 url="https://github.com/BurntSushi/ripgrep/releases/download/$latestvers/$name"
 (cd /tmp && curl -LO "$url" && sudo dpkg -i "$name")
 echo "ripgrep updated from $curvers to $latestvers"
