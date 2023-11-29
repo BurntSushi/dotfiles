@@ -1,10 +1,12 @@
 # Define aliases and generic shell variables.
 [[ -f ~/.pathrc ]] && . ~/.pathrc
-is-work && [[ -f ~/work/rc/pathrc ]] && . ~/work/rc/pathrc
 [[ -f ~/.aliasrc ]] && . ~/.aliasrc
-is-work && [[ -f ~/work/rc/aliasrc ]] && . ~/work/rc/aliasrc
 [[ -f ~/.envrc ]] && . ~/.envrc
-is-work && [[ -f ~/work/rc/envrc ]] && . ~/work/rc/envrc
+
+# When doing Astral work, do some custom setup.
+if cmd-exists tmux && [ "$(tmux display-message -p '#S')" = "astral" ]; then
+  . ~/.astralrc
+fi
 
 # If on a work machine, use special initialization.
 is-work && [[ -f ~/work/rc/zshrc ]] && . ~/work/rc/zshrc
