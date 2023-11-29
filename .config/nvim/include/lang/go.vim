@@ -2,7 +2,6 @@ let b:Comment="//"
 let b:EndComment=""
 runtime! include/spacing/eight.vim
 setlocal noexpandtab
-setlocal colorcolumn=100
 noremap <Leader>i :GoImports<CR>
 
 let g:gofmt_command="goimports"
