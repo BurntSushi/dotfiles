@@ -257,7 +257,7 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
     " Specials
     call <SID>X("Todo", "e50808", "dbf3cd", "bold")
     call <SID>X("Title", "000000", "", "")
-    call <SID>X("Special", "fd8900", "", "")
+    call <SID>X("Special", "EB7F00", "", "bold")
 
     " Syntax Elements
     call <SID>X("String", "0086d2", "", "")
