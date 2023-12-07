@@ -1,7 +1,7 @@
 [Options]
 # The list of workspaces to set upon startup. Workspaces can be added or
 # removed while Wingo is running.
-workspaces := 1 2 3 4 mail browser text s1 s2 s3 doc
+workspaces := 1 2 3 4 mail browser text chat s1 w1 doc a k
 
 # The default layout that is used in a particular workspace. Currently, the
 # only available layouts are: Floating, Vertical or Horizontal.
