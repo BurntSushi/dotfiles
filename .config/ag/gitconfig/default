@@ -18,6 +18,7 @@
   autoSetupRemote = true
 [rebase]
   autoSquash = true
+  updateRefs = true
 [absorb]
   maxStack = 50
 [alias]
