@@ -54,6 +54,7 @@ noremap <F12> :source ~/.config/nvim/include/spacing/text.vim<CR>
 command! W w !sudo tee % > /dev/null
 
 " fzf entrypoint.
+nmap <Leader>b :Buffers<CR>
 nmap <Leader>e :Files<CR>
 " ripgrep entrypoint.
 nmap <Leader>r :Rg<CR>
