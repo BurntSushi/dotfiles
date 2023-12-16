@@ -4,5 +4,4 @@ if [ -z "$1" ]; then
     echo "Usage: $(basename $0) <host>" >&2
 fi
 host="$1"
-
-exec terminal -e ssh -AY "$host" -t '. ~/.pathrc ; tmux' -u new -A -s astral
+exec terminal-tmux "$host" astral

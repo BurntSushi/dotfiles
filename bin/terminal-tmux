@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+    echo "Usage: $(basename $0) <host> [<tmux-session-name>]" >&2
+fi
+host="$1"
+tmux_session_name="$2"
+if [ -z "$tmux_session_name" ]; then
+  tmux_session_name=remote
+fi
+
+exec \
+  terminal \
+    -e ssh -AY "$host" -t \
+      '. ~/.pathrc ; tmux' -u new -A -s "$tmux_session_name"

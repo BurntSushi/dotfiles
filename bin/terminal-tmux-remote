@@ -4,9 +4,4 @@ if [ -z "$1" ]; then
     echo "Usage: $(basename $0) <host>" >&2
 fi
 host="$1"
-
-if is-work; then
-  exec gnome-terminal -- ssh -AY "$host" -t '. ~/.pathrc ; tmux' -u new -A -s remote
-else
-  exec terminal -e ssh -AY "$host" -t '. ~/.pathrc ; tmux' -u new -A -s remote
-fi
+exec terminal-tmux "$host" remote
