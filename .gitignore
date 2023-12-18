@@ -67,6 +67,7 @@
 /.password-store
 /.pki
 /.psql_history
+/.pyenv
 /.pythonhist
 /.python_history
 /.pyx11
