@@ -3,7 +3,7 @@
 GRUB_DEFAULT=0
 GRUB_TIMEOUT=0
 GRUB_DISTRIBUTOR="Arch"
-GRUB_CMDLINE_LINUX_DEFAULT="loglevel=0 audit=0 ec_sys.write_support=1 cryptdevice=UUID=b550e0da-12f8-43e7-9493-3b5bcd9b9ef8:cryptroot root=/dev/mapper/cryptroot rd.udev.log_priority=0 rd.systemd.show_status=0 vt.global_cursor_default=0 mem_sleep_default=s2idle i915.fastboot=0 nvme.noacpi=1 acpi_osi=\"!Windows 2020\""
+GRUB_CMDLINE_LINUX_DEFAULT="loglevel=0 audit=0 ec_sys.write_support=1 cryptdevice=UUID=b550e0da-12f8-43e7-9493-3b5bcd9b9ef8:cryptroot root=/dev/mapper/cryptroot rd.udev.log_priority=0 rd.systemd.show_status=0 vt.global_cursor_default=0 mem_sleep_default=s2idle i915.fastboot=0 nvme.noacpi=1 modprobe.blacklist=module=hid_sensor_hub acpi_osi=\"!Windows 2020\""
 GRUB_CMDLINE_LINUX=""
 
 # Preload both GPT and MBR modules so that they are not missed
