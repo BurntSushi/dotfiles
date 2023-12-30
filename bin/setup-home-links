@@ -73,9 +73,9 @@ if is-headless; then
 fi
 
 install \
-  "$HOME/.config/alacritty/alacritty.yml" \
-  "$HOME/.config/ag/alacritty/$DEV/alacritty.yml" \
-  "$HOME/work/config/alacritty/$DEV/alacritty.yml"
+  "$HOME/.config/alacritty/alacritty.toml" \
+  "$HOME/.config/ag/alacritty/$DEV/alacritty.toml" \
+  "$HOME/work/config/alacritty/$DEV/alacritty.toml"
 install \
   "$HOME/.config/gohead" \
   "$HOME/.config/ag/gohead/$DEV" \
