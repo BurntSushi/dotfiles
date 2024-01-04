@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -e
+if [ $# != 1 ]; then
+  echo "Usage: sr-forward <host>" >&2
+  exit 1
+fi
+host="$1"
+port="$(sr-port "$host")"
+ssh -L $port:127.0.0.1:$port "$host"

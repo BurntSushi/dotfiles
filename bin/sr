@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -e
+host="$(myhostname)"
+port="$(sr-port "$host")"
+samply record --no-open --port "$port" -- "$@"

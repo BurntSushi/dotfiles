@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -e
+if [ $# != 1 ]; then
+  echo "Usage: sr-port <host>" >&2
+  exit 1
+fi
+host="$1"
+
+case "$host" in
+  duff)
+    port=3000
+    ;;
+  armlisa)
+    port=3001
+    ;;
+  *)
+    echo "sr-port: unrecognized hostname $host" >&2
+    exit 1
+    ;;
+esac
+echo $port
