@@ -87,3 +87,6 @@
 
 "toggle-tap-to-click"
   mod1 + mod4 + c
+
+"toggle-headset-mode"
+  XF86AudioPlay

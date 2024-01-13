@@ -1,0 +1,56 @@
+#!/bin/bash
+
+notify_headset() {
+  beep
+  dunstify \
+    -i bluetooth-active-symbolic.symbolic \
+    -t 5000 \
+    -h string:synchronous:volume \
+    -r 1000 \
+    "Headset mode enabled"
+}
+
+notify_high_fidelity() {
+  beep
+  dunstify \
+    -i bluetooth-active-symbolic.symbolic \
+    -t 5000 \
+    -h string:synchronous:volume \
+    -r 1000 \
+    "High fidelity mode enabled"
+}
+
+beep() {
+  audio-play /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
+}
+
+case "$(myhostname)" in
+  kang)
+    card=bluez_card.50_C2_75_69_8E_5E
+    if ! [[ $(pactl get-default-sink) = *bluez* ]]; then
+      exit 0
+    fi
+    cur="$(
+      pactl list cards \
+        | rg -U '^\s+Name: bluez_card\p{any}+?Active Profile: (\S+)' -or '$1'
+    )"
+    case "$cur" in
+      a2dp-sink)
+        pactl set-card-profile $card headset-head-unit-msbc
+        notify_headset
+        ;;
+      headset-head-unit-msbc)
+        pactl set-card-profile $card a2dp-sink
+        notify_high_fidelity
+        ;;
+      *)
+        echo "Unrecognized bluetooth card profile: $cur" >&2
+        exit 1
+        ;;
+    esac
+    ;;
+  *)
+    echo "This machine doesn't understand headset toggling." >&2
+    exit 1
+    ;;
+esac

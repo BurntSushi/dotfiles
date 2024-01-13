@@ -13,5 +13,4 @@ if ! [ -f "$path" ]; then
   echo "$path does not exist" >&2
   exit 1
 fi
-sink="$(audio-default-sink-name)"
-exec ogg123 -d pulse -o "sink:$sink" "$path" > /dev/null 2>&1
+exec ogg123 "$path" > /dev/null 2>&1

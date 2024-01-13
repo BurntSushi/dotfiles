@@ -1,11 +1,80 @@
-#!/bin/sh
+#!/bin/bash
+
+# Display a notification indicating the volume is muted.
+notify_muted() {
+  local icon="audio-volume-muted-symbolic.symbolic"
+  beep
+  dunstify \
+    -i $icon \
+    -t 5000 \
+    -h int:value:0 \
+    -h string:synchronous:volume \
+    -r 1000 \
+    "Volume muted"
+}
+
+# Display a notification indicating the current volume.
+notify_volume() {
+  local vol
+
+  vol=$(pamixer --get-volume)
+  beep
+  dunstify \
+    -i "$(get_volume_icon "$vol")" \
+    -t 5000 \
+    -h int:value:"$vol" \
+    -r 1000 \
+    -h string:synchronous:volume \
+    "$(printf "Volume %03s%%" "$vol")"
+}
+
+# Play a little beep.
+beep() {
+  audio-play /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
+}
+
+# Gets an icon for the provided volume. The volume provided should be a
+# percentage (but without the % suffix).
+get_volume_icon() {
+  local vol="$1" icon
+  if [ "$vol" -gt 100 ]; then
+    icon="audio-volume-overamplified-symbolic.symbolic"
+  elif [ "$vol" -ge 70 ]; then
+    icon="audio-volume-high-symbolic.symbolic"
+  elif [ "$vol" -ge 40 ]; then
+    icon="audio-volume-medium-symbolic.symbolic"
+  elif [ "$vol" -gt 0 ]; then
+    icon="audio-volume-low-symbolic.symbolic"
+  else
+    icon="audio-volume-low-symbolic.symbolic"
+  fi
+  echo "$icon"
+}
 
 case "$(myhostname)" in
   duff|frink|krusty|kang|kodos)
     case $1 in
-      up)   i3-volume -n -i 10 ;;
-      down) i3-volume -n -d 10 ;;
-      mute) i3-volume -n -m ;;
+      up)
+        pamixer --increase 5
+        notify_volume
+        ;;
+      down)
+        pamixer --decrease 5
+        notify_volume
+        ;;
+      mute)
+        if ! eval $(pamixer --get-mute); then
+          notify_muted
+        fi
+        pamixer --toggle-mute
+        if ! eval $(pamixer --get-mute); then
+          notify_volume
+        fi
+        ;;
+      *)
+        echo "Unrecognized command: $1" >&2
+        exit 1
+        ;;
     esac
     ;;
   chalmers)
