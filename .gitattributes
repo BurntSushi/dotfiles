@@ -1,2 +1,3 @@
 /.ssh/config filter=git-crypt-home diff=git-crypt-home
 /.msmtprc filter=git-crypt-home diff=git-crypt-home
+/.secretastralrc filter=git-crypt-home diff=git-crypt-home
