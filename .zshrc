@@ -4,7 +4,7 @@
 [[ -f ~/.envrc ]] && . ~/.envrc
 
 # When doing Astral work, do some custom setup.
-if cmd-exists tmux && [ "$(tmux display-message -p '#S')" = "astral" ]; then
+if tmux-is-astral; then
   . ~/.astralrc
 fi
 

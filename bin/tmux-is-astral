@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if ! cmd-exists tmux; then
+  exit 1
+fi
+if ! ps aux | rg -q '\stmux\s'; then
+  exit 1
+fi
+tmux_session="$(tmux display-message -p '#S')"
+if ! [[ "$tmux_session" = *astral* ]]; then
+  exit 1
+fi
+exit 0
