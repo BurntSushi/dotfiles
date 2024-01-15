@@ -1,4 +1,9 @@
 # vim: ft=sh sw=2 ts=2 sts=2
 
+[[ -f ~/.secretastralrc ]] && . ~/.secretastralrc
+
+# Some Astral paths.
+PATH="$(prependpath "$PATH" "$HOME/astral/ruff/target/release")"
+
 # We use longer lines at Astral.
 export NEOVIM_COLOR_COLUMN=101

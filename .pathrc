@@ -51,6 +51,7 @@ PATH="$(prependpath "$PATH" "$HOME/.pyenv/shims")"
 
 # Some Astral paths.
 PATH="$(prependpath "$PATH" "$HOME/astral/ruff/target/release")"
+PATH="$(prependpath "$PATH" "$HOME/astral/puffin/target/profiling")"
 
 export PATH
 
