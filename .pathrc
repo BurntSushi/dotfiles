@@ -49,10 +49,6 @@ PATH="$(prependpath "$PATH" "/opt/homebrew/sbin")"
 # This is for pyenv.
 PATH="$(prependpath "$PATH" "$HOME/.pyenv/shims")"
 
-# Some Astral paths.
-PATH="$(prependpath "$PATH" "$HOME/astral/ruff/target/release")"
-PATH="$(prependpath "$PATH" "$HOME/astral/puffin/target/profiling")"
-
 export PATH
 
 # Set the Cargo installation directory.
