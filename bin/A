@@ -5,7 +5,9 @@ if [ -z "$host" ]; then
   host=$(myhostname)
 fi
 if [ "$host" = "$(myhostname)" ]; then
-  notify-send "done"
+  notify-send "done" &
+  audio-play /usr/share/sounds/freedesktop/stereo/complete.oga &
+  wait
 else
   ssh "$host" -t zsh -ic A > /dev/null 2>&1
 fi
