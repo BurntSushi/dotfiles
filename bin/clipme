@@ -1,16 +1,54 @@
-#!/bin/bash
+#!/bin/sh
 
-if [ "$1" = "shrug" ]; then
-    toclip="¯\\_(ツ)_/¯"
-elif [ "$1" = "snowman" ]; then
-    toclip="☃"
-elif [ "$1" = "sherlock-ru" ]; then
-    toclip="Шерлок Холмс"
-elif [ "$1" = "poo" ]; then
-    toclip="💩"
-else
-    echo "$(basename "$0") (shrug | snowman | sherlock-ru)" >&2
+# vim: ft=sh sw=2 ts=2 sts=2
+
+case "$1" in
+  "shrug") v="¯\\_(ツ)_/¯" ;;
+  "snowman") v="☃" ;;
+  "sherlock-ru") v="Шерлок Холмс" ;;
+  "poo") v="💩" ;;
+  "degree") v="°" ;;
+  "kelvin") v="K" ;;
+  "micro") v="µ" ;;
+  # A selection of greek letters.
+  "alpha-lo") v="α" ;;
+  "alpha-up") v="Α" ;;
+  "beta-lo") v="β" ;;
+  "beta-up") v="Β" ;;
+  "delta-lo") v="δ" ;;
+  "delta-up") v="Δ" ;;
+  "epsilon-lo") v="ε" ;;
+  "epsilon-up") v="Ε" ;;
+  "theta-lo") v="θ" ;;
+  "theta-up") v="Θ" ;;
+  "pi-lo") v="π" ;;
+  "pi-up") v="Π" ;;
+  "gamma-lo") v="γ" ;;
+  "gamma-up") v="Γ" ;;
+  "mu-lo") v="μ" ;;
+  "mu-up") v="Μ" ;;
+  "phi-lo") v="φ" ;;
+  "phi-up") v="Φ" ;;
+  "lamda-lo") v="λ" ;;
+  "lamda-up") v="Λ" ;;
+  "sigma-lo") v="σ" ;;
+  "sigma-up") v="Σ" ;;
+  "eta-lo") v="η" ;;
+  "eta-up") v="Η" ;;
+  "tau-lo") v="τ" ;;
+  "tau-up") v="Τ" ;;
+  "zeta-lo") v="ζ" ;;
+  "zeta-up") v="Ζ" ;;
+  "xi-lo") v="ξ" ;;
+  "xi-up") v="Ξ" ;;
+  "omega-lo") v="ω" ;;
+  "omega-up") v="Ω" ;;
+  "omega-lo-up") v="ꭥ" ;;
+  "kappa-lo") v="κ" ;;
+  "kappa-up") v="Κ" ;;
+  *)
+    echo "unrecognized character name" >&2
     exit 1
-fi
-
-echo -n "$toclip" | xcp
+    ;;
+esac
+printf "%s" "$v" | xcp
