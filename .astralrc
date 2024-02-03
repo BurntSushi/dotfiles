@@ -7,3 +7,6 @@ PATH="$(prependpath "$PATH" "$HOME/astral/ruff/target/release")"
 
 # We use longer lines at Astral.
 export NEOVIM_COLOR_COLUMN=101
+
+# Let's use a bit more default Python config.
+unset PYTHONDONTWRITEBYTECODE
