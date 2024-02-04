@@ -22,15 +22,15 @@ mkdir -p "$REPORT_DIR"
 f="$(mktemp "--tmpdir=$REPORT_DIR" XXXXXXXXXX.data)"
 if [ -n "$devnull" ]; then
     if [ -n "$callgraph" ]; then
-        perf record -F 10000 -o "$f" -g --call-graph dwarf "$@" > /dev/null
+        perf record -R -m 4096 --all-cpus -F 10000 -o "$f" -g --call-graph dwarf "$@" > /dev/null
     else
-        perf record -F 10000 -o "$f" -g "$@" > /dev/null
+        perf record -R -m 4096 --all-cpus -F 10000 -o "$f" -g "$@" > /dev/null
     fi
 else
     if [ -n "$callgraph" ]; then
-        perf record -F 10000 -o "$f" -g --call-graph dwarf "$@"
+        perf record -R -m 4096 --all-cpus -F 10000 -o "$f" -g --call-graph dwarf "$@"
     else
-        perf record -F 10000 -o "$f" -g "$@"
+        perf record -R -m 4096 --all-cpus -F 10000 -o "$f" -g "$@"
     fi
 fi
 echo "===== perf report created: $f ====="

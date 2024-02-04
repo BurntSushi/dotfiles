@@ -3,4 +3,4 @@
 set -e
 host="$(myhostname)"
 port="$(sr-port "$host")"
-samply record --no-open --port "$port" -- "$@"
+samply record --rate 100000 --no-open --port "$port" -- "$@"
