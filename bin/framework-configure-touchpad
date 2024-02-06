@@ -1,6 +1,15 @@
 #!/bin/sh
 
-device="PIXA3854:00 093A:0274 Touchpad"
+case "$(myhostname)" in
+  kang|bart)
+    device="PIXA3854:00 093A:0274 Touchpad"
+    ;;
+  *)
+    echo "Unsupported machine, get a Framework" >&2
+    exit 1
+    ;;
+esac
+
 
 # The default is a little too slow.
 xinput set-prop "$device" "libinput Accel Speed" 0.20

@@ -78,7 +78,7 @@ monty)
   fi
   autobright &
   ;;
-krusty|kang|kodos)
+krusty|kang|kodos|bart)
   if array_exists laptop "$*"; then
     placeHead laptop
   else

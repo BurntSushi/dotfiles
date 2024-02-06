@@ -33,6 +33,9 @@ case "$(myhostname)" in
     framework-configure-touchpad
     sudo framework_tool --fp-brightness low
     ;;
+  bart)
+    framework-configure-touchpad
+    ;;
   chalmers|skinner|wiggum|otto)
     no-blanking
     xset m 3 1

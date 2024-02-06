@@ -110,7 +110,7 @@ if __name__ == '__main__':
     fpow_now = 'power_now'
 
     batdir = subprocess.check_output(['batpath']).decode('utf-8').strip()
-    if host in ('krusty', 'kang', 'kodos'):
+    if host in ('krusty', 'kang', 'kodos', 'bart'):
         ffull = 'charge_full'
         fnow = 'charge_now'
         fpow_now = 'current_now'

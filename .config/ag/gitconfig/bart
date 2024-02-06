@@ -1,0 +1,35 @@
+[user]
+  email = jamslam@gmail.com
+  name = Andrew Gallant
+  signingkey = jamslam@gmail.com
+[init]
+  defaultBranch = master
+[rerere]
+  enabled = true
+[commit]
+  gpgsign = true
+[tag]
+  forceSignAnnotated = true
+[merge]
+  ff = only
+[pull]
+  rebase = true
+[rebase]
+  autoSquash = true
+[absorb]
+  maxStack = 50
+[alias]
+  pushf = push --force-with-lease
+  diffy = difftool --no-prompt --trust-exit-code --extcmd 'icdiff -N -U3'
+  amend = commit -a --amend -C HEAD
+  co = checkout
+[url "git@github.com:"]
+  insteadOf = https://github.com/
+[gui]
+  gcwarning = false
+	fontui = -family \"DejaVu Sans\" -size 20 -weight normal -slant roman -underline 0 -overstrike 0
+	fontdiff = -family \"DejaVu Sans Mono\" -size 18 -weight normal -slant roman -underline 0 -overstrike 0
+[core]
+  pager = gitdiffer
+[interactive]
+  diffFilter = gitdiffer

@@ -18,10 +18,14 @@ height=40
 y=$((mheight - height + my))
 
 # Bump font size for some machines.
-if [ "$(myhostname)" = "kang" ]; then
-  font="Cousine-25"
-  height=50
-fi
+case "$(myhostname)" in
+  kang|bart)
+    font="Cousine-25"
+    height=50
+    ;;
+  *)
+    ;;
+esac
 
 # Width constants for the system tray and battery indicator.
 tray_width=150

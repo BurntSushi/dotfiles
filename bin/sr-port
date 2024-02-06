@@ -17,6 +17,9 @@ case "$host" in
   kang)
     port=3002
     ;;
+  bart)
+    port=3003
+    ;;
   *)
     echo "sr-port: unrecognized hostname $host" >&2
     exit 1

@@ -100,9 +100,9 @@ x() {
 pkgs() {
   pacman --noconfirm -S \
     zsh \
-    asp \
     sudo \
     vi \
+    pkgfile \
     alsa-utils vorbis-tools \
     aspell aspell-en hunspell hunspell-en_US \
     python python-pip python-setuptools python-virtualenv bpython \
@@ -117,7 +117,7 @@ pkgs() {
     pdftk \
     unzip \
     cronie openssh openssl sshfs sshuttle gnupg tmux nfs-utils enscript \
-    docker ffmpeg jq ripgrep youtube-dl fzf \
+    docker ffmpeg jq ripgrep yt-dlp fzf \
     iotop htop linux-tools pkgfile pwgen pv strace tig time tree valgrind \
     vim \
     git git-crypt tk \
@@ -207,7 +207,7 @@ yaypkgs() {
   #
   # The AUR packages appear borked.
   yay --noconfirm -S \
-    neovim-git neovim-plug-git python-neovim-git \
+    neovim neovim-plug-git python-pynvim \
     brscan4 \
     ngrok \
     vim-plug-git \
@@ -229,15 +229,24 @@ yayxpkgs() {
   yay --noconfirm -S \
     dzen2-xft-xpm-xinerama-git \
     google-chrome \
-    mirage \
     idesk \
-    nerd-fonts-hack \
+    ttf-hack-nerd \
     ttf-oxygen \
     ttf-dejavu \
     ttf-fira-mono \
     ttf-mononoki-git \
     ttf-roboto \
     ttf-ubuntu-font-family
+}
+
+gpginit() {
+  rsync \
+    --archive --recursive --human-readable --partial --inplace --progress \
+    -e 'ssh -p 7704' \
+    andrew@home.burntsushi.net:/m/data/andrew/keys/*.key.* /tmp/
+  gpg --pinentry-mode loopback --import /tmp/jamslam@gmail.com.key.priv
+  gpg --pinentry-mode loopback --import /tmp/kbrady39@gmail.com.key.priv
+  echo "use 'gpg --edit-key {email}' to trust each key completely"
 }
 
 homeinit() {
@@ -272,16 +281,6 @@ xenvinit() {
   # shellcheck disable=SC1091
   . "$HOME/.pyx11/bin/activate"
   pip install git+https://github.com/wingowm/pywingo
-}
-
-gpginit() {
-  rsync \
-    --archive --recursive --human-readable --partial --inplace --progress \
-    -e 'ssh -p 7704' \
-    andrew@home.burntsushi.net:/m/data/andrew/keys/*.key.* /tmp/
-  gpg --pinentry-mode loopback --import /tmp/jamslam@gmail.com.key.priv
-  gpg --pinentry-mode loopback --import /tmp/kbrady39@gmail.com.key.priv
-  echo "use 'gpg --edit-key {email}' to trust each key completely"
 }
 
 sshinit() {
