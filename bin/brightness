@@ -2,7 +2,7 @@
 
 case $1 in
   bat)
-    sudo xbacklight -set 40
+    sudo xbacklight -set 20
     ;;
   ac)
     sudo xbacklight -set 100
