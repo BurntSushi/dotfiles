@@ -37,7 +37,7 @@
 "terminal -e tmux -u new -A -s bpython bpython"
   mod4 + p
 
-"terminal -e tmux -u new -A -s alsamixer alsamixer"
+"pavucontrol"
   mod4 + a
 
 "firefox"
