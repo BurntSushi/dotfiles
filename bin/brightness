@@ -2,16 +2,16 @@
 
 case $1 in
   bat)
-    sudo xbacklight -set 20
+    sudo xbacklight -set 10
     ;;
   ac)
     sudo xbacklight -set 100
     ;;
   inc)
-    sudo xbacklight -inc 20
+    sudo xbacklight -inc 10
     ;;
   dec)
-    sudo xbacklight -dec 20
+    sudo xbacklight -dec 10
     ;;
   *)
     echo "Unrecognized configuration '$1'." >&2
