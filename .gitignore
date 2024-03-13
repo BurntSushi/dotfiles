@@ -95,6 +95,7 @@
 /.vcpkg
 /.vim-cache
 /.viminfo
+/.wine
 /.wget*
 /.wicd
 /.wmWeatherReports
