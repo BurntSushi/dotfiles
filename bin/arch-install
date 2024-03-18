@@ -210,7 +210,6 @@ yaypkgs() {
   yay --noconfirm -S \
     neovim neovim-plug-git python-pynvim \
     brscan4 \
-    ngrok \
     vim-plug-git \
     zsh-autosuggestions \
     zsh-completions \
