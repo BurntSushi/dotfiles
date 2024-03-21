@@ -1,11 +1,15 @@
 #!/bin/sh
 
 host="$1"
+msg="$2"
 if [ -z "$host" ]; then
   host=$(myhostname)
 fi
+if [ -z "$msg" ]; then
+  msg="done"
+fi
 if [ "$host" = "$(myhostname)" ]; then
-  notify-send "done" &
+  notify-send "$msg" &
   audio-play /usr/share/sounds/freedesktop/stereo/complete.oga &
   wait
 else
