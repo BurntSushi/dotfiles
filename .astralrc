@@ -2,8 +2,11 @@
 
 [[ -f ~/.secretastralrc ]] && . ~/.secretastralrc
 
-# Some Astral paths.
-PATH="$(prependpath "$PATH" "$HOME/astral/ruff/target/release")"
+# For astral specific scripts.
+PATH="$(prependpath "$PATH" "$HOME/bin/astral")"
+
+# For uv tests.
+export UV_PYTHON_PATH="$HOME/astral/uv/bin"
 
 # We use longer lines at Astral.
 export NEOVIM_COLOR_COLUMN=101
