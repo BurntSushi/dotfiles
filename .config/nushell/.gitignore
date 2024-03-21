@@ -1,0 +1,3 @@
+# Why in the world is Nushell's command history stored in a
+# configuration directory?!?!?!
+/history.txt
