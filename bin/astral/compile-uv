@@ -1,0 +1,46 @@
+#!/bin/bash
+
+usage() {
+  echo "Usage: $(basename "$0") [-a -p] [<suffix>]"
+}
+
+name="uv"
+alert=
+profile=profiling
+while true; do
+  case "$1" in
+    -a)
+      alert=bart
+      shift
+      ;;
+    -p)
+      profile="$2"
+      shift 2
+      ;;
+    -h)
+      usage
+      exit 0
+      ;;
+    -*)
+      usage >&2
+      exit 1
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+suffix="$1"
+if [ -n "$suffix" ]; then
+  profile=profiling
+  name="$name-$suffix"
+fi
+dest="$HOME/bin/x86_64/$name"
+
+cd ~/astral/uv || exit 1
+cargo build --profile "$profile" -p uv
+cp "target/$profile/uv" "$dest"
+echo "binary at $dest"
+if [ -n "$alert" ]; then
+  A "$alert"
+fi
