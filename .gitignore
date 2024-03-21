@@ -63,6 +63,7 @@
 /.p4enviro
 /.p4tickets
 /.p4trust
+/.packse
 /.parallel
 /.password-store
 /.pki
@@ -164,3 +165,7 @@
 /Music
 /Public
 /.CFUserTextEncoding
+
+# Have no idea where this is coming from. WTF. I keep
+# deleting it and something keeps putting it back. WHY.
+/sym
