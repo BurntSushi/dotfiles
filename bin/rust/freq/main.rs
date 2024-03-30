@@ -5,7 +5,7 @@ Install:
 
 Usage:
 
-  freq [options]
+  freq [options] [<path> ...]
 
 See `freq --help` for more detail.
 */
