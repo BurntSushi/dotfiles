@@ -1,0 +1,22 @@
+[package]
+name = "freq"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.68"
+bstr = "1.9.1"
+lexopt = "0.3.0"
+log = "0.4.21"
+memchr = "2.7.2"
+regex = "1.10.4"
+rustc-hash = "1.1.0"
+tabwriter = "1.4.0"
+walkdir = "2.5.0"
+
+[[bin]]
+name = "freq"
+path = "main.rs"
+
+[profile.release]
+debug = true
