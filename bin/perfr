@@ -34,4 +34,5 @@ else
     fi
 fi
 echo "===== perf report created: $f ====="
-exec perf report --no-inline -M att -i "$f"
+# exec perf report --no-inline -M att -i "$f"
+exec perf report -M att -i "$f"
