@@ -39,6 +39,9 @@ edition = "2021"
 [[bin]]
 name = "$name"
 path = "main.rs"
+
+[profile.release]
+debug = true
 EOF
 cargo add anyhow
 for dependency; do
