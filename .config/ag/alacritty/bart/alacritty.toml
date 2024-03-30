@@ -33,7 +33,8 @@ yellow  = '#dbab09'
 blue    = '#0366d6'
 magenta = '#5a32a3'
 cyan    = '#0598bc'
-white   = '#6a737d'
+# white   = '#6a737d'
+white   = '#ffffff'
 
 [colors.bright]
 black   = '#959da5'
