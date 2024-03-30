@@ -34,7 +34,7 @@ fn main() -> anyhow::Result<()> {
         }
         for result in walkdir::WalkDir::new(path) {
             let dent = result?;
-            if dent.file_type().is_dir() {
+            if !dent.file_type().is_file() {
                 continue;
             }
             let data = std::fs::read(dent.path())
