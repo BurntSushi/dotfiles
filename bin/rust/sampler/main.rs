@@ -1,4 +1,4 @@
-/*
+/*!
 Install:
 
   cargo install --git https://github.com/BurntSushi/dotfiles sampler
