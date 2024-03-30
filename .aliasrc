@@ -65,6 +65,11 @@ nh() {
   nohup "$@" > /dev/null 2>&1 &
 }
 
+reenv() {
+  ssh_reagent
+  eval $(tmux show-environment -s | rg DISPLAY)
+}
+
 ssh_reagent() {
   for agent in /tmp/ssh-*/agent.*; do
     export SSH_AUTH_SOCK="$agent"
@@ -74,7 +79,6 @@ ssh_reagent() {
     unset SSH_AUTH_SOCK
   done
   echo "No valid SSH forwarding socket found." >&2
-  exit 1
 }
 
 mkcd() {
