@@ -12,7 +12,7 @@ esac
 
 
 # The default is a little too slow.
-xinput set-prop "$device" "libinput Accel Speed" 0.20
+xinput set-prop "$device" "libinput Accel Speed" 0.40
 # This is the secret sauce for switching from "click on a certain area on the
 # devicepad to get middle or right click" to "use two finger click for right
 # click and three finger click for middle click." The former was the default
