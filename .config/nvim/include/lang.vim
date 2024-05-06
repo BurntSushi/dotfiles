@@ -5,6 +5,9 @@ au FileType go runtime! include/lang/go.vim
 au FileType markdown
   \ | runtime! include/spacing/two.vim
 
+au FileType json
+  \ | runtime! include/spacing/four.vim
+
 au FileType ledger
   \ let b:Comment=";"
   \ | let b:EndComment=""
