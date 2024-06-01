@@ -6,7 +6,7 @@
 PATH="$(prependpath "$PATH" "$HOME/bin/astral")"
 
 # For uv tests.
-export UV_PYTHON_PATH="$HOME/astral/uv/bin"
+export UV_BOOTSTRAP_DIR="$HOME/astral/uv/bin"
 
 # We use longer lines at Astral.
 export NEOVIM_COLOR_COLUMN=101
