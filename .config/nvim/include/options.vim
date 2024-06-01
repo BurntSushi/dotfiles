@@ -63,3 +63,30 @@ let g:pandoc#syntax#conceal#use = 0
 " When there's more than one match, complete the longest common prefix among
 " them and show the rest of the options.
 set wildmode=list:longest,full
+
+" Make sure `autoread` is enabled. To be honest, I don't actually know what
+" this does. The docs seems to suggest it will result in automatically
+" reloading a file if it has been detected to change AND if there are no
+" changes made to the corresponding buffer. But I run into this situation all
+" the time where neovim does *not* automatically reload the file. (For
+" example, after running `cargo insta accept` for inline snapshots.)
+"
+" Anyway... we try to fix `autoread`'s apparent deficiencies with an autocmd
+" hammer below[1].
+"
+" OK, apparently, `autoread` does work, but just not like how it's
+" documented[2].
+"
+" [1]: https://old.reddit.com/r/neovim/comments/f0qx2y/automatically_reload_file_if_contents_changed/
+" [2]: https://github.com/neovim/neovim/issues/1936
+set autoread
+" I guess this forces a recheck in more cases?
+autocmd FocusGained,BufEnter,BufWinEnter,CursorHold,CursorHoldI *
+  \ if mode() != 'c'
+  \ | checktime
+  \ | endif
+" And this emits a warning if the file changed.
+autocmd FileChangedShellPost *
+  \ echohl WarningMsg
+  \ | echo "File changed on disk. Buffer reloaded."
+  \ | echohl None
