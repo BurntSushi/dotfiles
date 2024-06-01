@@ -2,6 +2,8 @@ au FileType rust runtime! include/lang/rust.vim
 
 au FileType go runtime! include/lang/go.vim
 
+au FileType typescript runtime! include/lang/typescript.vim
+
 au FileType markdown
   \ | runtime! include/spacing/two.vim
 

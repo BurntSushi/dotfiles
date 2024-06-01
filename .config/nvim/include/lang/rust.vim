@@ -1,3 +1,5 @@
+" See: https://github.com/neoclide/coc.nvim#example-vim-configuration
+
 " For custom commenting functions.
 let b:Comment="//"
 let b:EndComment=""
