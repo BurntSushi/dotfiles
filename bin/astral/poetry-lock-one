@@ -1,0 +1,38 @@
+#!/bin/bash
+
+if [ $# != 1 ]; then
+  echo "Usage: $(basename "$0") <dependency>" >&2
+  exit 1
+fi
+dependency="$1"
+shift
+
+lockdir=/tmp/poetry-locks
+mkdir -p "$lockdir"
+dir="$(mktemp -d -p "$lockdir")"
+echo "TEMPDIR: $dir" >&2
+
+cd "$dir" || exit 1
+cat > pyproject.toml <<EOF
+[tool.poetry]
+name = "project"
+version = "0.1.0"
+description = ""
+authors = ["Andrew Gallant <jamslam@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+$dependency = "0.0.0"
+
+[[tool.poetry.source]]
+name = "packse"
+url = "http://localhost:3141"
+priority = "primary"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+EOF
+
+poetry lock
+printf "%s" "$dir/poetry.lock" | xcp

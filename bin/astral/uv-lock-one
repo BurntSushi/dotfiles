@@ -1,0 +1,48 @@
+#!/bin/bash
+
+usage() {
+  echo "Usage: $(basename "$0") [-p/--python <requires-python>] <dependency>" >&2
+  exit 1
+}
+
+while true; do
+  case "$1" in
+    -p|--python)
+      requires_python="$2"
+      shift 2
+      ;;
+    -*)
+      usage
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+if [ $# != 1 ]; then
+  usage
+fi
+dependency="$1"
+shift
+
+lockdir=/tmp/uv-locks
+mkdir -p "$lockdir"
+dir="$(mktemp -d -p "$lockdir")"
+echo "TEMPDIR: $dir" >&2
+
+cd "$dir" || exit 1
+if [ -n "$requires_python" ]; then
+  requires_python="requires-python = '>=$requires_python'"
+fi
+cat > pyproject.toml <<EOF
+[project]
+name = 'project'
+version = '0.1.0'
+dependencies = ['$dependency']
+$requires_python
+EOF
+
+uvdir="$HOME/astral/uv"
+(cd "$uvdir" && cargo build -p uv)
+"$uvdir/target/debug/uv" lock
+printf "%s" "$dir/uv.lock" | xcp
