@@ -2,7 +2,12 @@ call plug#begin(stdpath('data') . '/plugged')
 
 " The standard Rust vim plugin. There's quite a bit of overlap with LSPs here,
 " but it has useful settings for indentation and what not.
-Plug 'rust-lang/rust.vim'
+"
+" I use my own fork of this with some minor customizations. It would probably
+" be good to get them upstreamed, but the repo hasn't been active for two
+" years. And I suspect it would be work to convince people that my changes
+" are good for everyone.
+Plug 'BurntSushi/rust.vim', { 'branch': 'burntsushi' }
 
 " Plugin for interacting with Jinga template files.
 Plug 'Glench/Vim-Jinja2-Syntax'
