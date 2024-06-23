@@ -15,6 +15,7 @@
   "rust-analyzer.diagnostics.disabled": [
     "inactive-code",
     "incorrect-ident-case",
+    "unlinked-file",
     "unresolved-macro-call",
     "unresolved-proc-macro"
   ],
