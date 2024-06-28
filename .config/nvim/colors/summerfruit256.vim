@@ -1,323 +1,221 @@
 " Vim color file
-" Maintainer: Martin Baeuml <baeuml@gmail.com>
-" Last Change: 2008-02-09
+" Current Maintainer: Andrew Gallant
+" Original Maintainer: Martin Baeuml <baeuml@gmail.com>
 "
-" This color file is a modification of the "summerfruit" color scheme by Armin Ronacher
-" so that it can be used on 88- and 256-color xterms. The colors are translated
-" using Henry So's programmatic approximation of gui colors from his "desert256"
-" color scheme.
+" Original header:
 "
-" I removed the "italic" option and the background color from
-" comment-coloring because that looks odd on my console.
+" This color file is a modification of the "summerfruit" color scheme by Armin
+" Ronacher so that it can be used on 88- and 256-color xterms. The colors are
+" translated using Henry So's programmatic approximation of gui colors from his
+" "desert256" color scheme.
 "
-" The original "summerfruit" color scheme and "desert256" are available from vim.org.
+" I removed the "italic" option and the background color from comment-coloring
+" because that looks odd on my console.
+"
+" The original "summerfruit" color scheme and "desert256" are available from
+" vim.org.
+"
+" Updates:
+"
+" I (burntsushi) have periodically updated this file to include tweaks in
+" the coloring. However, in June 2024, a neovim update changed its default
+" color scheme.[1] In turns out that this colorscheme relies on aspects of the
+" default colorscheme. There is supposed to be work-arounds... Like running
+" `colorscheme vim` after `hi clear`, but I couldn't get it to work.
+"
+" So I basically just re-did the entire thing. And cut out a bunch of weird
+" functions whose purpose I don't understand.
+"
+" [1]: https://github.com/neovim/neovim/issues/26378
 
 set background=light
-if version > 580
-    " no guarantees for version 5.8 and below, but this makes it stop
-    " complaining
-    hi clear
-    if exists("syntax_on")
-        syntax reset
-    endif
+hi clear
+if exists("syntax_on")
+    syntax reset
 endif
+colorscheme vim
 let g:colors_name="summerfruit256"
 
-if has("gui_running") || &t_Co == 88 || &t_Co == 256
-    " functions {{{
-    " returns an approximate grey index for the given grey level
-    fun <SID>grey_number(x)
-        if &t_Co == 88
-            if a:x < 23
-                return 0
-            elseif a:x < 69
-                return 1
-            elseif a:x < 103
-                return 2
-            elseif a:x < 127
-                return 3
-            elseif a:x < 150
-                return 4
-            elseif a:x < 173
-                return 5
-            elseif a:x < 196
-                return 6
-            elseif a:x < 219
-                return 7
-            elseif a:x < 243
-                return 8
-            else
-                return 9
-            endif
-        else
-            if a:x < 14
-                return 0
-            else
-                let l:n = (a:x - 8) / 10
-                let l:m = (a:x - 8) % 10
-                if l:m < 5
-                    return l:n
-                else
-                    return l:n + 1
-                endif
-            endif
-        endif
-    endfun
+" Restore default vim colors.
+hi ErrorMsg       ctermfg=15 ctermbg=1 guifg=White guibg=Red
+hi Question       ctermfg=2 gui=bold guifg=SeaGreen
+hi ColorColumn    guibg=LightRed
+hi Error          ctermfg=231 ctermbg=160 guifg=#ffffff guibg=#d40000
+hi Todo           cterm=bold ctermfg=160 ctermbg=194 gui=bold guifg=#e50808 guibg=#dbf3cd
+hi String         ctermfg=32 guifg=#0086d2
+hi Constant       ctermfg=32 guifg=#0086d2
+hi Number         ctermfg=33 guifg=#0086f7
+hi Function       ctermfg=198 guifg=#ff0086
+hi Identifier     ctermfg=198 guifg=#ff0086
+hi Statement      ctermfg=202 gui=bold guifg=#fb660a
+hi Label          ctermfg=198 guifg=#ff0086
+hi PreProc        ctermfg=196 guifg=#ff0007
+hi Type           ctermfg=65 gui=bold guifg=#70796b
+hi Special        cterm=bold ctermfg=208 gui=bold guifg=#eb7f00
+hi Visual         ctermbg=7 guibg=#dddddd
+hi LineNr         ctermfg=130 guifg=Brown
+hi StatusLine     cterm=bold gui=bold guifg=#ffffff guibg=#43c464
+hi StatusLineNC   cterm=reverse gui=reverse guifg=#9bd4a9 guibg=#51b069
+hi WarningMsg     ctermfg=1 guifg=Red
+hi link StorageClass   Type
+hi link Conditional    Statement
+hi link Boolean        Constant
+hi link Float          Number
+hi link Character      Constant
+hi link SpecialChar    Special
+hi link Delimiter      Special
+hi link SpecialComment Special
+hi link Debug          Special
+hi link Structure      Type
+hi link Typedef        Type
+hi link Tag            Special
+hi link Define         PreProc
+hi link Macro          PreProc
+hi link PreCondit      PreProc
+hi link Operator       Statement
+hi link Keyword        Statement
+hi link Exception      Statement
+hi link Include        PreProc
+hi link Repeat         Statement
 
-    " returns the actual grey level represented by the grey index
-    fun <SID>grey_level(n)
-        if &t_Co == 88
-            if a:n == 0
-                return 0
-            elseif a:n == 1
-                return 46
-            elseif a:n == 2
-                return 92
-            elseif a:n == 3
-                return 115
-            elseif a:n == 4
-                return 139
-            elseif a:n == 5
-                return 162
-            elseif a:n == 6
-                return 185
-            elseif a:n == 7
-                return 208
-            elseif a:n == 8
-                return 231
-            else
-                return 255
-            endif
-        else
-            if a:n == 0
-                return 0
-            else
-                return 8 + (a:n * 10)
-            endif
-        endif
-    endfun
+" More carry over from when before neovim changed its default colorscheme and
+" fucked everything up.
+hi DiagnosticError           ctermfg=1 guifg=Red
+hi DiagnosticWarn            ctermfg=3 guifg=Orange
+hi DiagnosticInfo            ctermfg=4 guifg=LightBlue
+hi DiagnosticHint            ctermfg=7 guifg=LightGrey
+hi DiagnosticOk              ctermfg=10 guifg=LightGreen
+hi DiagnosticUnderlineError  cterm=underline gui=underline guisp=Red
+hi DiagnosticUnderlineWarn   cterm=underline gui=underline guisp=Orange
+hi DiagnosticUnderlineInfo   cterm=underline gui=underline guisp=LightBlue
+hi DiagnosticUnderlineHint   cterm=underline gui=underline guisp=LightGrey
+hi DiagnosticUnderlineOk     cterm=underline gui=underline guisp=LightGreen
+hi DiagnosticDeprecated      cterm=strikethrough gui=strikethrough guisp=Red
 
-    " returns the palette index for the given grey index
-    fun <SID>grey_color(n)
-        if &t_Co == 88
-            if a:n == 0
-                return 16
-            elseif a:n == 9
-                return 79
-            else
-                return 79 + a:n
-            endif
-        else
-            if a:n == 0
-                return 16
-            elseif a:n == 25
-                return 231
-            else
-                return 231 + a:n
-            endif
-        endif
-    endfun
+hi link DiagnosticVirtualTextError DiagnosticError
+hi link DiagnosticVirtualTextWarn  DiagnosticWarn
+hi link DiagnosticVirtualTextInfo  DiagnosticInfo
+hi link DiagnosticVirtualTextHint  DiagnosticHint
+hi link DiagnosticVirtualTextOk    DiagnosticOk
+hi link DiagnosticFloatingError    DiagnosticError
+hi link DiagnosticFloatingWarn     DiagnosticWarn
+hi link DiagnosticFloatingInfo     DiagnosticInfo
+hi link DiagnosticFloatingHint     DiagnosticHint
+hi link DiagnosticFloatingOk       DiagnosticOk
+hi link DiagnosticSignError        DiagnosticError
+hi link DiagnosticSignWarn         DiagnosticWarn
+hi link DiagnosticSignInfo         DiagnosticInfo
+hi link DiagnosticSignHint         DiagnosticHint
+hi link DiagnosticSignOk           DiagnosticOk
+hi link DiagnosticUnnecessary      Comment
 
-    " returns an approximate color index for the given color level
-    fun <SID>rgb_number(x)
-        if &t_Co == 88
-            if a:x < 69
-                return 0
-            elseif a:x < 172
-                return 1
-            elseif a:x < 230
-                return 2
-            else
-                return 3
-            endif
-        else
-            if a:x < 75
-                return 0
-            else
-                let l:n = (a:x - 55) / 40
-                let l:m = (a:x - 55) % 40
-                if l:m < 20
-                    return l:n
-                else
-                    return l:n + 1
-                endif
-            endif
-        endif
-    endfun
+" More carry over. CoC specific.
+hi CocErrorSign      ctermfg=9 guifg=#ff0000
+hi CocWarningSign    ctermfg=130 guifg=#ff922b
+hi CocInfoSign       ctermfg=11 guifg=#fab005
+hi CocHintSign       ctermfg=12 guifg=#15aabf
+hi CocSelectedText   ctermfg=9 guifg=#fb4934
+hi CocCodeLens       ctermfg=248 guifg=#999999
+hi CocUnderline      cterm=underline gui=underline
+hi CocBold           cterm=bold gui=bold
+hi CocItalic         cterm=italic gui=italic
+hi CocStrikeThrough  cterm=strikethrough gui=strikethrough
+hi CocMarkdownLink   ctermfg=12 guifg=#15aabf
+hi CocDisabled       ctermfg=248 guifg=#999999
 
-    " returns the actual color level for the given color index
-    fun <SID>rgb_level(n)
-        if &t_Co == 88
-            if a:n == 0
-                return 0
-            elseif a:n == 1
-                return 139
-            elseif a:n == 2
-                return 205
-            else
-                return 255
-            endif
-        else
-            if a:n == 0
-                return 0
-            else
-                return 55 + (a:n * 40)
-            endif
-        endif
-    endfun
+hi link CocFadeOut              Conceal
+hi link CocMenuSel              PmenuSel
+hi link CocErrorFloat           CocErrorSign
+hi link CocWarningFloat         CocWarningSign
+hi link CocInfoFloat            CocInfoSign
+hi link CocHintFloat            CocHintSign
+hi link CocErrorHighlight       CocUnderline
+hi link CocWarningHighlight     CocUnderline
+hi link CocInfoHighlight        CocUnderline
+hi link CocHintHighlight        CocUnderline
+hi link CocDeprecatedHighlight  CocStrikeThrough
+hi link CocUnusedHighlight      CocFadeOut
+hi link CocListMode             ModeMsg
+hi link CocListPath             Comment
+hi link CocHighlightText        CursorColumn
+hi link CocHoverRange           Search
+hi link CocCursorRange          Search
+hi link CocHighlightRead        CocHighlightText
+hi link CocHighlightWrite       CocHighlightText
+hi link CocSnippetVisual        Visual
+hi link CocTreeTitle            Title
+hi link CocTreeDescription      Comment
+hi link CocTreeOpenClose        CocBold
+hi link CocTreeSelected         CursorLine
 
-    " returns the palette index for the given R/G/B color indices
-    fun <SID>rgb_color(x, y, z)
-        if &t_Co == 88
-            return 16 + (a:x * 16) + (a:y * 4) + a:z
-        else
-            return 16 + (a:x * 36) + (a:y * 6) + a:z
-        endif
-    endfun
+" Global
+hi Normal guifg=#000000 guibg=#ffffff
 
-    " returns the palette index to approximate the given R/G/B color levels
-    fun <SID>color(r, g, b)
-        " get the closest grey
-        let l:gx = <SID>grey_number(a:r)
-        let l:gy = <SID>grey_number(a:g)
-        let l:gz = <SID>grey_number(a:b)
+" Search
+hi Search guifg=#800000 guibg=#ffae00
+hi IncSearch guifg=#800000 guibg=#ffae00
 
-        " get the closest color
-        let l:x = <SID>rgb_number(a:r)
-        let l:y = <SID>rgb_number(a:g)
-        let l:z = <SID>rgb_number(a:b)
+" Interface Elements
+hi StatusLine guifg=#ffffff guibg=#43c464 gui=bold
+hi StatusLineNC guifg=#9bd4a9 guibg=#51b069
+hi VertSplit guifg=#3687a2 guibg=#3687a2
+hi Folded guifg=#3c78a2 guibg=#c3daea
+hi IncSearch guifg=#708090 guibg=#f0e68c
+hi Pmenu guifg=#000000 guibg=#e8ebff
+hi PmenuSel guifg=#ffffff guibg=#000000
+" hi SignColumn
+hi CursorLine guifg=#c0d9eb
+" hi LineNr guifg=#eeeeee guibg=#438ec3 gui=bold
+" hi MatchParen
 
-        if l:gx == l:gy && l:gy == l:gz
-            " there are two possibilities
-            let l:dgr = <SID>grey_level(l:gx) - a:r
-            let l:dgg = <SID>grey_level(l:gy) - a:g
-            let l:dgb = <SID>grey_level(l:gz) - a:b
-            let l:dgrey = (l:dgr * l:dgr) + (l:dgg * l:dgg) + (l:dgb * l:dgb)
-            let l:dr = <SID>rgb_level(l:gx) - a:r
-            let l:dg = <SID>rgb_level(l:gy) - a:g
-            let l:db = <SID>rgb_level(l:gz) - a:b
-            let l:drgb = (l:dr * l:dr) + (l:dg * l:dg) + (l:db * l:db)
-            if l:dgrey < l:drgb
-                " use the grey
-                return <SID>grey_color(l:gx)
-            else
-                " use the color
-                return <SID>rgb_color(l:x, l:y, l:z)
-            endif
-        else
-            " only one possibility
-            return <SID>rgb_color(l:x, l:y, l:z)
-        endif
-    endfun
+" Specials
+hi Todo guifg=#e50808 guibg=#dbf3cd gui=bold
+hi Title guifg=#000000
+hi Special guifg=#EB7F00 gui=bold
 
-    " returns the palette index to approximate the 'rrggbb' hex string
-    fun <SID>rgb(rgb)
-        let l:r = ("0x" . strpart(a:rgb, 0, 2)) + 0
-        let l:g = ("0x" . strpart(a:rgb, 2, 2)) + 0
-        let l:b = ("0x" . strpart(a:rgb, 4, 2)) + 0
+" Syntax Elements
+hi String guifg=#0086d2
+hi Constant guifg=#0086d2
+hi Number guifg=#0086f7
+hi Statement guifg=#fb660a
+hi Function guifg=#ff0086
+hi PreProc guifg=#ff0007
+hi Comment guifg=#22a21f gui=bold
+hi Type guifg=#70796b
+hi Error guifg=#ffffff guibg=#d40000
+hi Identifier guifg=#ff0086
+hi Label guifg=#ff0086
 
-        return <SID>color(l:r, l:g, l:b)
-    endfun
+" Python Highlighting
+hi pythonCoding guifg=#ff0086
+hi pythonRun guifg=#ff0086
+hi pythonBuiltinObj guifg=#2b6ba2
+hi pythonBuiltinFunc guifg=#2b6ba2
+hi pythonException guifg=#ee0000
+hi pythonExClass guifg=#66cd66
+" hi pythonSpaceError
+hi pythonDocTest guifg=#2f5f49
+hi pythonDocTest2 guifg=#3b916a
+hi pythonFunction guifg=#ee0000
+hi pythonClass guifg=#ff0086
 
-    " sets the highlighting for the given group
-    fun <SID>X(group, fg, bg, attr)
-        if a:fg != ""
-            exec "hi " . a:group . " guifg=#" . a:fg . " ctermfg=" . <SID>rgb(a:fg)
-        endif
-        if a:bg != ""
-            exec "hi " . a:group . " guibg=#" . a:bg . " ctermbg=" . <SID>rgb(a:bg)
-        endif
-        if a:attr != ""
-            exec "hi " . a:group . " gui=" . a:attr . " cterm=" . a:attr
-        endif
-    endfun
-    " }}}
+" HTML Highlighting
+hi htmlTag guifg=#00bdec
+hi htmlEndTag guifg=#00bdec
+hi htmlSpecialTagName guifg=#4aa04a
+hi htmlTagName guifg=#4aa04a
+hi htmlTagN guifg=#4aa04a
 
-    " Global
-    call <SID>X("Normal", "000000", "ffffff", "")
-    " call <SID>X("NonText", "438ec3", "b7dce8", "")
-
-    " Search
-    call <SID>X("Search", "800000", "ffae00", "")
-    call <SID>X("IncSearch", "800000", "ffae00", "")
-
-    " Interface Elements
-    call <SID>X("StatusLine", "ffffff", "43c464", "bold")
-    call <SID>X("StatusLineNC", "9bd4a9", "51b069", "")
-    call <SID>X("VertSplit", "3687a2", "3687a2", "")
-    call <SID>X("Folded", "3c78a2", "c3daea", "")
-    call <SID>X("IncSearch", "708090", "f0e68c", "")
-    call <SID>X("Pmenu", "000000", "e8ebff", "")
-    call <SID>X("PmenuSel", "ffffff", "000000", "")
-    call <SID>X("SignColumn", "", "", "")
-    call <SID>X("CursorLine", "", "c0d9eb", "")
-    " call <SID>X("LineNr", "eeeeee", "438ec3", "bold")
-    call <SID>X("MatchParen", "", "", "")
-
-    " Specials
-    call <SID>X("Todo", "e50808", "dbf3cd", "bold")
-    call <SID>X("Title", "000000", "", "")
-    call <SID>X("Special", "EB7F00", "", "bold")
-
-    " Syntax Elements
-    call <SID>X("String", "0086d2", "", "")
-    call <SID>X("Constant", "0086d2", "", "")
-    call <SID>X("Number", "0086f7", "", "")
-    call <SID>X("Statement", "fb660a", "", "")
-    call <SID>X("Function", "ff0086", "", "")
-    call <SID>X("PreProc", "ff0007", "", "")
-    call <SID>X("Comment", "22a21f", "", "bold")
-    call <SID>X("Type", "70796b", "", "")
-    call <SID>X("Error", "ffffff", "d40000", "")
-    call <SID>X("Identifier", "ff0086", "", "")
-    call <SID>X("Label", "ff0086", "", "")
-
-    " Python Highlighting
-    call <SID>X("pythonCoding", "ff0086", "", "")
-    call <SID>X("pythonRun", "ff0086", "", "")
-    call <SID>X("pythonBuiltinObj", "2b6ba2", "", "")
-    call <SID>X("pythonBuiltinFunc", "2b6ba2", "", "")
-    call <SID>X("pythonException", "ee0000", "", "")
-    call <SID>X("pythonExClass", "66cd66", "", "")
-    call <SID>X("pythonSpaceError", "", "", "")
-    call <SID>X("pythonDocTest", "2f5f49", "", "")
-    call <SID>X("pythonDocTest2", "3b916a", "", "")
-    call <SID>X("pythonFunction", "ee0000", "", "")
-    call <SID>X("pythonClass", "ff0086", "", "")
-
-    " HTML Highlighting
-    call <SID>X("htmlTag", "00bdec", "", "")
-    call <SID>X("htmlEndTag", "00bdec", "", "")
-    call <SID>X("htmlSpecialTagName", "4aa04a", "", "")
-    call <SID>X("htmlTagName", "4aa04a", "", "")
-    call <SID>X("htmlTagN", "4aa04a", "", "")
-
-    " Jinja Highlighting
-    call <SID>X("jinjaTagBlock", "ff0007", "fbf4c7", "bold")
-    call <SID>X("jinjaVarBlock", "ff0007", "fbf4c7", "")
-    call <SID>X("jinjaString", "0086d2", "fbf4c7", "")
-    call <SID>X("jinjaNumber", "bf0945", "fbf4c7", "bold")
-    call <SID>X("jinjaStatement", "fb660a", "fbf4c7", "bold")
-    call <SID>X("jinjaComment", "008800", "002300", "italic")
-    call <SID>X("jinjaFilter", "ff0086", "fbf4c7", "")
-    call <SID>X("jinjaRaw", "aaaaaa", "fbf4c7", "")
-    call <SID>X("jinjaOperator", "ffffff", "fbf4c7", "")
-    call <SID>X("jinjaVariable", "92cd35", "fbf4c7", "")
-    call <SID>X("jinjaAttribute", "dd7700", "fbf4c7", "")
-    call <SID>X("jinjaSpecial", "008ffd", "fbf4c7", "")
-
-    " delete functions {{{
-    delf <SID>X
-    delf <SID>rgb
-    delf <SID>color
-    delf <SID>rgb_color
-    delf <SID>rgb_level
-    delf <SID>rgb_number
-    delf <SID>grey_color
-    delf <SID>grey_level
-    delf <SID>grey_number
-    " }}}
-endif
-
-" vim: set fdl=0 fdm=marker:
-
+" Jinja Highlighting
+hi jinjaTagBlock guifg=#ff0007 guibg=#fbf4c7 gui=bold
+hi jinjaVarBlock guifg=#ff0007 guibg=#fbf4c7
+hi jinjaString guifg=#0086d2 guibg=#fbf4c7
+hi jinjaNumber guifg=#bf0945 guibg=#fbf4c7 gui=bold
+hi jinjaStatement guifg=#fb660a guibg=#fbf4c7 gui=bold
+hi jinjaComment guifg=#008800 guibg=#002300 gui=italic
+hi jinjaFilter guifg=#ff0086 guibg=#fbf4c7
+hi jinjaRaw guifg=#aaaaaa guibg=#fbf4c7
+hi jinjaOperator guifg=#ffffff guibg=#fbf4c7
+hi jinjaVariable guifg=#92cd35 guibg=#fbf4c7
+hi jinjaAttribute guifg=#dd7700 guibg=#fbf4c7
+hi jinjaSpecial guifg=#008ffd guibg=#fbf4c7

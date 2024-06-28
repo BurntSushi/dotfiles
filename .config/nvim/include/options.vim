@@ -18,6 +18,9 @@ set hidden
 " instead of needing to use the '+' or '*' registers explicitly.
 set clipboard+=unnamedplus
 
+" Always disable code folding.
+set nofoldenable
+
 " Prefer xsel over xclip. With xclip, pasting into gmail/gdocs results in
 " stripping all newlines. But with xsel, it works correctly.
 " See: https://github.com/neovim/neovim/issues/5853
@@ -90,3 +93,17 @@ autocmd FileChangedShellPost *
   \ echohl WarningMsg
   \ | echo "File changed on disk. Buffer reloaded."
   \ | echohl None
+
+" A function for finding the syntactic group under the cursor.
+"
+" This is useful for customizing colorschemes.
+"
+" Ref: https://stackoverflow.com/questions/9464844/how-to-get-group-name-of-highlighting-under-cursor-in-vim
+function! SynStack ()
+    for i1 in synstack(line("."), col("."))
+        let i2 = synIDtrans(i1)
+        let n1 = synIDattr(i1, "name")
+        let n2 = synIDattr(i2, "name")
+        echo n1 "->" n2
+    endfor
+endfunction
