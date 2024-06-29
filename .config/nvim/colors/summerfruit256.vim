@@ -57,6 +57,8 @@ hi Visual         ctermbg=7 guibg=#dddddd
 hi LineNr         ctermfg=130 guifg=Brown
 hi StatusLine     cterm=bold gui=bold guifg=#ffffff guibg=#43c464
 hi StatusLineNC   cterm=reverse gui=reverse guifg=#9bd4a9 guibg=#51b069
+hi MoreMsg        ctermfg=2 gui=bold guifg=SeaGreen
+hi ModeMsg        cterm=bold gui=bold
 hi WarningMsg     ctermfg=1 guifg=Red
 hi Search         guibg=NvimDarkGrey1 guifg=NvimLightYellow
 hi CurSearch      guibg=#dddddd guifg=NvimDarkYellow
@@ -98,6 +100,7 @@ hi link PmenuKind      Pmenu
 hi link PmenuKindSel   PmenuSel
 hi link PmenuExtra     Pmenu
 hi link PmenuExtraSel  PmenuSel
+hi link QuickFixLine   Search
 
 " More carry over from when before neovim changed its default colorscheme and
 " fucked everything up.
@@ -131,18 +134,26 @@ hi link DiagnosticSignOk           DiagnosticOk
 hi link DiagnosticUnnecessary      Comment
 
 " More carry over. CoC specific.
-hi CocErrorSign      ctermfg=9 guifg=#ff0000
-hi CocWarningSign    ctermfg=130 guifg=#ff922b
-hi CocInfoSign       ctermfg=11 guifg=#fab005
-hi CocHintSign       ctermfg=12 guifg=#15aabf
-hi CocSelectedText   ctermfg=9 guifg=#fb4934
-hi CocCodeLens       ctermfg=248 guifg=#999999
-hi CocUnderline      cterm=underline gui=underline
-hi CocBold           cterm=bold gui=bold
-hi CocItalic         cterm=italic gui=italic
-hi CocStrikeThrough  cterm=strikethrough gui=strikethrough
-hi CocMarkdownLink   ctermfg=12 guifg=#15aabf
-hi CocDisabled       ctermfg=248 guifg=#999999
+hi CocErrorSign         ctermfg=9 guifg=#ff0000
+hi CocWarningSign       ctermfg=130 guifg=#ff922b
+hi CocInfoSign          ctermfg=11 guifg=#fab005
+hi CocHintSign          ctermfg=12 guifg=#15aabf
+hi CocSelectedText      ctermfg=9 guifg=#fb4934
+hi CocCodeLens          ctermfg=248 guifg=#999999
+hi CocUnderline         cterm=underline gui=underline
+hi CocBold              cterm=bold gui=bold
+hi CocItalic            cterm=italic gui=italic
+hi CocStrikeThrough     cterm=strikethrough gui=strikethrough
+hi CocMarkdownLink      ctermfg=12 guifg=#15aabf
+hi CocDisabled          ctermfg=248 guifg=#999999
+hi CocCursorTransparent gui=strikethrough blend=100
+" hi CocLocationLine    guifg=#ffffff guibg=#000000
+" hi CocSelectedLine    guifg=#ffffff guibg=#000000
+hi CocListLine          guibg=#dddddd
+" hi CocErrorLine       guifg=#ffffff guibg=#000000
+" hi CocWarningLine     guifg=#ffffff guibg=#000000
+" hi CocInfoLine        guifg=#ffffff guibg=#000000
+" hi CocHintLine        guifg=#ffffff guibg=#000000
 
 hi link CocFadeOut              Conceal
 hi link CocMenuSel              PmenuSel
@@ -168,6 +179,39 @@ hi link CocTreeTitle            Title
 hi link CocTreeDescription      Comment
 hi link CocTreeOpenClose        CocBold
 hi link CocTreeSelected         CursorLine
+hi link CocSelectedRange CocHighlightText
+hi link CocSymbolDefault MoreMsg
+hi link CocSymbolFile  Statement
+hi link CocSymbolModule Statement
+hi link CocSymbolNamespace Statement
+hi link CocSymbolPackage Statement
+hi link CocSymbolClass Statement
+hi link CocSymbolMethod Function
+hi link CocSymbolProperty Keyword
+hi link CocSymbolField CocSymbolDefault
+hi link CocSymbolConstructor Function
+hi link CocSymbolEnum  CocSymbolDefault
+hi link CocSymbolInterface CocSymbolDefault
+hi link CocSymbolFunction Function
+hi link CocSymbolVariable CocSymbolDefault
+hi link CocSymbolConstant Constant
+hi link CocSymbolString String
+hi link CocSymbolNumber Number
+hi link CocSymbolBoolean Boolean
+hi link CocSymbolArray CocSymbolDefault
+hi link CocSymbolObject CocSymbolDefault
+hi link CocSymbolKey   Keyword
+hi link CocSymbolNull  Type
+hi link CocSymbolEnumMember CocSymbolDefault
+hi link CocSymbolStruct Keyword
+hi link CocSymbolEvent Keyword
+hi link CocSymbolOperator Operator
+hi link CocSymbolTypeParameter Operator
+hi link CocFloating    NormalFloat
+hi link CocErrorVirtualText CocErrorSign
+hi link CocWarningVirtualText CocWarningSign
+hi link CocInfoVirtualText CocInfoSign
+hi link CocHintVirtualText CocHintSign
 
 " Global
 hi Normal guifg=#000000 guibg=#ffffff
