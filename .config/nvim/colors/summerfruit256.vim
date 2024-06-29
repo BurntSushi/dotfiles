@@ -187,7 +187,7 @@ hi PmenuSel guifg=#ffffff guibg=#000000
 " hi SignColumn
 hi CursorLine guifg=#c0d9eb
 " hi LineNr guifg=#eeeeee guibg=#438ec3 gui=bold
-" hi MatchParen
+hi MatchParen guibg=#dddddd
 
 " Specials
 hi Todo guifg=#e50808 guibg=#dbf3cd gui=bold
