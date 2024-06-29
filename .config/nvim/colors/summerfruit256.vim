@@ -39,6 +39,7 @@ let g:colors_name="summerfruit256"
 " Restore default vim colors.
 hi ErrorMsg       ctermfg=15 ctermbg=1 guifg=White guibg=Red
 hi Question       ctermfg=2 gui=bold guifg=SeaGreen
+hi TermCursor     cterm=reverse gui=reverse
 hi ColorColumn    guibg=LightRed
 hi Error          ctermfg=231 ctermbg=160 guifg=#ffffff guibg=#d40000
 hi Todo           cterm=bold ctermfg=160 ctermbg=194 gui=bold guifg=#e50808 guibg=#dbf3cd
@@ -57,6 +58,21 @@ hi LineNr         ctermfg=130 guifg=Brown
 hi StatusLine     cterm=bold gui=bold guifg=#ffffff guibg=#43c464
 hi StatusLineNC   cterm=reverse gui=reverse guifg=#9bd4a9 guibg=#51b069
 hi WarningMsg     ctermfg=1 guifg=Red
+hi Search         guibg=NvimDarkGrey1 guifg=NvimLightYellow
+hi CurSearch      guibg=#dddddd guifg=NvimDarkYellow
+hi Conceal        ctermfg=7 ctermbg=242 guifg=#ffffff guibg=DarkGrey
+hi Pmenu          ctermfg=16 ctermbg=195 guifg=#000000 guibg=#e8ebff
+hi PmenuSel       ctermfg=231 ctermbg=16 guifg=#ffffff guibg=#000000
+hi PmenuSbar      ctermbg=248 guibg=Grey
+hi PmenuThumb     ctermbg=0 guibg=Black
+hi CursorLineNr   cterm=underline ctermfg=130 gui=bold guifg=Brown
+hi CursorColumn   ctermbg=7 guibg=Grey90
+hi CursorLine     cterm=underline ctermbg=153 guibg=#c0d9eb
+hi Cursor         guifg=bg guibg=fg
+hi lCursor        guifg=bg guibg=fg
+hi link IncSearch      Search
+hi link CursorLineSign SignColumn
+hi link CursorLineFold FoldColumn
 hi link StorageClass   Type
 hi link Conditional    Statement
 hi link Boolean        Constant
@@ -77,6 +93,11 @@ hi link Keyword        Statement
 hi link Exception      Statement
 hi link Include        PreProc
 hi link Repeat         Statement
+hi link Substitute     Search
+hi link PmenuKind      Pmenu
+hi link PmenuKindSel   PmenuSel
+hi link PmenuExtra     Pmenu
+hi link PmenuExtraSel  PmenuSel
 
 " More carry over from when before neovim changed its default colorscheme and
 " fucked everything up.
