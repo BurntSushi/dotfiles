@@ -7,12 +7,12 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.68"
-chrono = { version = "0.4.23", default-features = false, features = ["std", "clock"] }
-env_logger = { version = "0.10.0", default-features = false, features = ["color", "humantime"] }
-lexopt = "0.2.1"
+jiff = { version = "*", path = "/home/andrew/rust/jiff" }
+env_logger = { version = "0.11.3", default-features = false, features = ["color", "humantime"] }
+lexopt = "0.3.0"
 log = "0.4.17"
 regex = "1.7.0"
-roxmltree = "0.16.0"
+roxmltree = "0.20.0"
 textwrap = { version = "0.16.0", default-features = false }
 
 [[bin]]

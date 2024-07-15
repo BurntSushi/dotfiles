@@ -20,7 +20,7 @@ order.
 use std::path::{Path, PathBuf};
 
 use anyhow::Context;
-use chrono::{DateTime, Local, NaiveDateTime, TimeZone};
+use jiff::{civil, fmt::strtime, tz::TimeZone, Timestamp};
 use regex::Regex;
 use roxmltree::{Document, Node};
 
@@ -88,13 +88,13 @@ struct Message {
     /// A date associated with the message. It corresponds to the 'date'
     /// attribute and is in units of milliseconds. It is *probably* the
     /// "received datetime." It always appears to be in UTC.
-    date: DateTime<Local>,
+    date: Timestamp,
     /// A readable date string devoid of timezone info. It's probably just
     /// "naive local time."
     ///
     /// We currently don't use this because 'date' appears sufficient.
     #[allow(dead_code)]
-    date_readable: Option<NaiveDateTime>,
+    date_readable: Option<civil::DateTime>,
     /// From what I can tell, this is equivalent to 'date', but with
     /// milliseconds always set to `0`. (Its units is still milliseconds for
     /// 'sms' but apparently seconds for 'mms'. It appears to always be in
@@ -102,7 +102,7 @@ struct Message {
     ///
     /// We currently don't use this because 'date' appears sufficient.
     #[allow(dead_code)]
-    date_sent: Option<DateTime<Local>>,
+    date_sent: Option<Timestamp>,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -204,7 +204,7 @@ impl<'i> Doc<'i> {
                 body = Some(a.value().to_string());
             } else if a.name() == "date" {
                 date = Some(
-                    parse_utc_timestamp_millis(a.value())
+                    parse_timestamp_millis(a.value())
                         .context("'date' attribute")?,
                 );
             } else if a.name() == "readable_date" {
@@ -214,7 +214,7 @@ impl<'i> Doc<'i> {
                 );
             } else if a.name() == "date_sent" && a.value() != "0" {
                 date_sent = Some(
-                    parse_utc_timestamp_millis(a.value())
+                    parse_timestamp_millis(a.value())
                         .context("'date_sent' attribute")?,
                 );
             }
@@ -276,7 +276,7 @@ impl<'i> Doc<'i> {
                 );
             } else if a.name() == "date" {
                 date = Some(
-                    parse_utc_timestamp_millis(a.value())
+                    parse_timestamp_millis(a.value())
                         .context("'date' attribute")?,
                 );
             } else if a.name() == "readable_date" {
@@ -286,7 +286,7 @@ impl<'i> Doc<'i> {
                 );
             } else if a.name() == "date_sent" && a.value() != "0" {
                 date_sent = Some(
-                    parse_utc_timestamp_seconds(a.value())
+                    parse_timestamp_seconds(a.value())
                         .context("'date_sent' attribute")?,
                 );
             }
@@ -408,6 +408,7 @@ fn output_human(
     msgs: &[Message],
     mut wtr: impl std::io::Write,
 ) -> anyhow::Result<()> {
+    let tz = TimeZone::system();
     for (i, msg) in msgs.iter().enumerate() {
         if i > 0 {
             writeln!(wtr, "{}", "-".repeat(79))?;
@@ -419,43 +420,35 @@ fn output_human(
         writeln!(wtr, "{}", msg.contacts.join(", "))?;
         writeln!(wtr, "PHONE: {}", msg.addresses.join(", "))?;
         writeln!(wtr, "STAMP: {}", msg.timestamp)?;
-        writeln!(wtr, " DATE: {}", msg.date.format("%Y-%m-%d %H:%M:%S"))?;
+        writeln!(
+            wtr,
+            " DATE: {}",
+            strtime::format("%F %T %Z", &msg.date.to_zoned(tz.clone()))?,
+        )?;
         writeln!(wtr, "")?;
         writeln!(wtr, "{}", textwrap::wrap(&msg.body, 79).join("\n"))?;
     }
     Ok(())
 }
 
-fn parse_utc_timestamp_seconds(
-    value: &str,
-) -> anyhow::Result<DateTime<Local>> {
+fn parse_timestamp_seconds(value: &str) -> anyhow::Result<Timestamp> {
     let seconds = value
         .parse::<i64>()
         .context("failed to parse timestamp as seconds")?;
-    let Some(millis) = seconds.checked_mul(1000) else {
-        anyhow::bail!("seconds overflowed when converting to milliseconds")
-    };
-    utc_datetime_from_timestamp_millis(millis)
+    Timestamp::from_second(seconds).context("invalid timestamp")
 }
 
-fn parse_utc_timestamp_millis(value: &str) -> anyhow::Result<DateTime<Local>> {
+fn parse_timestamp_millis(value: &str) -> anyhow::Result<Timestamp> {
     let millis = value
         .parse::<i64>()
         .context("failed to parse timestamp as milliseconds")?;
-    utc_datetime_from_timestamp_millis(millis)
+    Timestamp::from_millisecond(millis).context("invalid timestamp")
 }
 
-fn utc_datetime_from_timestamp_millis(
-    millis: i64,
-) -> anyhow::Result<DateTime<Local>> {
-    let Some(ndt) = NaiveDateTime::from_timestamp_millis(millis) else {
-        anyhow::bail!("invalid timestamp")
-    };
-    Ok(Local.from_utc_datetime(&ndt))
-}
-
-fn parse_readable_date(value: &str) -> anyhow::Result<NaiveDateTime> {
+fn parse_readable_date(value: &str) -> anyhow::Result<civil::DateTime> {
     // Example: Apr 1, 2022 20:46:15
-    NaiveDateTime::parse_from_str(value, "%h %-d, %Y %H:%M:%S")
-        .context("failed to parse readable date")
+    strtime::parse("%h %d, %Y %H:%M:%S", value)
+        .context("failed to parse readable date")?
+        .to_datetime()
+        .context("failed to convert parsed readable date to datetime")
 }
