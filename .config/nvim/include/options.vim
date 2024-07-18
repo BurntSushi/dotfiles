@@ -41,8 +41,8 @@ if executable('xsel')
 endif
 
 " There's no need to do syntax highlighting past this many columns. The default
-" of 3000 is a bit and degrades performance.
-set synmaxcol=200
+" of 3000 is a bit big and degrades performance.
+set synmaxcol=400
 
 " While typing a search, start highlighting results.
 set incsearch
