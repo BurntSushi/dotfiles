@@ -447,8 +447,6 @@ fn parse_timestamp_millis(value: &str) -> anyhow::Result<Timestamp> {
 
 fn parse_readable_date(value: &str) -> anyhow::Result<civil::DateTime> {
     // Example: Apr 1, 2022 20:46:15
-    strtime::parse("%h %d, %Y %H:%M:%S", value)
-        .context("failed to parse readable date")?
-        .to_datetime()
-        .context("failed to convert parsed readable date to datetime")
+    civil::DateTime::strptime("%h %d, %Y %H:%M:%S", value)
+        .context("failed to parse readable datetime")
 }
