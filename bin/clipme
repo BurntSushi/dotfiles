@@ -3,6 +3,7 @@
 # vim: ft=sh sw=2 ts=2 sts=2
 
 case "$1" in
+  "mre") v="[Help me help you.](https://www.youtube.com/watch?v=l1B1_jQnlFk) Don't tell, [_show_](https://en.wikipedia.org/wiki/Minimal_reproducible_example). Here's [how to do it](https://stackoverflow.com/help/minimal-reproducible-example)." ;;
   "shrug") v="¯\\_(ツ)_/¯" ;;
   "snowman") v="☃" ;;
   "sherlock-ru") v="Шерлок Холмс" ;;
