@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.68"
-jiff = { version = "*", path = "/home/andrew/rust/jiff" }
+jiff = "0.1.13"
 env_logger = { version = "0.11.3", default-features = false, features = ["color", "humantime"] }
 lexopt = "0.3.0"
 log = "0.4.17"
