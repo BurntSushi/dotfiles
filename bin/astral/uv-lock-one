@@ -32,17 +32,18 @@ echo "TEMPDIR: $dir" >&2
 
 cd "$dir" || exit 1
 if [ -n "$requires_python" ]; then
-  requires_python="requires-python = '>=$requires_python'"
+  requires_python_toml="requires-python = '>=$requires_python'"
+  requires_python_arg="-p $requires_python"
 fi
 cat > pyproject.toml <<EOF
 [project]
 name = 'project'
 version = '0.1.0'
 dependencies = ['$dependency']
-$requires_python
+$requires_python_toml
 EOF
 
 uvdir="$HOME/astral/uv"
 (cd "$uvdir" && cargo build -p uv)
-"$uvdir/target/debug/uv" lock
+"$uvdir/target/debug/uv" lock $requires_python_arg
 printf "%s" "$dir/uv.lock" | xcp
