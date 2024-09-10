@@ -19,6 +19,7 @@
 /.dotnet
 /.dub
 /.eclipse
+/.emscripten_cache
 /.falcon.*
 /.fceux
 /.fontconfig
