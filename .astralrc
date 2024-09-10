@@ -8,6 +8,16 @@ PATH="$(prependpath "$PATH" "$HOME/bin/astral")"
 # For uv tests.
 export UV_BOOTSTRAP_DIR="$HOME/astral/uv/bin"
 
+# uv attempts hard-linking from `/tmp` to `~/.local/blah/blah`, but my
+# `/tmp` is a ramdisk and thus a different file system. So hard-linking
+# fails. This in turn prompts a WARNING message to stderr. Note a huge
+# deal, but this results in snapshot test failures that are just too
+# annoying to deal with. So... Just enable `copy` link mode.
+#
+# Welp, that didn't work. Becausr this being set apparently changes the
+# help output in some cases.
+#export UV_LINK_MODE=copy
+
 # We use longer lines at Astral.
 export NEOVIM_COLOR_COLUMN=101
 
