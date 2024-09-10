@@ -49,6 +49,9 @@ PATH="$(prependpath "$PATH" "/opt/homebrew/sbin")"
 # This is for pyenv.
 PATH="$(prependpath "$PATH" "$HOME/.pyenv/shims")"
 
+# This is for emscripten. Whhhyyyyyyyyyyy is it in /usr/lib? Wtf?
+PATH="$(prependpath "$PATH" "/usr/lib/emscripten")"
+
 export PATH
 
 # Set the Cargo installation directory.
