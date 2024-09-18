@@ -55,7 +55,7 @@ dest="$bindir/$name"
 cargo build --profile "$profile" -p uv
 cp "target/$profile/$base" "$dest"
 echo "binary at $dest"
-if [ "$worktree" = main ]; then
+if [ "$name" = "uv-main" ]; then
   cp "target/$profile/$base" "$bindir/"
   echo "binary also at $bindir/$name"
 fi
