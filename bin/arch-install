@@ -25,10 +25,21 @@
 #
 #   gpginit
 #   homeinit
+#
+# Now log out and log back in, then:
+#
 #   xenvinit (if installing graphics)
 #   sshinit
 #   scannerinit
 #   autologin (for media PCs)
+#
+# Time for some manual steps:
+#
+#   Run setup-home-links and add appropriate configs.
+#   Then run it again.
+#
+#   Then add hostname to relevant scripts in ~/.config and ~/bin. Then add
+#   ~/.config/ag/startup/wingo-HOST.xinitrc and make it executable.
 
 INSTALL_DIR=/mnt
 
@@ -135,7 +146,6 @@ xpkgs() {
     alacritty \
     k3b konversation konsole dolphin okular \
     qt5 qt5ct oxygen oxygen-icons \
-    xsane \
     xbindkeys \
     libnotify \
     kmix \
@@ -276,6 +286,8 @@ xenvinit() {
   . "$HOME/bin/x11-go"
   go install -v github.com/BurntSushi/wingo/...@latest
   go install -v github.com/BurntSushi/gohead/...@latest
+  git clone https://github.com/BurntSushi/wingo /tmp/wingo
+  cp -a /tmp/wingo/data ~/.local/share/wingo
 
   virtualenv "$HOME/.pyx11"
   # shellcheck disable=SC1091
