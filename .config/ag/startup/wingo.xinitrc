@@ -34,6 +34,9 @@ case "$(myhostname)" in
   chalmers)
     exec "$base/wingo-chalmers.xinitrc"
     ;;
+  flanders)
+    exec "$base/wingo-flanders.xinitrc"
+    ;;
   wiggum)
     exec "$base/wingo-wiggum.xinitrc"
     ;;

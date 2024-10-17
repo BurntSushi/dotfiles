@@ -98,6 +98,9 @@ skinner)
   ;;
 chalmers)
   ;;
+flanders)
+  placeHead "$1"
+  ;;
 wiggum|otto)
   pgrep dzen-workspaces | xargs -r kill
   killall trayer

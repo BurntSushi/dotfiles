@@ -145,7 +145,7 @@ xpkgs() {
     xterm \
     alacritty \
     k3b konversation konsole dolphin okular \
-    qt5 qt5ct oxygen oxygen-icons \
+    qt6ct oxygen oxygen-icons kde-cli-tools \
     xbindkeys \
     libnotify \
     kmix \
@@ -167,6 +167,16 @@ xpkgs() {
     pipewire-audio pipewire-pulse pipewire-alsa wireplumber \
     pamixer pavucontrol \
     firefox
+
+  # Someone seems to have fucked up the KDE/qt6 packages
+  # on Archlinux, so we need to download this magical file
+  # in order to make file associations in Dolphin work. WTF.
+  #
+  # See: https://old.reddit.com/r/kde/comments/1bd313p/dolphin_not_recognizing_file_associations/l26i3m2/
+  mkdir ~/.config/menus
+  curl \
+    -L https://raw.githubusercontent.com/KDE/plasma-workspace/master/menu/desktop/plasma-applications.menu \
+    -o ~/.config/menus/applications.menu
 }
 
 userinit() {

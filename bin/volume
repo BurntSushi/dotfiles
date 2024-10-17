@@ -52,7 +52,7 @@ get_volume_icon() {
 }
 
 case "$(myhostname)" in
-  duff|frink|krusty|kang|kodos|bart)
+  duff|frink|krusty|kang|kodos|bart|flanders)
     case $1 in
       up)
         pamixer --increase 5

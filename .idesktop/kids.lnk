@@ -1,8 +1,8 @@
 table Icon
-  Caption: movies
+  Caption: kids
   Icon: /usr/share/icons/oxygen/base/64x64/places/folder-blue.png
-  X: 422
+  X: 522
   Y: 42
-  Command[0]: dolphin /m/media/movies
+  Command[0]: dolphin /m/media/kids
 end
 
