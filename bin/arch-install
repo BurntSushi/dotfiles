@@ -1,10 +1,47 @@
 #!/bin/bash
 
+# TIP: For configuring wifi from the boot disk, these commands are useful:
+#
+#   iwctl station wlan0 scan
+#   iwctl station wlan0 get-networks
+#   iwctl station wlan0 connect <SSID>
+#
+# The last command will prompt for a password.
+
+# TIP: This command will write out a nice mirror list. Do this before
+# bootstrap.
+#
+#   reflector \
+#     --country 'United States' \
+#     --age 12 \
+#     --protocol https \
+#     --sort rate \
+#     --save /etc/pacman.d/mirrorlist
+#
+# This command can take a while and will sometimes emit errors. That's OK.
+# Running this can sometimes significantly improve download speeds.
+
+# The script below doesn't handle disk partitioning since that can vary
+# depending on the hardware. But the standard thing I do (for non-encrypted
+# devices) is:
+#
+#   cfdisk /dev/sda
+#
+# Use a GPT partition table. Then create a 2GB boot EFI System Partition.
+# And then a Linux system partition using the rest of the space. No swap
+# partition. Write it. Then format the partitions:
+#
+#   mkfs.fat -F32 /dev/sda1
+#   mkfs.ext4 /dev/sda2
+#
+# Then you can start the steps below.
+
 # Recommended steps:
 #
 #   encrypt (if encrypting disk, recommended for laptop)
 #   bootstrap before entering chroot
 #   copy this script into INSTALL_DIR
+#   arch-chroot /mnt
 #   rootinit after entering chroot
 #   x (if installing graphics)
 #   pkgs
@@ -26,7 +63,7 @@
 #   gpginit
 #   homeinit
 #
-# Now log out and log back in, then:
+# Now log out and log back in on tty2, then:
 #
 #   xenvinit (if installing graphics)
 #   sshinit
@@ -40,6 +77,11 @@
 #
 #   Then add hostname to relevant scripts in ~/.config and ~/bin. Then add
 #   ~/.config/ag/startup/wingo-HOST.xinitrc and make it executable.
+#
+#   Then `setup-system-links --dry-run`. Check the output and then run
+#   `sudo -E setup-system-links`. (Somewhat recently, "secure path" has
+#   been enabled in sudoers, which makes this annoyingly not work. I've just
+#   been disabling it.)
 
 INSTALL_DIR=/mnt
 
@@ -167,16 +209,6 @@ xpkgs() {
     pipewire-audio pipewire-pulse pipewire-alsa wireplumber \
     pamixer pavucontrol \
     firefox
-
-  # Someone seems to have fucked up the KDE/qt6 packages
-  # on Archlinux, so we need to download this magical file
-  # in order to make file associations in Dolphin work. WTF.
-  #
-  # See: https://old.reddit.com/r/kde/comments/1bd313p/dolphin_not_recognizing_file_associations/l26i3m2/
-  mkdir ~/.config/menus
-  curl \
-    -L https://raw.githubusercontent.com/KDE/plasma-workspace/master/menu/desktop/plasma-applications.menu \
-    -o ~/.config/menus/applications.menu
 }
 
 userinit() {
@@ -303,6 +335,16 @@ xenvinit() {
   # shellcheck disable=SC1091
   . "$HOME/.pyx11/bin/activate"
   pip install git+https://github.com/wingowm/pywingo
+
+  # Someone seems to have fucked up the KDE/qt6 packages
+  # on Archlinux, so we need to download this magical file
+  # in order to make file associations in Dolphin work. WTF.
+  #
+  # See: https://old.reddit.com/r/kde/comments/1bd313p/dolphin_not_recognizing_file_associations/l26i3m2/
+  mkdir "$HOME/.config/menus"
+  curl \
+    -L https://raw.githubusercontent.com/KDE/plasma-workspace/master/menu/desktop/plasma-applications.menu \
+    -o "$HOME/.config/menus/applications.menu"
 }
 
 sshinit() {
