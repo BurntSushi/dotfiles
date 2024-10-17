@@ -36,7 +36,7 @@ case "$(myhostname)" in
   bart)
     framework-configure-touchpad
     ;;
-  chalmers|skinner|wiggum|otto|flanders)
+  chalmers|skinner|wiggum|otto|flanders|milhouse)
     no-blanking
     xset m 3 1
     ;;

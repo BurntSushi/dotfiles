@@ -98,7 +98,7 @@ skinner)
   ;;
 chalmers)
   ;;
-flanders)
+flanders|milhouse)
   placeHead "$1"
   ;;
 wiggum|otto)

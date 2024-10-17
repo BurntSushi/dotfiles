@@ -37,6 +37,9 @@ case "$(myhostname)" in
   flanders)
     exec "$base/wingo-flanders.xinitrc"
     ;;
+  milhouse)
+    exec "$base/wingo-milhouse.xinitrc"
+    ;;
   wiggum)
     exec "$base/wingo-wiggum.xinitrc"
     ;;
