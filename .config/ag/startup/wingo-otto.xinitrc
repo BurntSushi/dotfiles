@@ -10,7 +10,6 @@ idesk &
 no-blanking-loop &
 dunst &
 nm-applet &
-kmix --keepvisibility &
 restart-xcompmgr &
 
 exec bash -c '(dbus-launch run-wingo ; (while true; do sleep 1000; done))'
