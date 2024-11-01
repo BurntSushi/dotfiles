@@ -57,7 +57,7 @@ cp "target/$profile/$base" "$dest"
 echo "binary at $dest"
 if [ "$name" = "uv-main" ]; then
   cp "target/$profile/$base" "$bindir/"
-  echo "binary also at $bindir/$name"
+  echo "binary also at $bindir/$base"
 fi
 if [ -n "$alert" ]; then
   A "$alert"
