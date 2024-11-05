@@ -33,3 +33,5 @@
   pager = gitdiffer
 [interactive]
   diffFilter = gitdiffer
+[branch]
+  sort = -committerdate
