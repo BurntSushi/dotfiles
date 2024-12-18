@@ -295,7 +295,7 @@ gpginit() {
   rsync \
     --archive --recursive --human-readable --partial --inplace --progress \
     -e 'ssh -p 7704' \
-    andrew@home.burntsushi.net:/m/data/andrew/keys/*.key.* /tmp/
+    andrew@home.burntsushi.net:/m/data/andrew/sync/keys/*.key.* /tmp/
   gpg --pinentry-mode loopback --import /tmp/jamslam@gmail.com.key.priv
   gpg --pinentry-mode loopback --import /tmp/kbrady39@gmail.com.key.priv
   echo "use 'gpg --edit-key {email}' to trust each key completely"
