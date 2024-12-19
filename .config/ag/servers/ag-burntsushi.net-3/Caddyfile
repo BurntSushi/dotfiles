@@ -1,27 +1,75 @@
 (logger) {
-  log {
-    level info
-    format console {
-      time_format rfc3339
-    }
-    output file {args.0} {
-      roll_size 200MiB
-      roll_uncompressed
-      roll_local_time
-    }
-  }
+	log {
+		level info
+		format console {
+			time_format rfc3339
+		}
+		output file {args.0} {
+			roll_size 200MiB
+			roll_uncompressed
+			roll_local_time
+		}
+	}
 }
 
 {
-  import logger ./log/caddy.log
+	import logger ./log/caddy.log
 }
 
-spaceforyoupo.com {
-  root * ./spaceforyoupo.com/site
-  file_server
-  import logger ./spaceforyoupo.com/log/access.log
+# spaceforyoupo.com {
+# 	root * ./spaceforyoupo.com/site
+# 	file_server
+# 	import logger ./spaceforyoupo.com/log/access.log
+# }
+#
+# www.spaceforyoupo.com {
+# 	redir https://spaceforyoupo.com{uri}
+# }
+
+burntsushi.net {
+	import logger ./burntsushi.net/log/access.log
+	handle_path /stuff/* {
+		basicauth /secret/* {
+			rocksteady $2a$14$FSaqcCg5bGXmk.f38SyidO.OSLyTq/zF5CB66ZI.psQrIZybbEomO
+		}
+		root * ./burntsushi.net/site/stuff
+		file_server
+	}
+	handle {
+		root /keybase.txt ./burntsushi.net/site/keybase
+		root * ./burntsushi.net/site/blog
+		file_server
+	}
 }
 
-www.spaceforyoupo.com {
-  redir https://spaceforyoupo.com{uri}
+www.burntsushi.net {
+	redir https://burntsushi.net{uri}
 }
+
+blog.burntsushi.net {
+	redir https://burntsushi.net{uri}
+}
+
+# burntsushi-test.net {
+#   import logger ./burntsushi.net/log/access.log
+#   handle_path /stuff/* {
+#     basicauth /secret/* {
+#       rocksteady $2a$14$FSaqcCg5bGXmk.f38SyidO.OSLyTq/zF5CB66ZI.psQrIZybbEomO
+#     }
+#     root * ./burntsushi.net/site/stuff
+#     file_server
+#   }
+#   handle {
+#     root /keybase.txt ./burntsushi.net/site/keybase
+#     root * ./burntsushi.net/site/blog
+#     file_server
+#   }
+# }
+#
+# www.burntsushi-test.net {
+# 	redir https://burntsushi-test.net{uri}
+# }
+#
+# blog.burntsushi-test.net {
+# 	redir https://burntsushi-test.net{uri}
+# }
