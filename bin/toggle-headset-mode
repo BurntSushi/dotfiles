@@ -46,7 +46,7 @@ case "$cur" in
     pactl set-card-profile $card headset-head-unit-msbc
     notify_headset
     ;;
-  headset-head-unit-msbc)
+  headset-head-unit|headset-head-unit-msbc)
     pactl set-card-profile $card a2dp-sink
     notify_high_fidelity
     ;;
