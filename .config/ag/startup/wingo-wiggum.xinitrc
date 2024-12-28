@@ -1,6 +1,8 @@
 #!/bin/sh
 
 startup &
+sleep 2
+video tv
 nitrogen --restore
 gkrellm &
 idesk &
@@ -9,7 +11,5 @@ dunst &
 nm-applet &
 restart-xcompmgr &
 (sleep 2 && video tv) &
-(sleep 4 && nitrogen --restore) &
-(sleep 6 && video tv) &
 
 exec bash -c '(dbus-launch run-wingo ; (while true; do sleep 1000; done))'

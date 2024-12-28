@@ -2,7 +2,6 @@
 
 startup &
 sleep 2
-# (sleep 1 && video tv) &
 video tv
 nitrogen --restore
 gkrellm &
