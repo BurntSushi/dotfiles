@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Every once in a while, the mirrors I'm using get slow.
+# And in most occasions, running this fixes the issue.
+
+reflector \
+  --country 'United States' \
+  --age 12 \
+  --protocol https \
+  --sort rate \
+  --save /etc/pacman.d/mirrorlist
