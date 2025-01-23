@@ -1,0 +1,64 @@
+#!/bin/bash
+
+usage() {
+  echo "Usage: $(basename "$0") [-a -p <cargo-profile>] [worktree] [<suffix>]"
+}
+
+base="ruff"
+alert=
+profile=profiling
+worktree=main
+suffix=
+while true; do
+  case "$1" in
+    -a)
+      alert=bart
+      shift
+      ;;
+    -p)
+      profile="$2"
+      shift 2
+      ;;
+    -h)
+      usage
+      exit 0
+      ;;
+    -*)
+      usage >&2
+      exit 1
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+if [ -n "$1" ]; then
+  worktree="$1"
+  shift
+  if [ -n "$1" ]; then
+    suffix="$1"
+    shift
+  fi
+fi
+
+checkout="$HOME/astral/ruff/$worktree"
+cd "$checkout" || exit 1
+if [ -n "$suffix" ]; then
+  name="$base-$suffix"
+else
+  branch="$(git branch --show-current | sed 's#/#-#g')"
+  name="$base-$branch"
+fi
+bindir="$HOME/bin/x86_64"
+dest="$bindir/$name"
+
+cargo build --profile "$profile" -p ruff
+cp "target/$profile/$base" "$dest"
+echo "binary at $dest"
+if [ "$name" = "ruff-main" ]; then
+  cp "target/$profile/$base" "$bindir/"
+  echo "binary also at $bindir/$base"
+fi
+if [ -n "$alert" ]; then
+  A "$alert"
+fi

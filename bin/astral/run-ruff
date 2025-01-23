@@ -1,0 +1,68 @@
+#!/bin/bash
+
+set -e
+
+usage() {
+  echo "Usage: $(basename "$0") [-a/--alert -q/--quiet -p/--profile <cargo-profile>] <worktree> -- <ruff-args>"
+}
+
+base="ruff"
+profile=dev
+worktree=
+quiet=
+alert=
+while true; do
+  case "$1" in
+    -a|--alert)
+      alert=bart
+      shift
+      ;;
+    -p|--profile)
+      profile="$2"
+      shift 2
+      ;;
+    -q|--quiet)
+      quiet="-q"
+      shift
+      ;;
+    -h)
+      usage
+      exit 0
+      ;;
+    --)
+      shift
+      break
+      ;;
+    -*)
+      usage >&2
+      exit 1
+      ;;
+    *)
+      if [ -n "$worktree" ]; then
+        usage >&2
+        exit 1
+      fi
+      worktree="$1"
+      shift
+      ;;
+  esac
+done
+if [ -z "$worktree" ]; then
+  usage >&2
+  exit 1
+fi
+
+checkout="$HOME/astral/ruff/$worktree"
+(
+  cd "$checkout" || exit 1
+  cargo build --profile "$profile" -p ruff $quiet
+)
+if [ "$profile" = "dev" ]; then
+  bin="$checkout/target/debug/$base"
+else
+  bin="$checkout/target/$profile/$base"
+fi
+if [ -n "$alert" ]; then
+  A "$alert" &
+fi
+"$bin" "$@"
