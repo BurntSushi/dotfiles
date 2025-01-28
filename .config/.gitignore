@@ -1,3 +1,5 @@
+/.android
+/Android Open Source Project
 /alacritty
 /alire
 /autostart
@@ -26,6 +28,7 @@
 /go
 /goa-1.0
 /gohead
+/Google
 /google-chrome
 /gpick
 /gtk-2.0

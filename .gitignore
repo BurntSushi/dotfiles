@@ -3,6 +3,7 @@
 # with ripgrep convenient, since it won't descend into most directories.
 
 # top-level hidden files/directories
+/.android
 /.ansible
 /.anyconnect
 /.aws
@@ -33,6 +34,7 @@
 /.gnupg
 /.gnuplot_history
 /.gox11
+/.gradle
 /.gsutil
 /.helm
 /.honu
@@ -157,6 +159,7 @@
 /.perforce-install
 /.smartbear
 /jmeter.log
+/.emulator_console_auth_token
 
 # More junk and macOS shit.
 /Documents
