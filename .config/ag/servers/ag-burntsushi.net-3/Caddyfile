@@ -40,3 +40,14 @@ blog.burntsushi.net {
 	redir https://burntsushi.net{uri}
 }
 
+jiff.rs {
+	import logger ./jiff.rs/log/access.log
+	handle {
+		root * ./jiff.rs/site
+		file_server
+	}
+}
+
+www.jiff.rs {
+	redir https://jiff.rs{uri}
+}
