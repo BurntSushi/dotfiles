@@ -10,6 +10,7 @@
 /.babel.json
 /.bash_history
 /.bazel
+/.cabal
 /.cache
 /.cargo
 /.cddb
@@ -25,6 +26,7 @@
 /.fceux
 /.fontconfig
 /.fzf*
+/.ghcup
 /.gist
 /.gitconfig
 /.git-old
