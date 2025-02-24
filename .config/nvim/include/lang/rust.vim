@@ -20,7 +20,6 @@ let g:rust_recommended_style = 0
 let g:rustfmt_autosave = 1
 let g:rustfmt_autosave_if_config_present = 0
 let g:rustfmt_command = "rustfmt +stable"
-let g:rustfmt_options = "--edition 2021"
 
 " Make CTRL-T work correctly with goto-definition.
 setlocal tagfunc=CocTagFunc
