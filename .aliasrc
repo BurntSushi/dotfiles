@@ -33,6 +33,8 @@ alias gp="g push home master && g push origin master"
 alias gpt="g push home master --tags && g push origin master --tags"
 alias gy="g diffy | less -RFX"
 
+alias cir="cargo insta review"
+
 alias grep="grep --color=auto"
 alias egrep="egrep --color=auto"
 alias fgrep="fgrep --color=auto"
