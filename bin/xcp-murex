@@ -1,0 +1,13 @@
+#!/usr/bin/murex
+
+paste=""
+$ARGV | foreach arg {
+  switch $arg {
+    case "-o" { paste="yes" }
+  }
+}
+if { $paste == "yes" } then {
+  xsel -o --clipboard
+} else {
+  xsel -i --clipboard
+}
