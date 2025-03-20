@@ -47,6 +47,7 @@ bind zv composite js document.location.href | exclaim_quiet mpv --loop
 autocmd DocStart mail.google.com mode ignore
 autocmd DocStart meet.google.com mode ignore
 autocmd DocStart discordapp.com mode ignore
+autocmd DocStart profiler.firefox.com mode ignore
 
 " Sometimes the status bar in the bottom left corner overlaps the Tridactyl
 " command line, so set an option to move the status bar to the right.
