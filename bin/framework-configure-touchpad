@@ -19,8 +19,8 @@ xinput set-prop "$device" "libinput Accel Speed" 0.40
 # and was totally alient to me.
 xinput set-prop "$device" "libinput Click Method Enabled" 0 1
 # This makes two finger scrolling a bit more sensitive, so that it starts
-# scrolling more quickly. (This also appears to be the minimum value.)
-xinput set-prop "$device" "libinput Scrolling Pixel Distance" 20
+# scrolling more quickly.
+xinput set-prop "$device" "libinput Scrolling Pixel Distance" 10
 # These are all default values, but were things I was experimenting with before
 # I figured out that 'Click Method' was what I wanted to tweak.
 xinput set-prop "$device" "libinput Middle Emulation Enabled" 0
