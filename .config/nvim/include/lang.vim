@@ -2,6 +2,8 @@ au FileType rust runtime! include/lang/rust.vim
 
 au FileType go runtime! include/lang/go.vim
 
+au FileType python runtime! include/lang/python.vim
+
 au FileType typescript runtime! include/lang/typescript.vim
 
 au FileType markdown
@@ -91,13 +93,6 @@ au FileType lua
   \ | let &efm="lua: %f:%l:%m,%-G%.%#"
   \ | let b:Comment="--"
   \ | let b:EndComment=""
-
-au FileType python
-  \ let &mp="clear; python2 %"
-  \ | let &efm='%A %#File "%f"\, line %l\,%.%#,%-GTrace%.%#,%C %.%#,%Z%m,%-G%.%#'
-  \ | let b:Comment="#"
-  \ | let b:EndComment=""
-  \ | runtime! include/spacing/four.vim
 
 au FileType php
   \ let b:Comment="//"

@@ -33,5 +33,20 @@
   "rust-analyzer.inlayHints.typeHints": false,
   "rust-analyzer.cargo.loadOutDirsFromCheck": true,
   "rust-analyzer.procMacro.enable": true,
-  "rust-analyzer.server.path": "/home/andrew/bin/rust-analyzer-wrapper"
+  "rust-analyzer.server.path": "/home/andrew/bin/rust-analyzer-wrapper",
+  "languageserver": {
+    "python": {
+      "command": "/home/andrew/bin/astral/run-red-knot-server",
+      "args": ["server"],
+      "rootPatterns": ["pyproject.toml", "knot.toml"],
+      "filetypes": ["python"],
+      "trace.server": "verbose",
+      "initializationOptions": {
+        "settings": {
+          "logLevel": "debug",
+          "logFile": "/tmp/trace-red-knot.log"
+        }
+      }
+    }
+  }
 }
