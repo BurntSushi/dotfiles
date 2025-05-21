@@ -16,8 +16,8 @@ vnoremap <Leader>f !par T4 'B=.,?_A_a' 71qr<CR>
 nmap <Leader>f <S-v><Leader>f
 vnoremap <Leader>g !par T4 'B=.,?_A_a' 79qr<CR>
 nmap <Leader>g <S-v><Leader>g
-vnoremap <Leader>h !par T8 'B=.,?_A_a' 79qr<CR>
-nmap <Leader>h <S-v><Leader>h
+vnoremap <Leader>g !par T4 'B=.,?_A_a' 99qr<CR>
+nmap <Leader>g <S-v><Leader>g
 
 " Conveniences for base64 encoding/decoding. For encoding, we strip the
 " trailing newline to make inline base64 encoding work as one would expect.
