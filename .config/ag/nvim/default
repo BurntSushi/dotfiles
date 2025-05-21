@@ -36,15 +36,20 @@
   "rust-analyzer.server.path": "/home/andrew/bin/rust-analyzer-wrapper",
   "languageserver": {
     "python": {
-      "command": "/home/andrew/bin/astral/run-red-knot-server",
+      "command": "/home/andrew/bin/astral/run-ty-server",
       "args": ["server"],
-      "rootPatterns": ["pyproject.toml", "knot.toml"],
+      "rootPatterns": ["pyproject.toml", "ty.toml"],
       "filetypes": ["python"],
       "trace.server": "verbose",
       "initializationOptions": {
         "settings": {
+          "experimental": {
+              "completions": {
+                  "enable": true
+              }
+          },
           "logLevel": "debug",
-          "logFile": "/tmp/trace-red-knot.log"
+          "logFile": "/tmp/trace-ty.log"
         }
       }
     }

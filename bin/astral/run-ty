@@ -3,10 +3,10 @@
 set -e
 
 usage() {
-  echo "Usage: $(basename "$0") [-a/--alert -q/--quiet -p/--profile <cargo-profile>] <worktree> -- <red_knot-args>"
+  echo "Usage: $(basename "$0") [-a/--alert -q/--quiet -p/--profile <cargo-profile>] <worktree> -- <ty-args>"
 }
 
-base="red_knot"
+base="ty"
 profile=dev
 worktree=
 quiet=
@@ -55,7 +55,7 @@ fi
 checkout="$HOME/astral/ruff/$worktree"
 (
   cd "$checkout" || exit 1
-  cargo build --profile "$profile" -p red_knot $quiet
+  cargo build --profile "$profile" -p ty $quiet
 )
 if [ "$profile" = "dev" ]; then
   bin="$checkout/target/debug/$base"

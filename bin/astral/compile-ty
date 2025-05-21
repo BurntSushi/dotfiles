@@ -4,7 +4,7 @@ usage() {
   echo "Usage: $(basename "$0") [-a -p <cargo-profile>] [worktree] [<suffix>]"
 }
 
-base="red_knot"
+base="ty"
 alert=
 profile=profiling
 worktree=main
@@ -61,10 +61,10 @@ fi
 bindir="$HOME/bin/x86_64"
 dest="$bindir/$name"
 
-cargo build --profile "$cargo_profile_name" -p red_knot
+cargo build --profile "$cargo_profile_name" -p ty
 cp "target/$profile/$base" "$dest"
 echo "binary at $dest"
-if [ "$name" = "red_knot-main" ]; then
+if [ "$name" = "ty-main" ]; then
   cp "target/$profile/$base" "$bindir/"
   echo "binary also at $bindir/$base"
 fi

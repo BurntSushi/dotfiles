@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec /home/andrew/astral/ruff/pr1/target/debug/ty server 2> /tmp/stderr-ty.log

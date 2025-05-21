@@ -1,3 +1,0 @@
-#!/bin/bash
-
-exec /home/andrew/astral/ruff/pr1/target/debug/red_knot server 2> /tmp/stderr-red-knot.log

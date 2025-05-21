@@ -14,7 +14,7 @@ export UV_BOOTSTRAP_DIR="$HOME/astral/uv/bin"
 # deal, but this results in snapshot test failures that are just too
 # annoying to deal with. So... Just enable `copy` link mode.
 #
-# Welp, that didn't work. Becausr this being set apparently changes the
+# Welp, that didn't work. Because this being set apparently changes the
 # help output in some cases.
 #export UV_LINK_MODE=copy
 
