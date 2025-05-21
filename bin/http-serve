@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if [ $# != 2 ]; then
+  echo "Usage: $(basename "$0") <port> <directory>" >&2
+  exit 1
+fi
+port="$1"
+dir="$2"
+
+exec darkhttpd "$dir" --port "$port" --default-mimetype image/svg+xml
