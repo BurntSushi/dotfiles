@@ -11,12 +11,12 @@ inoremap <C-s> <ESC>l:w<CR>
 " Keybindings for invoking 'par' to reflow text.
 " 'f' is for reflowing to shorter lines, usually for commit messages.
 " 'g' is for standard 79 columns with 4 space tabs.
-" 'h' is like 'g', except it's for 8 space tabs. (e.g., Go.)
+" 'h' is for 100 columns and 4 space tabs (Astral style).
 vnoremap <Leader>f !par T4 'B=.,?_A_a' 71qr<CR>
 nmap <Leader>f <S-v><Leader>f
 vnoremap <Leader>g !par T4 'B=.,?_A_a' 79qr<CR>
 nmap <Leader>g <S-v><Leader>g
-vnoremap <Leader>h !par T4 'B=.,?_A_a' 99qr<CR>
+vnoremap <Leader>h !par T4 'B=.,?_A_a' 100qr<CR>
 nmap <Leader>h <S-v><Leader>h
 
 " Conveniences for base64 encoding/decoding. For encoding, we strip the
