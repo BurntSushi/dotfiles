@@ -6,7 +6,6 @@
   "diagnostic.checkCurrentLine": true,
   "diagnostic.messageTarget": "echo",
   "diagnostic.level": "hint",
-  "suggest.autoTrigger": "none",
   "signature.enable": false,
   "coc.preferences.snippets.enable": false,
   "rust-analyzer.checkOnSave.enable": true,
@@ -34,6 +33,9 @@
   "rust-analyzer.cargo.loadOutDirsFromCheck": true,
   "rust-analyzer.procMacro.enable": true,
   "rust-analyzer.server.path": "/home/andrew/bin/rust-analyzer-wrapper",
+  "[python]": {
+    "suggest.autoTrigger": "always"
+  },
   "languageserver": {
     "python": {
       "command": "/home/andrew/bin/astral/run-ty-server",
@@ -43,11 +45,6 @@
       "trace.server": "verbose",
       "initializationOptions": {
         "settings": {
-          "experimental": {
-              "completions": {
-                  "enable": true
-              }
-          },
           "logLevel": "debug",
           "logFile": "/tmp/trace-ty.log"
         }
