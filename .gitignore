@@ -101,6 +101,7 @@
 /.vcpkg
 /.vim-cache
 /.viminfo
+/.vscode
 /.wine
 /.wget*
 /.wicd
