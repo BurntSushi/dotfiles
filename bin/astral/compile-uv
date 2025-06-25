@@ -40,6 +40,11 @@ if [ -n "$1" ]; then
     shift
   fi
 fi
+arch=x86_64
+if uname -m | grep -q arm64; then
+  arch=aarch64
+fi
+dest="$HOME/bin/$arch/$name"
 
 checkout="$HOME/astral/uv/$worktree"
 cd "$checkout" || exit 1
