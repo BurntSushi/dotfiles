@@ -5,17 +5,17 @@ case "$(myhostname)" in
     echo "cannot mount media on nas; the nas IS the media!" >&2
     exit 1
     ;;
-  duff|frink)
+  duff)
     if [ ! $1 ] || [ $1 != down ]; then
       sudo mount nas:/m /m
     else
       sudo umount /m
     fi
     ;;
-  Turtle)
-    msshfs down /m
+  flanders|wiggum|milhouse|otto)
+    msshfs-readonly down /m
     if [ ! $1 ] || [ $1 != down ]; then
-      msshfs home.burntsushi.net:/m /m
+      msshfs-readonly nas:/m /m
     fi
     ;;
   *)

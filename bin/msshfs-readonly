@@ -7,5 +7,5 @@ if [ "$1" = down ]; then
     fusermount -u $2
   fi
 else
-  sshfs $1 $2 -o allow_other,reconnect,follow_symlinks,writeback_cache=no,kernel_cache
+  sshfs $1 $2 -o ro,allow_other,reconnect,follow_symlinks,writeback_cache=no,kernel_cache
 fi
