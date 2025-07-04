@@ -22,7 +22,7 @@ def bat_value(fname):
         sys.exit(1)
     val = 0.0
     try:
-        val = float(open(f).read())
+        val = abs(float(open(f).read()))
     except IOError:
         eprint('Could not open "%s".' % f)
         sys.exit(1)
