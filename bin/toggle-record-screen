@@ -1,0 +1,50 @@
+#!/bin/bash
+
+usage() {
+  echo "Usage: $(basename "$0") [--window]" >&2
+}
+
+dir="/tmp/recordings"
+progressdir="$dir/progress"
+stamp="$(biff time round -s second now | biff time fmt -f rfc3339)"
+path="$dir/$stamp.mp4"
+progresspath="$progressdir/$stamp.log"
+
+options="--alert --clip"
+while true; do
+  case "$1" in
+    --window)
+      options+=" --window"
+      shift
+      ;;
+    -*)
+      usage
+      exit 1
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+mkdir -p "$dir" "$progressdir"
+killedany=
+for pid in $(pgrep recordmydesktop); do
+  kill "$pid"
+  wait "$pid"
+  killedany=yes
+done
+if [ -n "$killedany" ]; then
+  sleep 0.5s
+fi
+
+dunstctl set-paused false
+if [ -n "$killedany" ]; then
+  A "$(myhostname)" "recording stopped, processing..."
+else
+  A "$(myhostname)" "starting recording..."
+  sleep 1
+  dunstctl close-all
+  dunstctl set-paused true
+  nohup record-screen $options "$path" > "$progresspath" 2>&1 &
+fi

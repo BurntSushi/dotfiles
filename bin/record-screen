@@ -1,0 +1,57 @@
+#!/bin/bash
+
+usage() {
+  echo "Usage: $(basename "$0") [--alert --window] <recording-path>" >&2
+}
+
+path=
+select_window=
+alert=
+clip=
+while true; do
+  case "$1" in
+    --window)
+      select_window=yes
+      shift
+      ;;
+    --alert)
+      alert=yes
+      shift
+      ;;
+    --clip)
+      clip=yes
+      shift
+      ;;
+    -*)
+      usage
+      exit 1
+      ;;
+    *)
+      path="$1"
+      shift
+      break
+      ;;
+  esac
+done
+if [ -z "$path" ]; then
+  usage
+  exit 1
+fi
+
+tmp="$(mktemp)"
+if [ -n "$select_window" ]; then
+  windowid="$(xwininfo | awk '/Window id:/ {print $4}')"
+  recordmydesktop -o "$tmp" --v_quality 30 --no-cursor --no-sound --windowid "$windowid"
+else
+  recordmydesktop -o "$tmp" --v_quality 30 --no-cursor --no-sound
+fi
+
+actualtmp="$tmp.ogv"
+ffmpeg -i "$actualtmp" "$path"
+rm "$actualtmp"
+if [ -n "$clip" ]; then
+  echo -n "$path" | xcp
+fi
+if [ -n "$alert" ]; then
+  A "$(myhostname)" "screen recording done: $path"
+fi

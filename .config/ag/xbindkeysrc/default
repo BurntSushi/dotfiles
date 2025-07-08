@@ -88,5 +88,5 @@
 "toggle-tap-to-click"
   mod1 + mod4 + c
 
-"toggle-headset-mode"
+"toggle-record-screen"
   XF86AudioPlay
