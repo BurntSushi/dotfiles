@@ -1,8 +1,8 @@
 table Icon
   Caption: tv
   Icon: /usr/share/icons/oxygen/base/64x64/places/folder-blue.png
-  X: 322
-  Y: 42
+  X: 302
+  Y: 62
   Command[0]: dolphin /m/media/tv
 end
 
