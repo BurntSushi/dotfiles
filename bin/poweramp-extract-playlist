@@ -1,0 +1,32 @@
+#!/usr/bin/bash
+
+set -e
+
+usage() {
+  echo "Usage: $(basename "$0") <path-to-poweramp-backup> <playlist-name> <dest-directory>"
+}
+
+if [ $# != 3 ]; then
+  usage >&2
+  exit 1
+fi
+
+music_prefix="/m/media/music/active/"
+backup="$1"
+playlist_name="$2"
+dst="$3"
+
+unzip -o "$backup"
+playlist_id="$(
+  sqlite3 -list -noheader lists-export "select _id from playlists where name = '$playlist_name';"
+)"
+i=0
+sqlite3 -list -noheader lists-export "select path from tracks where playlist_id = $playlist_id;" \
+  | sed "s#^primary/Music/#$music_prefix#" \
+  | while read -r path; do
+      i=$((i+1))
+      track_number="$(printf '%02d' "$i")"
+      base="$(basename "$path" | sed 's/^[-_.0-9 ]\+//')"
+      newbase="$track_number - $base"
+      cp -a "$path" "$dst/$newbase"
+    done

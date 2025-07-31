@@ -1,0 +1,43 @@
+#!/usr/bin/bash
+
+# This creates a "power hour" playlist.
+#
+# It expects an ordered playlist as a directory of 60 mp3 files. (If you're
+# still using PowerAmp, you can get this by exporting a PowerAmp backup that
+# includes playlists, and then running `poweramp-extract-playlist` on it.)
+#
+# This will then slice off the first minute of each of those 60 songs and
+# concatenate it with LMFAO's "Shots Shots Shots" chorus. (This actually makes
+# the power hour 7-8 minutes longer than 60 minutes... This probably matters.
+# But I'm old. I'll take the extra breather.) It will write the resulting mp3
+# to the destination directory given. Finally, this will also copy the victory
+# song from Tecmo Super Bowl as the final 61st song to the destination
+# directory.
+#
+# Back in the old days, I used to use an Android app for this. But I've long
+# since been able to find any such app. I'd guess the lawyers at Google decided
+# adults shouldn't be playing drinking games. Fuck that.
+
+set -e
+
+usage() {
+  echo "Usage: $(basename "$0") <source-playlist-dir> <dest-directory>"
+}
+
+src="$1"
+dst="$2"
+tecmo="/m/media/music/active/powerhour/tecmo/tecmo.mp3"
+shots="/m/media/music/active/powerhour/shots/shots.mp3"
+log="/m/log/powerhour-ffmpeg.log"
+trunc="$(mktemp -d)"
+for mp3 in "$src"/*.mp3; do
+  base="$(basename "$mp3")"
+  if [ -f "$dst/$base" ]; then
+    echo "skipping $mp3" >&2
+    continue
+  fi
+  video-slice --accurate 00:00:00 00:01:00 "$mp3" "$trunc/$base" &> "$log"
+  ffmpeg -i "concat:$trunc/$base|$shots" -acodec copy "$dst/$base" &> "$log"
+  echo "finished $base" >&2
+done
+cp -a "$tecmo" "$dst/61 - tecmo.mp3"
