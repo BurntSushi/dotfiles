@@ -44,10 +44,8 @@
       "filetypes": ["python"],
       "trace.server": "verbose",
       "initializationOptions": {
-        "settings": {
-          "logLevel": "debug",
-          "logFile": "/tmp/trace-ty.log"
-        }
+        "logLevel": "debug",
+        "logFile": "/tmp/trace-ty.log"
       }
     }
   }
