@@ -179,3 +179,8 @@ au FileType css
 au FileType vim
   \ let b:Comment='"'
   \ | let b:EndComment=""
+
+au FileType dot
+  \ let b:Comment="//"
+  \ | let b:EndComment=""
+  \ | runtime! include/spacing/four.vim
