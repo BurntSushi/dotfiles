@@ -52,7 +52,7 @@ a_border_color := $THIN_COLOR
 i_border_color := $THIN_COLOR
 
 [Borders]
-border_size := 4
+border_size := 6
 a_thin_color := $THIN_COLOR
 i_thin_color := $THIN_COLOR
 a_border_color := $ORANGE
