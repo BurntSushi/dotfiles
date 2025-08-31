@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if ! is-laptop; then
+  exit 0
+fi
+
 if batrem | grep -q 'AC'; then
   brightness ac
 else
