@@ -67,6 +67,10 @@ let g:pandoc#syntax#conceal#use = 0
 " them and show the rest of the options.
 set wildmode=list:longest,full
 
+" Disable neovim's built-in completions.
+set complete=
+set completeopt=
+
 " Make sure `autoread` is enabled. To be honest, I don't actually know what
 " this does. The docs seems to suggest it will result in automatically
 " reloading a file if it has been detected to change AND if there are no
