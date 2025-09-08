@@ -48,7 +48,10 @@
       "trace.server": "verbose",
       "initializationOptions": {
         "logLevel": "debug",
-        "logFile": "/tmp/trace-ty.log"
+        "logFile": "/tmp/trace-ty.log",
+        "experimental": {
+          "autoImport": true
+        }
       }
     }
   }
