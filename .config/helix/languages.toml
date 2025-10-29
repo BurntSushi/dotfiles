@@ -1,0 +1,8 @@
+[[language]]
+name = "python"
+language-servers = ["ty"]
+
+[language-server.ty]
+command = "/home/andrew/bin/astral/run-ty-server"
+args = ["server"]
+config = { logLevel = "debug", logFile = "/tmp/trace-ty.log", experimental = { autoImport = true } }
