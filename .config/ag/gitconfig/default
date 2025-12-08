@@ -16,6 +16,7 @@
 [pull]
   rebase = true
 [push]
+  default = upstream
   autoSetupRemote = true
 [rebase]
   autoSquash = true
