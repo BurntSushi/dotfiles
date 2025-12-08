@@ -3,5 +3,15 @@
 if [ "$(myhostname)" = "bart" ]; then
   exec /home/andrew/bin/x86_64/ty server 2> /tmp/stderr-ty.log
 else
-  exec /home/andrew/astral/ruff/pr1/target/debug/ty server 2> /tmp/stderr-ty.log
+  paths=(
+    /home/andrew/astral/ruff/pr1/target/debug/ty
+    /home/andrew/astral/ruff/pr2/target/debug/ty
+  )
+  for path in "${paths[@]}"; do
+    if [ -f "$path" ]; then
+      exec "$path" server 2> /tmp/stderr-ty.log
+    fi
+  done
+  echo "failed to find ty server binary" >&2
+  exit 1
 fi
