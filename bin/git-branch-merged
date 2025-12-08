@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# This script is meant to be run at the root of
+# a checkout after the current branch has been
+# merged to master via the GitHub UI. This will
+# update the local master branch and then forcefully
+# delete the merged branch. This also accounts for
+# worktrees (using my own personal convention).
+
+master="$(git-master-name)"
+current="$(git branch --show-current)"
+is_worktree=
+if [ -f ./.git ] && rg -q gitdir ./.git; then
+  is_worktree=yes
+fi
+
+if [ -n "$is_worktree" ]; then
+  (cd ../"$master" && git pull)
+  git checkout -d "$master"
+  git branch -D "$current"
+else
+  git checkout "$master"
+  git pull
+  git branch -D "$current"
+fi
