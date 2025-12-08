@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# This will return the "default" branch name for a git repo.
+# It used to almost always be master. But now it might be
+# main because $reasons.
+git remote show origin | rg 'HEAD branch: (.*)' -or '$1'
