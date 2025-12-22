@@ -5,7 +5,6 @@ nitrogen --restore
 (
   sleep 0.3
   video laptop
-  restart-xcompmgr &
   dunst &
   nm-applet &
   ag-blueberry-tray &
