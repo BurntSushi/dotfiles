@@ -73,7 +73,7 @@ reenv() {
 }
 
 ssh_reagent() {
-  for agent in /tmp/ssh-*/agent.*; do
+  for agent in "$HOME/.ssh/agent"/* /tmp/ssh-*/agent.*; do
     export SSH_AUTH_SOCK="$agent"
     if ssh-add -L > /dev/null 2>&1; then
       return
