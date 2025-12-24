@@ -35,6 +35,7 @@
   "rust-analyzer.inlayHints.typeHints": false,
   "rust-analyzer.cargo.loadOutDirsFromCheck": true,
   "rust-analyzer.procMacro.enable": true,
+  "rust-analyzer.cargo.targetDir": "/home/andrew/tmp/target-rust-analyzer",
   "rust-analyzer.server.path": "/home/andrew/bin/rust-analyzer-wrapper",
   "[python]": {
     "suggest.autoTrigger": "always"
