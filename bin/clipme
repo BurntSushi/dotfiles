@@ -6,6 +6,7 @@ case "$1" in
   "mre") v="[Help me help you.](https://www.youtube.com/watch?v=l1B1_jQnlFk) Don't tell, [_show_](https://en.wikipedia.org/wiki/Minimal_reproducible_example). Here's [how to do it](https://stackoverflow.com/help/minimal-reproducible-example)." ;;
   "mre-rust") v="[Help me help you.](https://www.youtube.com/watch?v=l1B1_jQnlFk) Don't tell, [_show_](https://en.wikipedia.org/wiki/Minimal_reproducible_example). Here's [how to do it](https://stackoverflow.com/help/minimal-reproducible-example). For Rust, it should include a Cargo.toml, a complete source file, any relevant inputs, expected output, actual output and the commands you use to build and run the code." ;;
   "nobot") v="-author:app/dependabot -author:app/renovate -author:app/github-actions -author:app/pull -author:vexxhost-bot -author:BrewTestBot -author:app/fro-bot -author:nextest-bot -author:app/unleash-bot -author:app/ppat-self-hosted-renovate-bot" ;;
+  "acp-accepted") v="Please [open a tracking issue](https://github.com/rust-lang/rust/issues/new?assignees=&labels=C-tracking-issue%2C+T-libs&template=library_tracking_issue.md&title=Tracking+Issue+for+XXX) and open a PR to rust-lang/rust to add it as an unstable feature. You can close this ACP once the tracking issue has been created." ;;
   "shrug") v="¯\\_(ツ)_/¯" ;;
   "snowman") v="☃" ;;
   "sherlock-ru") v="Шерлок Холмс" ;;
