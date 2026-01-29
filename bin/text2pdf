@@ -10,7 +10,7 @@ for f; do
   echo "File: " $f
   echo
   cat $f
-done | enscript --font="DejaVuSansMono11" --media Letter \
+done | enscript --font="DejaVuSansMono10" --media Letter \
          --margins=25:25:: \
          --header='$n|Page $% of $=' -o - | ps2pdf - -
 
