@@ -1,6 +1,12 @@
 #!/bin/sh
 
 xsetroot -cursor_name left_ptr
+# Resets keyboard map. Useful when calling
+# this idempotently. Sometimes caps lock
+# somehow gets enabled, even though I remap
+# it. This way, I can just call `startup`
+# again and it gets fixed.
+setxkbmap -us
 setxkbmap -option terminate:ctrl_alt_bksp
 xset r rate 200
 xset b 0
