@@ -6,6 +6,9 @@ au FileType python runtime! include/lang/python.vim
 
 au FileType typescript runtime! include/lang/typescript.vim
 
+au FileType vimscript
+  \ | runtime! include/spacing/two.vim
+
 au FileType markdown
   \ | runtime! include/spacing/two.vim
 

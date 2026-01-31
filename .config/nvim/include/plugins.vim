@@ -28,6 +28,16 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
+" I tried `nvim-cmp` and did get it to work, but...
+" So much shit just for completions? I don't get it.
+" The configuration require is INSANE. Thankfully
+" the `blink` project seems to have better sensibilities.
+Plug 'saghen/blink.cmp'
+
+" The config is so complicated, I guess we should
+" just bring in a community maintained one.
+Plug 'neovim/nvim-lspconfig'
+
 " For autowrapping function declarations.
 Plug 'FooSoft/vim-argwrap'
 nnoremap <silent> \q :ArgWrap<CR>
@@ -37,7 +47,7 @@ let g:argwrap_tail_comma = 1
 " Plug 'neovim/nvim-lsp'
 " TODO: There appears to currently be a bug where nvim-lsp always reports a
 " syntax error at the bottom of a Rust source file. So use COC for now.
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " This plugin is used to configure how nvim-lsp displays errors/diagnostics.
 " TODO: Since we're using COC for now, we don't need this.

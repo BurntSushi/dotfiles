@@ -60,11 +60,11 @@ nmap <Leader>e :Files<CR>
 nmap <Leader>r :Rg<CR>
 
 " Show hover when provider exists, fallback to vim's builtin behavior.
-function! ShowDocumentation()
-  if CocAction('hasProvider', 'hover')
-    call CocActionAsync('definitionHover')
-  else
-    call feedkeys('K', 'in')
-  endif
-endfunction
-nnoremap <silent> K :call ShowDocumentation()<CR>
+" function! ShowDocumentation()
+  " if CocAction('hasProvider', 'hover')
+    " call CocActionAsync('definitionHover')
+  " else
+    " call feedkeys('K', 'in')
+  " endif
+" endfunction
+" nnoremap <silent> K :call ShowDocumentation()<CR>

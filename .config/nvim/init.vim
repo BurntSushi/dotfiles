@@ -14,3 +14,4 @@ runtime! include/keybinds.vim
 runtime! include/options.vim
 runtime! include/style.vim
 runtime! include/windows.vim
+runtime! include/lsp.lua

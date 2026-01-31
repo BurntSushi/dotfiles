@@ -69,7 +69,7 @@ set wildmode=list:longest,full
 
 " Disable neovim's built-in completions.
 set complete=
-set completeopt=
+set completeopt=noselect
 
 " Make sure `autoread` is enabled. To be honest, I don't actually know what
 " this does. The docs seems to suggest it will result in automatically
