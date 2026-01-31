@@ -19,11 +19,25 @@ require('blink.cmp').setup({
   },
 })
 
+vim.lsp.config('ty', {
+  cmd = { '/home/andrew/bin/astral/run-ty-server' },
+  trace = 'verbose',
+  init_options = {
+    logLevel = 'debug',
+    logFile = '/tmp/neovim-ty-tracing.log',
+  },
+  settings = {
+    ty = {
+      completions = {
+        autoImport = true,
+      },
+    },
+  },
+})
+
 vim.lsp.config('rust_analyzer', {
   cmd = { '/home/andrew/bin/rust-analyzer-wrapper' },
   filetypes = { 'rust' },
-  -- root_markers = { 'Cargo.lock' },
-  -- capabilities = capabilities,
   settings = {
     ['rust-analyzer'] = {
       cargo = {
@@ -65,6 +79,40 @@ vim.lsp.config('rust_analyzer', {
   },
 })
 
+vim.lsp.config('lua_ls', {
+  -- N.B. This is not quite right, but I only really use Lua these days inside
+  -- neovim. So just recognize my `init.lua` as the root of my workspace.
+  root_markers = {'init.lua'},
+  on_init = function(client)
+    client.config.settings.Lua = vim.tbl_deep_extend(
+      'force',
+      client.config.settings.Lua, {
+        runtime = {
+          -- Tell the language server which version of Lua you're using (most
+          -- likely LuaJIT in the case of Neovim)
+          version = 'LuaJIT',
+          -- Tell the language server how to find Lua modules same way as Neovim
+          -- (see `:h lua-module-load`)
+          path = {
+            'lua/?.lua',
+            'lua/?/init.lua',
+          },
+        },
+        -- Make the server aware of Neovim runtime files
+        workspace = {
+          checkThirdParty = false,
+          library = {
+            vim.env.VIMRUNTIME,
+          },
+        },
+      }
+    )
+  end,
+  settings = {
+    Lua = {},
+  },
+})
+
 -- Hide all semantic highlights. Maybe I'll enable this some day, but
 -- as of right now, I don't like it.
 for _, group in ipairs(vim.fn.getcompletion('@lsp', 'highlight')) do
@@ -75,7 +123,7 @@ end
 -- into neovim???
 function RestartLSP()
     print('Restarting all attached LSP clients and reloading buffer...')
-    vim.lsp.stop_client(vim.lsp.get_active_clients())
+    vim.lsp.stop_client(vim.lsp.get_clients())
     vim.cmd('write')
     vim.cmd('edit')
 end
@@ -106,4 +154,6 @@ vim.keymap.set('n', [[\gs]], vim.lsp.buf.signature_help)
 vim.keymap.set('n', [[\gd]], vim.diagnostic.open_float)
 vim.keymap.set('n', [[\gh]], vim.lsp.buf.typehierarchy)
 
+vim.lsp.enable('ty')
 vim.lsp.enable('rust_analyzer')
+vim.lsp.enable('lua_ls')
