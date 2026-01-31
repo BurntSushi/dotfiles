@@ -72,6 +72,7 @@
 /.parallel
 /.password-store
 /.pki
+/.prism
 /.psql_history
 /.pyenv
 /.pythonhist
@@ -144,6 +145,7 @@
 /.DBcreds
 /.bootstrap*
 /.chatter
+/.claude*
 /.conda
 /.curlrc.insecure
 /apps
