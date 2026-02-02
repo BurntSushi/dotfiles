@@ -1,3 +1,7 @@
+-- TODO: Configure some undo niceties?
+-- https://neovim.io/doc/user/lua.html#vim.hl
+-- https://neovim.io/doc/user/undo.html#undo-persistence
+
 -- Show line numbers.
 vim.opt.number = true
 
