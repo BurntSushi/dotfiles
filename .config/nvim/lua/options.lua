@@ -48,9 +48,13 @@ vim.g.http_client_focus_output_window = 0
 -- Don't conceal things in markup languages.
 vim.g['pandoc#syntax#conceal#use'] = 0
 
+-- I use blink for completions now.
+vim.opt.wildmenu = false
 -- When there's more than one match, complete the longest common prefix among
 -- them and show the rest of the options.
-vim.o.wildmode = 'list:longest,full'
+--
+-- (Useful if I ever switch back to the default wildmenu.)
+-- vim.o.wildmode = 'list:longest,full'
 
 -- Disable neovim's built-in completions.
 vim.opt.complete = nil

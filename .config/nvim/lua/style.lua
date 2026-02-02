@@ -1,6 +1,9 @@
 -- Force neovim to emit true colors.
 vim.opt.termguicolors = true
 
+-- Give me borders!
+vim.opt.winborder = 'rounded'
+
 -- Colors a vertical bar at the given column.
 if vim.env.NEOVIM_COLOR_COLUMN == nil then
   vim.opt.colorcolumn = '80'

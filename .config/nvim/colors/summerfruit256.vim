@@ -233,6 +233,11 @@ hi CursorLine guifg=#c0d9eb
 " hi LineNr guifg=#eeeeee guibg=#438ec3 gui=bold
 hi MatchParen guibg=#dddddd
 
+" Blink completion styling.
+hi BlinkCmpMenu guibg=#ffffff guifg=#000000
+hi BlinkCmpMenuSelection guibg=#ff7f00 guifg=#ffffff
+hi BlinkCmpMenuBorder guifg=#ff7f00
+
 " Specials
 hi Todo guifg=#e50808 guibg=#dbf3cd gui=bold
 hi Title guifg=#000000

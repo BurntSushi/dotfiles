@@ -17,4 +17,5 @@ require 'windows'
 
 require 'keybinds'
 require 'lang'
+require 'completion'
 require 'lsp'

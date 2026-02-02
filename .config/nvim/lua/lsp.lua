@@ -1,24 +1,3 @@
-require('blink.cmp').setup({
-  -- Hitting enter to select something is the natural thing.
-  keymap = { preset = 'enter' },
-  sources = {
-    -- I don't want completions from anything else.
-    default = {'lsp'},
-  },
-  fuzzy = {
-    -- implementation = 'prefer_rust_with_warning',
-    implementation = 'lua',
-    -- N.B. I couldn't get this working. So just use
-    -- their Lua implementation. Which seems pretty
-    -- snappy?
-    prebuilt_binaries = {
-      download = true,
-      ignore_version_mismatch = true,
-      force_version = nil,
-    },
-  },
-})
-
 vim.lsp.config('ty', {
   cmd = { '/home/andrew/bin/astral/run-ty-server' },
   trace = 'verbose',
@@ -42,6 +21,11 @@ vim.lsp.config('rust_analyzer', {
     ['rust-analyzer'] = {
       cargo = {
         targetDir = '/home/andrew/tmp/target-rust-analyzer',
+      },
+      completion = {
+        callable = {
+          snippets = 'none',
+        },
       },
       diagnostics = {
         enable = true,
