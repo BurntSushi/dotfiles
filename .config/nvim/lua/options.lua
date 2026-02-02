@@ -50,7 +50,7 @@ vim.g['pandoc#syntax#conceal#use'] = 0
 
 -- When there's more than one match, complete the longest common prefix among
 -- them and show the rest of the options.
-vim.opt.wildmode = { 'list:longest', 'full' }
+vim.o.wildmode = 'list:longest,full'
 
 -- Disable neovim's built-in completions.
 vim.opt.complete = nil

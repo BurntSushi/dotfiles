@@ -152,6 +152,7 @@ vim.keymap.set('n', [[\gl]], vim.lsp.buf.declaration)
 vim.keymap.set('n', [[\gO]], vim.lsp.buf.document_symbol)
 vim.keymap.set('n', [[\gs]], vim.lsp.buf.signature_help)
 vim.keymap.set('n', [[\gd]], vim.diagnostic.open_float)
+vim.keymap.set('n', [[<C-d>]], vim.diagnostic.open_float)
 vim.keymap.set('n', [[\gh]], vim.lsp.buf.typehierarchy)
 
 vim.lsp.enable('ty')

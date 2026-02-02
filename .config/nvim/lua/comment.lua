@@ -23,7 +23,7 @@ local literal = function(s)
 end
 
 local comment = function()
-  if string.len(vim.b.comment) == 0 then return end
+  if string.len(vim.b.comment or '') == 0 then return end
   local range = ''
   if fn.is_visual_mode() then
     fn.escape_visual_mode()
@@ -31,14 +31,14 @@ local comment = function()
   end
 
   vim.cmd(range .. [[s/^\(\s*\)/\1]] .. literal(vim.b.comment) .. [[ /e]])
-  if string.len(vim.b.end_comment) > 0 then
+  if string.len(vim.b.end_comment or '') > 0 then
     vim.cmd(range .. [[s/$/]] .. literal(vim.b.end_comment) .. [[/e]])
   end
   vim.cmd.nohlsearch()
 end
 
 local uncomment = function()
-  if string.len(vim.b.comment) == 0 then return end
+  if string.len(vim.b.comment or '') == 0 then return end
   local range = ''
   if fn.is_visual_mode() then
     fn.escape_visual_mode()
@@ -46,7 +46,7 @@ local uncomment = function()
   end
 
   vim.cmd(range .. [[s/^\(\s*\)]] .. literal(vim.b.comment) .. [[\s*/\1/e]])
-  if string.len(vim.b.end_comment) > 0 then
+  if string.len(vim.b.end_comment or '') > 0 then
     vim.cmd(range .. [[s/\s*]] .. literal(vim.b.end_comment) .. [[\s*$//e]])
   end
   vim.cmd.nohlsearch()
