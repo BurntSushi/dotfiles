@@ -4,7 +4,9 @@ require('blink.cmp').setup({
     preset = 'enter',
     ['<Tab>'] = { 'select_next', 'fallback' },
     ['<S-Tab>'] = { 'select_prev', 'fallback' },
-    ['<ESC>'] = { 'cancel', 'fallback' },
+    -- I thought I wanted this, but it's actually pretty annoying. I end up
+    -- having to hit <ESC> twice a lot to get back into normal mode.
+    -- ['<ESC>'] = { 'cancel', 'fallback' },
   },
   completion = {
     accept = {

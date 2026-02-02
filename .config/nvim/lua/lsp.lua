@@ -1,3 +1,5 @@
+local telescope = require 'telescope.builtin'
+
 vim.lsp.config('ty', {
   cmd = { '/home/andrew/bin/astral/run-ty-server' },
   trace = 'verbose',
@@ -97,6 +99,8 @@ vim.lsp.config('lua_ls', {
   },
 })
 
+vim.lsp.config('clangd', {})
+
 -- Hide all semantic highlights. Maybe I'll enable this some day, but
 -- as of right now, I don't like it.
 for _, group in ipairs(vim.fn.getcompletion('@lsp', 'highlight')) do
@@ -128,7 +132,8 @@ vim.keymap.del('n', 'gO')
 -- Nice thing is that this should work for
 -- all LSP servers.
 vim.keymap.set('n', [[\grn]], vim.lsp.buf.rename)
-vim.keymap.set('n', [[\grr]], vim.lsp.buf.references)
+-- vim.keymap.set('n', [[\grr]], vim.lsp.buf.references)
+vim.keymap.set('n', [[\grr]], telescope.lsp_references)
 vim.keymap.set('n', [[\ga]], vim.lsp.buf.code_action)
 vim.keymap.set('n', [[\gi]], vim.lsp.buf.implementation)
 vim.keymap.set('n', [[\gt]], vim.lsp.buf.type_definition)
@@ -142,3 +147,4 @@ vim.keymap.set('n', [[\gh]], vim.lsp.buf.typehierarchy)
 vim.lsp.enable('ty')
 vim.lsp.enable('rust_analyzer')
 vim.lsp.enable('lua_ls')
+vim.lsp.enable('clangd')

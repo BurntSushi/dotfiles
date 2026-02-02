@@ -73,3 +73,22 @@ vim.keymap.set('n', [[\e]], ':Files<CR>')
 
 -- ripgrep entrypoint.
 vim.keymap.set('n', [[\r]], ':Rg<CR>')
+
+-- Tweak some telescope keybindings.
+local actions = require('telescope.actions')
+require('telescope').setup({
+  defaults = {
+    mappings = {
+      i = {
+        ["<ESC>"] = actions.close,
+        ["<Tab>"] = actions.move_selection_next,
+        ["<S-Tab>"] = actions.move_selection_previous,
+      },
+      n = {
+        ["<ESC>"] = actions.close,
+        ["<Tab>"] = actions.move_selection_next,
+        ["<S-Tab>"] = actions.move_selection_previous,
+      },
+    },
+  },
+})

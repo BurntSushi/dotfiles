@@ -31,6 +31,11 @@ plug('cespare/vim-toml')
 plug('junegunn/fzf', { ['dir'] = '~/.fzf', ['do'] = './install --all' })
 plug('junegunn/fzf.vim')
 
+-- I use this for some LSP commands (like find references).
+-- The default quickfix experience is very lacking.
+plug('nvim-lua/plenary.nvim')
+plug('nvim-telescope/telescope.nvim')
+
 -- I tried `nvim-cmp` and did get it to work, but...
 -- So much shit just for completions? I don't get it.
 -- The configuration require is INSANE. Thankfully
