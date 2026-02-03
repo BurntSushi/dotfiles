@@ -104,11 +104,11 @@ hi link QuickFixLine   Search
 
 " More carry over from when before neovim changed its default colorscheme and
 " fucked everything up.
-hi DiagnosticError           ctermfg=1 guifg=Red
-hi DiagnosticWarn            ctermfg=3 guifg=Orange
-hi DiagnosticInfo            ctermfg=4 guifg=LightBlue
-hi DiagnosticHint            ctermfg=7 guifg=LightGrey
-hi DiagnosticOk              ctermfg=10 guifg=LightGreen
+hi DiagnosticError           ctermfg=1 guifg=Red gui=bold
+hi DiagnosticWarn            ctermfg=3 guifg=Red gui=bold
+hi DiagnosticInfo            ctermfg=4 guifg=Red gui=bold
+hi DiagnosticHint            ctermfg=7 guifg=Red gui=bold
+hi DiagnosticOk              ctermfg=10 guifg=LightGreen gui=bold
 hi DiagnosticUnderlineError  cterm=underline gui=underline guisp=Red
 hi DiagnosticUnderlineWarn   cterm=underline gui=underline guisp=Orange
 hi DiagnosticUnderlineInfo   cterm=underline gui=underline guisp=LightBlue

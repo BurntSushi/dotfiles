@@ -78,9 +78,10 @@ vim.keymap.set('n', [[\r]], ':Rg<CR>')
 local actions = require('telescope.actions')
 require('telescope').setup({
   defaults = {
+    initial_mode = 'normal',
     mappings = {
       i = {
-        ["<ESC>"] = actions.close,
+        -- ["<ESC>"] = actions.close,
         ["<Tab>"] = actions.move_selection_next,
         ["<S-Tab>"] = actions.move_selection_previous,
       },
