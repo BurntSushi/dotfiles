@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 usage() {
   echo "Usage: $(basename "$0") [-a -p <cargo-profile>] [worktree] [<suffix>]"
 }

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$(myhostname)" = "bart" ]; then
-  exec /home/andrew/bin/x86_64/ty server 2> /tmp/vscode-ty-stderr.log
+  exec /home/andrew/bin/x86_64/ty server 2> /tmp/ty-stderr.log
 else
   paths=(
     /home/andrew/astral/ruff/pr1/target/debug/ty
@@ -9,7 +9,7 @@ else
   )
   for path in "${paths[@]}"; do
     if [ -f "$path" ]; then
-      exec "$path" server 2> /tmp/vscode-ty-stderr.log
+      exec "$path" server 2> /tmp/ty-stderr.log
     fi
   done
   echo "failed to find ty server binary" >&2
