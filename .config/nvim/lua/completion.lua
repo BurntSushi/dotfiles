@@ -44,16 +44,21 @@ require('blink.cmp').setup({
     },
   },
   cmdline = {
+    enabled = true,
     keymap = {
       preset = 'inherit',
-      ['<Tab>'] = { 'show', 'select_next', 'fallback' },
+      ['<Tab>'] = { 'show_and_insert', 'select_next', 'fallback' },
       ['<CR>'] = { 'accept_and_enter', 'fallback' },
+      -- ['<CR>'] = { 'accept', 'fallback' },
+      ['<C-y>'] = { 'accept', 'fallback' },
+      ['<C-space>'] = {'accept', 'show'},
+      ['<C-e>'] = { 'hide' },
     },
     completion = {
       list = {
         selection = {
           auto_insert = true,
-          preselect = true,
+          preselect = false,
         },
       },
       menu = {
