@@ -1,5 +1,4 @@
 local plugged_path = vim.fn.stdpath('data') .. '/plugged'
-vim.print(plugged_path)
 vim.call('plug#begin', plugged_path)
 local plug = vim.fn['plug#']
 

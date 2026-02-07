@@ -46,7 +46,6 @@ end)
 local divider = function(char)
   return function()
     local len = string.len(vim.fn.getline('.'))
-    vim.print(len)
     vim.fn.append('.', string.rep(char, len))
     vim.cmd.normal('j')
   end
