@@ -100,6 +100,7 @@ vim.lsp.config('lua_ls', {
 })
 
 vim.lsp.config('clangd', {})
+vim.lsp.config('ts_ls', {})
 
 -- Hide all semantic highlights. Maybe I'll enable this some day, but
 -- as of right now, I don't like it.
@@ -154,3 +155,4 @@ vim.lsp.enable('ty')
 vim.lsp.enable('rust_analyzer')
 vim.lsp.enable('lua_ls')
 vim.lsp.enable('clangd')
+vim.lsp.enable('ts_ls')
