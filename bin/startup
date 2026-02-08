@@ -6,7 +6,7 @@ xsetroot -cursor_name left_ptr
 # somehow gets enabled, even though I remap
 # it. This way, I can just call `startup`
 # again and it gets fixed.
-setxkbmap -us
+setxkbmap us
 setxkbmap -option terminate:ctrl_alt_bksp
 xset r rate 200
 xset b 0
