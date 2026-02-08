@@ -42,8 +42,10 @@ tmp="$(mktemp)"
 if [ -n "$select_window" ]; then
   windowid="$(xwininfo | awk '/Window id:/ {print $4}')"
   recordmydesktop -o "$tmp" --v_quality 30 --no-cursor --no-sound --windowid "$windowid"
+  # recordmydesktop -o "$tmp" --v_quality 30 --no-cursor --windowid "$windowid"
 else
   recordmydesktop -o "$tmp" --v_quality 30 --no-cursor --no-sound
+  # recordmydesktop -o "$tmp" --v_quality 30 --no-cursor
 fi
 
 actualtmp="$tmp.ogv"
