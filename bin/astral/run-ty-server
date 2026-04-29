@@ -1,15 +1,25 @@
 #!/bin/bash
 
+ty_stderr=/tmp/ty-stderr.log
+if [ -n "$TYERR" ]; then
+  ty_stderr="$TYERR"
+fi
+
+if [ -n "$TYBIN" ]; then
+  exec "$TYBIN" server 2> "$ty_stderr"
+fi
+
 if [ "$(myhostname)" = "bart" ]; then
-  exec /home/andrew/bin/x86_64/ty server 2> /tmp/ty-stderr.log
+  exec /home/andrew/bin/x86_64/ty server 2> "$ty_stderr"
 else
   paths=(
+    /home/andrew/astral/ruff/pr1/target/profiling/ty
     /home/andrew/astral/ruff/pr1/target/debug/ty
     /home/andrew/astral/ruff/pr2/target/debug/ty
   )
   for path in "${paths[@]}"; do
     if [ -f "$path" ]; then
-      exec "$path" server 2> /tmp/ty-stderr.log
+      exec "$path" server 2> "$ty_stderr"
     fi
   done
   echo "failed to find ty server binary" >&2

@@ -12,6 +12,9 @@ vim.lsp.config('ty', {
       completions = {
         autoImport = true,
       },
+      inlayHints = {
+        variableTypes = true,
+      },
     },
   },
 })
@@ -150,6 +153,9 @@ vim.keymap.set('n', [[\gd]], function()
 end)
 vim.keymap.set('n', [[<C-d>]], vim.diagnostic.open_float)
 vim.keymap.set('n', [[\gh]], vim.lsp.buf.typehierarchy)
+vim.keymap.set('n', [[\gri]], function()
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+end)
 
 vim.lsp.enable('ty')
 vim.lsp.enable('rust_analyzer')

@@ -206,7 +206,7 @@ vim.api.nvim_create_autocmd('FileType', {
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'sh',
   callback = function()
-    spacing.space4()
+    spacing.space2()
     vim.b.comment = '#'
   end,
 })
