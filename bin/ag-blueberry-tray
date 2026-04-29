@@ -1,6 +1,3 @@
 #!/bin/sh
 
-while true; do
-  blueberry-tray
-  sleep 1
-done
+blueman-applet

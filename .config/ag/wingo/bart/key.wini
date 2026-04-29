@@ -12,6 +12,7 @@ Mod1-f := ToggleFloating (GetActive)
 
 Mod1-Shift-t := Move (GetActive) 0.2 0.2
 Mod1-Shift-t := Resize (GetActive) 0.6 0.6
+Mod1-Shift-n := FrameNada (GetActive)
 
 Mod4-left := Move (GetActive) 0 0
 Mod4-left := Resize (GetActive) 0.5 1.0
@@ -137,7 +138,7 @@ Control-Mod1-t := Workspace (GetWorkspacePrefix "t")
 Control-Mod1-u := Workspace (GetWorkspacePrefix "u")
 Control-Mod1-v := Workspace (GetWorkspacePrefix "v")
 Control-Mod1-w := Workspace (GetWorkspacePrefix "w")
-Control-Mod1-x := Workspace (GetWorkspacePrefix "x")
+# Control-Mod1-x := Workspace (GetWorkspacePrefix "x")
 Control-Mod1-y := Workspace (GetWorkspacePrefix "y")
 Control-Mod1-z := Workspace (GetWorkspacePrefix "z")
 
