@@ -3,11 +3,11 @@
 # This used to do more when I used different versions of Chrome on different
 # machines. But now I just use stable when I use Chrome.
 case "$(myhostname)" in
-    bart)
-        # And we
-        exec google-chrome-stable --force-device-scale-factor=1.5 "$@"
-        ;;
-    *)
-        exec google-chrome-stable "$@"
-        ;;
+  bart)
+    # And we
+    exec google-chrome-stable --force-device-scale-factor=1.5 "$@"
+    ;;
+  *)
+    exec google-chrome-stable "$@"
+    ;;
 esac

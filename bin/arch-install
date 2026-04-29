@@ -363,7 +363,7 @@ autologin() {
   sudo tee /etc/systemd/system/getty@tty1.service.d/override.conf > /dev/null <<EOF
 [Service]
 ExecStart=
-ExecStart=-/usr/bin/agetty --autologin andrew --noclear %I $TERM
+ExecStart=-/sbin/agetty --noreset --noclear --autologin andrew - ${TERM}
 EOF
 }
 
