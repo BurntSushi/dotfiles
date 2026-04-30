@@ -1,0 +1,11 @@
+@binding-set NoEmoji {
+    unbind "<Control>period";
+}
+
+entry {
+    -gtk-key-bindings: NoEmoji;
+}
+
+textview {
+    -gtk-key-bindings: NoEmoji;
+}
