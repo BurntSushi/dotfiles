@@ -3,7 +3,7 @@
 # Run this first to make sure it starts and so that the settings
 # following stick.
 if cmd-exists ibus; then
-  ibus start
+  ibus start &
 fi
 
 xsetroot -cursor_name left_ptr
