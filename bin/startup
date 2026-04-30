@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# Run this first to make sure it starts and so that the settings
+# following stick.
+if cmd-exists ibus; then
+  ibus start
+fi
+
 xsetroot -cursor_name left_ptr
 # Resets keyboard map. Useful when calling
 # this idempotently. Sometimes caps lock
