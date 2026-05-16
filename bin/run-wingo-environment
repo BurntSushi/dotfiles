@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# https://old.reddit.com/r/archlinux/comments/1ppn6ff/firefox_not_opening_system_dialogs_after_latest/
+dbus-update-activation-environment --systemd DISPLAY XAUTHORITY
+exec bash -c '(dbus-launch run-wingo ; (while true; do sleep 1000; done))'
