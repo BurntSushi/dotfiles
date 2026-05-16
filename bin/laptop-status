@@ -1,0 +1,10 @@
+#!/bin/sh
+
+battery="$(batrem -s | tr -d '\n')"
+if echo "$battery" | rg -q 'AC'; then
+  batcolor=77dd77
+else
+  batcolor=ff6961
+fi
+now="$(biff time fmt now -f '%a, %B %d, %Y, %H:%M %p %Z' | tr -d '\n')"
+printf "%s  ^fn(Cousine:bold:size=18)^fg(#$batcolor)%s\n" "$now" "$battery"
