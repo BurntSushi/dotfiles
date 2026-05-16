@@ -115,7 +115,9 @@ end
 -- into neovim???
 function RestartLSP()
     print('Restarting all attached LSP clients and reloading buffer...')
-    vim.lsp.stop_client(vim.lsp.get_clients())
+    for _, client in ipairs(vim.lsp.get_clients()) do
+      client:stop()
+    end
     vim.cmd('write')
     vim.cmd('edit')
 end
