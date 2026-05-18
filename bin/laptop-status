@@ -6,5 +6,7 @@ if echo "$battery" | rg -q 'AC'; then
 else
   batcolor=ff6961
 fi
-now="$(biff time fmt now -f '%a, %B %d, %Y, %H:%M %p %Z' | tr -d '\n')"
-printf "%s  ^fn(Cousine:bold:size=18)^fg(#$batcolor)%s\n" "$now" "$battery"
+nowcolor=3b82ff
+font='^fn(Cousine:bold:size=18)'
+now="$(biff time fmt now -f "^fg(#$nowcolor)%a, %B %d, %Y, %H:%M %p %Z")"
+exec printf "%s%s  ^fg(#$batcolor)%s\n" "$font" "$now" "$battery"

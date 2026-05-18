@@ -28,7 +28,7 @@ case "$(myhostname)" in
 esac
 
 # Width constants for the system tray and battery indicator.
-tray_width=150
+tray_width=300
 bat_width=650
 
 # Determine the width of the pager based on the width of the system tray and
