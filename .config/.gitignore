@@ -1,13 +1,16 @@
 /.android
+/1Password
 /Android Open Source Project
 /alacritty
 /alire
 /autostart
+/BraveSoftware
 /baloofileinformationrc
 /baloofilerc
 /broot
 /caddy
 /cef_user_data
+/chromium
 /coc
 /Code
 /configstore
@@ -31,6 +34,8 @@
 /gohead
 /Google
 /google-chrome
+/google-chrome-beta
+/google-chrome-unstable
 /gpick
 /gtk-2.0
 /gtk-3.0/bookmarks
@@ -55,6 +60,7 @@
 /ktrashrc
 /libreoffice
 /menus
+/microsoft-edge-dev
 /mimeapps.list
 /mirage
 /monitors.xml*
@@ -62,6 +68,7 @@
 /nitrogen
 /okularpartrc
 /okularrc
+/op
 /pavucontrol.ini
 /Perforce
 /Pinta
@@ -83,6 +90,8 @@
 /trashrc
 /Unknown Organization
 /user-dirs.*
+/vivaldi
+/vivaldi-snapshot
 /vlc
 /wingo
 /yad.conf
