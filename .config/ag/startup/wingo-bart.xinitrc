@@ -9,5 +9,6 @@ nitrogen --restore
   nm-applet &
   ag-blueberry-tray &
   (volume mute ; volume mute) &
+  restart-compositor &
 ) &
 exec run-wingo-environment

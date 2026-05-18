@@ -9,6 +9,6 @@ idesk &
 no-blanking-loop &
 dunst &
 nm-applet &
-restart-xcompmgr &
+restart-compositor &
 
 exec bash -c '(dbus-launch run-wingo ; (while true; do sleep 1000; done))'
