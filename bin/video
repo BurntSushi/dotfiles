@@ -68,7 +68,6 @@ Tiger)
   else
     placeHead "$1"
   fi
-  autobright &
   ;;
 monty)
   if array_exists laptop "$*"; then
@@ -76,7 +75,6 @@ monty)
   else
     placeHead "$1"
   fi
-  autobright &
   ;;
 krusty|kang|kodos|bart)
   if array_exists laptop "$*"; then
@@ -84,7 +82,6 @@ krusty|kang|kodos|bart)
   else
     placeHead "$1"
   fi
-  autobright &
   ;;
 Turtle)
   if array_exists laptop "$*"; then
@@ -92,7 +89,6 @@ Turtle)
   else
     placeHead "$1"
   fi
-  autobright &
   ;;
 skinner)
   ;;

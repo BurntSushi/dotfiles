@@ -12,7 +12,6 @@ xset r rate 200
 xset b 0
 numlockx on
 dpms-settings
-autobright
 
 if [ -f "$HOME/.Xresources" ]; then
   xrdb "$HOME/.Xresources"
