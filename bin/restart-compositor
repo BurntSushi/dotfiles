@@ -1,29 +1,4 @@
 #!/bin/sh
 
-# See: https://github.com/chjj/compton/wiki/vsync-guide
-
 killall picom --wait
-exec picom --backend glx \
-  --vsync \
-  --fade-in-step 1.0 \
-  --fade-out-step 1.0
-
-# killall compton --wait
-# exec compton --backend glx --vsync
-# exec compton --backend glx
-# exec compton --backend glx \
-    # --glx-no-stencil \
-    # --glx-no-rebind-pixmap \
-    # --use-damage \
-# allow_rgb10_configs=false exec compton \
-  # --backend glx \
-  # --glx-no-stencil \
-  # --glx-no-rebind-pixmap
-
-# exec compton \
-  # --backend xr_glx_hybrid \
-  # --paint-on-overlay \
-  # --glx-no-stencil \
-  # --glx-no-rebind-pixmap
-
-# exec compton --paint-on-overlay
+exec picom --backend xrender --vsync --fade-in-step=0.1 --fade-out-step=0.1
