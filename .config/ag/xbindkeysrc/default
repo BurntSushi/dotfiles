@@ -43,13 +43,13 @@
 "pavucontrol"
   mod4 + a
 
-"firefox"
+"google-chrome"
   mod4 + b
 
-"firefox --private-window"
+"google-chrome --incognito"
   mod4 + shift + b
 
-"firefox --new-window http://gmail.com"
+"google-chrome --new-window http://gmail.com"
   mod4 + g
 
 "sh /home/andrew/.config/ag/startup/common.xinitrc"

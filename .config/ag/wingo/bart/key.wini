@@ -13,6 +13,7 @@ Mod1-f := ToggleFloating (GetActive)
 Mod1-Shift-t := Move (GetActive) 0.2 0.2
 Mod1-Shift-t := Resize (GetActive) 0.6 0.6
 Mod1-Shift-n := FrameNada (GetActive)
+Mod1-Shift-f := FrameFull (GetActive)
 
 Mod4-left := Move (GetActive) 0 0
 Mod4-left := Resize (GetActive) 0.5 1.0

@@ -4,7 +4,7 @@
 # machines. But now I just use stable when I use Chrome.
 case "$(myhostname)" in
   bart)
-    # And we
+    # And we set the scaling factor for when the DPI is too high.
     exec google-chrome-stable --force-device-scale-factor=1.5 "$@"
     ;;
   *)
