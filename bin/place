@@ -62,7 +62,7 @@ if is-laptop; then
   # shellcheck disable=SC2009
   ps aux | grep -v grep | grep batrem | awk '{print $2}' | xargs -r kill
   ((while true; do laptop-status && sleep 10s; done) | \
-    dzen2 -fn "Cousine:size=18" -fg black -bg white \
+    dzen2 -dock -fn "Cousine:size=18" -fg black -bg white \
       -x $((mx + pager_width)) -y $y -w $bat_width -h $height &)
 fi
 
