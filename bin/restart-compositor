@@ -1,4 +1,4 @@
 #!/bin/sh
 
 killall picom --wait
-exec picom --backend xrender --vsync --fade-in-step=0.1 --fade-out-step=0.1
+exec picom --backend xrender --vsync --fade-in-step=0.08 --fade-out-step=0.08
