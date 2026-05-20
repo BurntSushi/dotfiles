@@ -1,0 +1,25 @@
+#!/bin/sh
+
+case "$1" in
+  todo)
+    passwords="$(
+      (cd ~/.password-store && rg --files --sort path) \
+        | rg -or '$1' '(.*)\.gpg$'
+    )"
+    for f in $passwords; do
+      (pass "$f" | rg -q '1PASS') && echo $f
+    done
+    ;;
+  untagged)
+    s='.[] | select((.tags // []) | length == 0) | "\(.vault.name) :: \(.title)"'
+    op item list --format json | jq -r "$s"
+    ;;
+  ?)
+    echo "unknown command: $1"
+    exit 1
+    ;;
+  *)
+    echo "Usage: $(basename "$0") (todo | migrated | untagged)"
+    exit 0
+    ;;
+esac
