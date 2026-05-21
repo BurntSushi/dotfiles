@@ -54,8 +54,8 @@
 # At this point, log in as the user created above.
 #
 #   yayinit
-#   yaypkgs
-#   yayxpkgs (if installing graphics)
+#   aurpkgs
+#   aurxpkgs (if installing graphics)
 #
 # At this point, reboot to disk, as dealing with GPG off the
 # live disk seems to have issues.
@@ -252,7 +252,7 @@ yayinit() {
   makepkg -fsi --noconfirm
 }
 
-yaypkgs() {
+aurpkgs() {
   # It looks like these need to be manually installed:
   #
   #   brother-mfc-l3770cdw
@@ -270,7 +270,7 @@ yaypkgs() {
     dict-wn
 }
 
-yayxpkgs() {
+aurxpkgs() {
   # It looks like gkrellm has finally gone the way of the dodo. This is what
   # I used to install:
   #
@@ -281,6 +281,7 @@ yayxpkgs() {
   yay --noconfirm -S \
     dzen2-xft-xpm-xinerama-git \
     google-chrome \
+    1password 1password-cli \
     idesk \
     ttf-hack-nerd \
     ttf-oxygen \
@@ -379,8 +380,8 @@ case "$1" in
   wifiinit) shift ; wifiinit "$@" ;;
   grubinit) shift ; grubinit "$@" ;;
   yayinit) shift ; yayinit "$@" ;;
-  yaypkgs) shift ; yaypkgs "$@" ;;
-  yayxpkgs) shift ; yayxpkgs "$@" ;;
+  aurpkgs) shift ; aurpkgs "$@" ;;
+  aurxpkgs) shift ; aurxpkgs "$@" ;;
   homeinit) shift ; homeinit "$@" ;;
   xenvinit) shift ; xenvinit "$@" ;;
   gpginit) shift ; gpginit "$@" ;;
