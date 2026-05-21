@@ -2,7 +2,14 @@
 # an exhaustive gitignore list. This also makes searching my home directory
 # with ripgrep convenient, since it won't descend into most directories.
 
-# top-level hidden files/directories
+# We start by un-ignoring all hidden files and directories. This way, hidden
+# directories like `.config` will show up in ripgrep searches.
+!.*
+
+# top-level hidden files/directories that we specifically ignore and skip over.
+# It's annoying to maintain this list, but it's worth doing IMO. Because it
+# lets us craft a small(ish) `$HOME` environment that works well with tools
+# that respect `.gitignore` outside of `git`.
 /.android
 /.ansible
 /.anyconnect
