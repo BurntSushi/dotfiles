@@ -1,14 +1,30 @@
-#!/bin/sh
+#!/usr/bin/env zsh
+
+# startup &
+# sleep 2
+# video tv
+# nitrogen --restore
+# gkrellm &
+# idesk &
+# no-blanking-loop &
+# dunst &
+# nm-applet &
+# restart-compositor &
+#
+# exec bash -c '(dbus-launch run-wingo ; (while true; do sleep 1000; done))'
 
 startup &
-sleep 2
-video tv
-nitrogen --restore
-gkrellm &
-idesk &
-no-blanking-loop &
+nitrogen --restore &
+video laptop &
 dunst &
 nm-applet &
+ag-blueberry-tray &
 restart-compositor &
 
-exec bash -c '(dbus-launch run-wingo ; (while true; do sleep 1000; done))'
+# Run the 1password tray.
+1password \
+  --silent \
+  --force-device-scale-factor=1.5 \
+  --log=debug &> /tmp/1password.log &
+
+exec run-wingo-environment
