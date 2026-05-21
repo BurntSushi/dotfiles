@@ -40,7 +40,7 @@ plug('nvim-telescope/telescope.nvim')
 -- So much shit just for completions? I don't get it.
 -- The configuration require is INSANE. Thankfully
 -- the `blink` project seems to have better sensibilities.
-plug('saghen/blink.cmp')
+plug('saghen/blink.cmp', { branch = 'v1' })
 
 -- The rust-analyzer config is so complicated, I guess we should
 -- just bring in a community maintained one.
