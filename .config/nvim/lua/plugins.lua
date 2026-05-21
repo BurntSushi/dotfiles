@@ -22,7 +22,7 @@ plug('qpkorr/vim-renamer')
 plug('aquach/vim-http-client')
 
 -- TOML syntax support.
-plug('cespare/vim-toml')
+plug('cespare/vim-toml', { branch = 'main' })
 
 -- Go plugin. Re-enable this if I start writing Go again.
 -- plug('fatih/vim-go', { ['do'] = ':GoUpdateBinaries' })
