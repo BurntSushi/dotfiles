@@ -1,3 +1,5 @@
+// Add a convention that lets us avoid doing symlinks. e.g., For PAM.
+
 #[cfg(not(unix))]
 compile_error!("setup-system-links only works on Unix systems");
 
@@ -41,8 +43,34 @@ impl Links {
     fn discover(system: &Path, hostname: &str) -> anyhow::Result<Links> {
         // Collect all leaf files in ~/system, creating a map, e.g.,
         // etc/default/grub |--> {default, duff, frink, ...}
-        // Note that the key lack the leading slash. We add that below.
-        let mut all: BTreeMap<PathBuf, BTreeSet<String>> = BTreeMap::new();
+        // Note that the key lacks a leading slash. We add that below.
+        #[derive(Debug)]
+        struct Leaf {
+            machine_config_name: String,
+            copy: bool,
+        }
+
+        impl Eq for Leaf {}
+
+        impl PartialEq for Leaf {
+            fn eq(&self, rhs: &Leaf) -> bool {
+                self.machine_config_name == rhs.machine_config_name
+            }
+        }
+
+        impl Ord for Leaf {
+            fn cmp(&self, rhs: &Leaf) -> std::cmp::Ordering {
+                self.machine_config_name.cmp(&rhs.machine_config_name)
+            }
+        }
+
+        impl PartialOrd for Leaf {
+            fn partial_cmp(&self, rhs: &Leaf) -> Option<std::cmp::Ordering> {
+                Some(self.cmp(rhs))
+            }
+        }
+
+        let mut all: BTreeMap<PathBuf, BTreeSet<Leaf>> = BTreeMap::new();
         for result in WalkDir::new(system) {
             let dent = result.with_context(|| {
                 format!("{}: failed to walk directory", system.display())
@@ -51,13 +79,6 @@ impl Links {
                 continue;
             }
 
-            let machine_config_name = dent
-                .file_name()
-                .to_str()
-                .with_context(|| {
-                    format!("{} is not valid UTF-8", dent.path().display())
-                })?
-                .to_string();
             // Should never fail since 'system' is our root and is guaranteed
             // to be non-empty.
             let dst = dent
@@ -72,21 +93,39 @@ impl Links {
                 // ~/system/README.md and are not part of our config.
                 continue;
             }
-            all.entry(dst)
-                .or_insert_with(|| BTreeSet::new())
-                .insert(machine_config_name);
+
+            let machine_config_name =
+                dent.file_name().to_str().with_context(|| {
+                    format!("{} is not valid UTF-8", dent.path().display())
+                })?;
+            let mut leaf = Leaf {
+                machine_config_name: machine_config_name.to_string(),
+                copy: false,
+            };
+            if let Some(hostname) = machine_config_name.strip_prefix("copy:") {
+                leaf.machine_config_name = hostname.to_string();
+                leaf.copy = true;
+            }
+            all.entry(dst).or_insert_with(|| BTreeSet::new()).insert(leaf);
         }
         // Now organize them into links by choosing the appropriate specific
         // config for this machine.
         let mut links = vec![];
+        let attempts = [
+            Leaf { machine_config_name: hostname.to_string(), copy: false },
+            Leaf { machine_config_name: "default".to_string(), copy: false },
+        ];
         for (relative_dst, configs) in all {
             let dst = Path::new("/").join(&relative_dst);
-            for &attempt in &[hostname, "default"] {
-                if configs.contains(attempt) {
-                    let src = system.join(relative_dst).join(attempt);
-                    links.push(Link { src, dst });
-                    break;
-                }
+            for attempt in &attempts {
+                let Some(config) = configs.get(attempt) else { continue };
+                let src = system.join(relative_dst).join(if !config.copy {
+                    attempt.machine_config_name.to_string()
+                } else {
+                    format!("copy:{}", attempt.machine_config_name)
+                });
+                links.push(Link { src, dst, copy: config.copy });
+                break;
             }
         }
         Ok(Links { links, backup: None })
@@ -120,7 +159,7 @@ impl Links {
             }
         }
         for link in to_link {
-            link.link(&mut wtr)?;
+            link.install(&mut wtr)?;
         }
         Ok(())
     }
@@ -141,7 +180,7 @@ impl Links {
             }
         }
         for link in to_link {
-            link.dry_link(&mut wtr)?;
+            link.dry_install(&mut wtr)?;
         }
         Ok(())
     }
@@ -156,15 +195,29 @@ struct Link {
     src: PathBuf,
     /// The path to where this config lives on the system.
     dst: PathBuf,
+    /// When true, we create a completely new file that is
+    /// an identical copy of the source. This is needed in
+    /// some cases (like for `/etc/pam.d/system-auth`) where
+    /// symlinks are tricky because of permissions. Namely,
+    /// the permission of the source file are relevant.
+    ///
+    /// We can't use hard-links either, because for PAM, files
+    /// in `/etc/pam.d` need to be owned by root. But we don't
+    /// want this for `~/system`, where files should be owned by
+    /// the user. Hardlinks don't allow it.
+    ///
+    /// So... we copy.
+    copy: bool,
 }
 
 impl Link {
     /// Write the equivalent Unix command we would execute if we were running
     /// for real.
-    fn dry_link<W: Write>(&self, mut wtr: W) -> io::Result<()> {
+    fn dry_install<W: Write>(&self, mut wtr: W) -> io::Result<()> {
+        let (prog, flags) = if self.copy { ("cp", "") } else { ("ln", " -s") };
         writeln!(
             wtr,
-            "ln \"{}\" \"{}\"",
+            "{prog}{flags} \"{}\" \"{}\"",
             self.src.display(),
             self.dst.display()
         )
@@ -188,10 +241,10 @@ impl Link {
         )
     }
 
-    /// Link the source to the destination, overwriting the destination if it
-    /// exists. Callers should ensure that the destination is backed up before
-    /// executing.
-    fn link<W: Write>(&self, wtr: W) -> anyhow::Result<()> {
+    /// Link (or install) the source to the destination, overwriting the
+    /// destination if it exists. Callers should ensure that the destination is
+    /// backed up before executing.
+    fn install<W: Write>(&self, wtr: W) -> anyhow::Result<()> {
         if self.dst.exists() {
             std::fs::remove_file(&self.dst).with_context(|| {
                 format!(
@@ -201,14 +254,24 @@ impl Link {
                 )
             })?;
         }
-        unix::fs::symlink(&self.src, &self.dst).with_context(|| {
-            format!(
-                "failed to link {} to {}",
-                self.src.display(),
-                self.dst.display()
-            )
-        })?;
-        self.dry_link(wtr)?;
+        if self.copy {
+            std::fs::copy(&self.src, &self.dst).with_context(|| {
+                format!(
+                    "failed to copy {} to {}",
+                    self.src.display(),
+                    self.dst.display()
+                )
+            })?;
+        } else {
+            unix::fs::symlink(&self.src, &self.dst).with_context(|| {
+                format!(
+                    "failed to link {} to {}",
+                    self.src.display(),
+                    self.dst.display()
+                )
+            })?;
+        }
+        self.dry_install(wtr)?;
         Ok(())
     }
 
