@@ -46,6 +46,7 @@
 #   x (if installing graphics)
 #   pkgs
 #   xpkgs (if installing graphics)
+#   bluetoothinit
 #   userinit
 #   kaitinit (optional)
 #   wifiinit (optional)
@@ -66,6 +67,7 @@
 # Now log out and log back in on tty2, then:
 #
 #   xenvinit (if installing graphics)
+#   pywingoinit (if installing graphics)
 #   sshinit
 #   scannerinit
 #   autologin (for media PCs)
@@ -158,7 +160,7 @@ pkgs() {
     pkgfile \
     alsa-utils vorbis-tools \
     aspell aspell-en hunspell hunspell-en_US \
-    python python-pip python-setuptools python-virtualenv bpython \
+    uv python python-pip python-setuptools python-virtualenv bpython \
     flake8 \
     go go-tools \
     rustup rust-analyzer \
@@ -209,6 +211,11 @@ xpkgs() {
     pipewire-audio pipewire-pulse pipewire-alsa wireplumber \
     pamixer pavucontrol \
     firefox
+}
+
+bluetoothinit() {
+  pacman --noconfirm -S blueman bluez bluez-utils
+  systemctl enable bluetooth
 }
 
 userinit() {
@@ -348,13 +355,24 @@ xenvinit() {
     -o "$HOME/.config/menus/applications.menu"
 }
 
+# Split into its own step so that it can be run on its own. When major Python
+# upgrades occur, the venv can get fucked up. Unless, I think, when uv does
+# installation. :-)
+pywingoinit() {
+  cd "$HOME" || exit 1
+
+  rm -rfv "$HOME/.pyx11"
+  uv venv "$HOME/.pyx11"
+  # shellcheck disable=SC1091
+  . "$HOME/.pyx11/bin/activate"
+  uv pip install git+https://github.com/wingowm/pywingo
+}
+
 sshinit() {
   ssh-extract-key burntsushi
 }
 
 scannerinit() {
-  # Old black & white printer.
-  # brsaneconfig4 -a name=Brother model=DCP-7065DN ip=192.168.1.150
   # New color printer.
   brsaneconfig4 -a name=BrotherColor model=MFC-L3770CDW ip=192.168.1.151
 }
@@ -375,6 +393,7 @@ case "$1" in
   x) shift ; x "$@" ;;
   pkgs) shift ; pkgs "$@" ;;
   xpkgs) shift ; xpkgs "$@" ;;
+  bluetoothinit) shift ; bluetoothinit "$@" ;;
   userinit) shift ; userinit "$@" ;;
   kaitinit) shift ; kaitinit "$@" ;;
   wifiinit) shift ; wifiinit "$@" ;;
@@ -384,6 +403,7 @@ case "$1" in
   aurxpkgs) shift ; aurxpkgs "$@" ;;
   homeinit) shift ; homeinit "$@" ;;
   xenvinit) shift ; xenvinit "$@" ;;
+  pywingoinit) shift ; pywingoinit "$@" ;;
   gpginit) shift ; gpginit "$@" ;;
   sshinit) shift ; sshinit "$@" ;;
   scannerinit) shift ; scannerinit "$@" ;;
