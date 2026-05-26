@@ -1,0 +1,16 @@
+#!/bin/sh
+
+script="$1"
+if [ -z "$script" ]; then
+  echo "Usage: $(basename "$0") <script-path-or-name>" >&2
+  exit 1
+fi
+if ! echo "$script" |  rg -q /; then
+  script="$HOME/bin/$script"
+fi
+if [ -f "$script" ]; then
+  echo "$script already exists" >&2
+  exit 1
+fi
+echo '#!/usr/bin/env bash' > "$script"
+cx "$script"

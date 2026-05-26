@@ -14,7 +14,7 @@ case "$(myhostname)" in
     exec "$base/wingo-krusty.xinitrc"
     ;;
   bart)
-    exec "$base/wingo-bart.xinitrc"
+    exec "$base/wingo-bart.xinitrc" &> /tmp/run-wingo-environment.log
     ;;
   kang)
     exec "$base/wingo-kang.xinitrc"

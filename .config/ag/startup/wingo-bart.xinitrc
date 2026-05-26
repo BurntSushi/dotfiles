@@ -1,6 +1,9 @@
 #!/bin/sh
 
-startup &
+set -x
+set -e
+
+startup
 nitrogen --restore &
 video laptop &
 dunst &

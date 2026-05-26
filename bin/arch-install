@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# BREADCRUMBS:
+#
+# Audit this whole thing and use it as a forcing function to do clean-up.
+
 # TIP: For configuring wifi from the boot disk, these commands are useful:
 #
 #   iwctl station wlan0 scan

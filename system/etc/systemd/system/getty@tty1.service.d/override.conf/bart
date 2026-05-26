@@ -1,0 +1,3 @@
+[Service]
+ExecStart=
+ExecStart=-/usr/bin/agetty --autologin andrew --noclear %I tmux-256color

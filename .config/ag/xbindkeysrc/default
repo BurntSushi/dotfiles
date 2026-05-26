@@ -38,7 +38,7 @@
   mod4 + p
 
 "1password"
-  mod4 + mod1 + p
+  control + shift + p
 
 "pavucontrol"
   mod4 + a

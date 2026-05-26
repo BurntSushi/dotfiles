@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# A script to re-apply X11 options whenever something changes that seems to
+# cause the settings to be reset to the default.
+#
+# I got this idea from Codex.
+
+apply() {
+  delay=250
+  rate=40
+  xsetroot -cursor_name left_ptr
+  # Resets keyboard map. Useful when calling
+  # this idempotently.
+  setxkbmap us
+  setxkbmap -option terminate:ctrl_alt_bksp
+  xset r rate "$delay" "$rate" >/dev/null 2>&1
+  xset b 0
+}
+
+apply
+
+while true; do
+  apply
+
+  # Reapply on X input hierarchy changes, such as Bluetooth reconnects.
+  timeout 300 xinput --test-xi2 --root 2>/dev/null | \
+    while IFS= read -r line; do
+      case "$line" in
+        *HierarchyChanged*|*DeviceChanged*)
+          apply
+          ;;
+      esac
+    done
+  sleep 1
+done

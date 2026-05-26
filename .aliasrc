@@ -15,7 +15,8 @@ else
 fi
 
 alias y='yay'
-alias p="ps axo pid,cmd | sed 's/^\\s*\\([0-9]\\+\\)\\s\\+/\\1\\t/g' | grep -v grep | grep"
+# alias p="ps axo pid,cmd | sed 's/^\\s*\\([0-9]\\+\\)\\s\\+/\\1\\t/g' | grep -v grep | grep"
+# alias p="pgrep -a"
 alias diff="colordiff"
 alias less="less -R"
 alias sqlite3="sqlite3 -column -nullvalue 'NULL' -header"
@@ -144,4 +145,9 @@ o() {
     return
   fi
   echo -n "$files" | xargs -0 -o "$EDITOR"
+}
+
+p() {
+  pattern="$1"
+  pgrep -a "$1" | rg "$1"
 }

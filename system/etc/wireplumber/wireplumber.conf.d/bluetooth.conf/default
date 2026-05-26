@@ -1,0 +1,6 @@
+# See /usr/share/doc/wireplumber/examples/wireplumber.conf.d/bluetooth.conf
+
+wireplumber.settings = {
+  # Whether to use headset profile in the presence of an input stream.
+  bluetooth.autoswitch-to-headset-profile = false
+}

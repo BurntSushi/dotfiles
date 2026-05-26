@@ -1,29 +1,10 @@
 #!/bin/sh
 
-xsetroot -cursor_name left_ptr
-# Resets keyboard map. Useful when calling
-# this idempotently. Sometimes caps lock
-# somehow gets enabled, even though I remap
-# it. This way, I can just call `startup`
-# again and it gets fixed.
-setxkbmap us
-setxkbmap -option terminate:ctrl_alt_bksp
-xset r rate 200
-xset b 0
-numlockx on
-dpms-settings
+set -x
+set -e
 
-if [ -f "$HOME/.Xresources" ]; then
-  xrdb "$HOME/.Xresources"
-fi
-if [ -f "$HOME/.xmodmaprc" ]; then
-  xmodmap "$HOME/.xmodmaprc"
-fi
-
-if pgrep xbindkeys > /dev/null 2>&1; then
-  killall xbindkeys
-fi
-xbindkeys
+process-running xconfig-self-healing &
+process-running xbindkeys
 
 case "$(myhostname)" in
   monty)
