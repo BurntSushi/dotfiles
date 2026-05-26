@@ -23,6 +23,7 @@
 /.cddb
 /.circleci
 /.cisco
+/.codex
 /.debug
 /.docker
 /.dotnet
