@@ -3,4 +3,7 @@
 # This will return the "default" branch name for a git repo.
 # It used to almost always be master. But now it might be
 # main because $reasons.
+#
+# (I eventually want to switch all my projects to `main` and
+# get rid of this work-around. But it's so much work!)
 git remote show origin | rg 'HEAD branch: (.*)' -or '$1'
