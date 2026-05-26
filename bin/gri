@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+branch="$1"
+if [ -z "$branch" ]; then
+  branch="$(git-master-name)"
+fi
+exec git rebase -i "$branch"
