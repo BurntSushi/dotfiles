@@ -38,7 +38,7 @@ vim.keymap.set('v', [[\j]], '!jq .<CR>')
 
 -- Convenience keybinding for writing the current date.
 vim.keymap.set('n', [[\cd]], function()
-  local now = vim.fn.system({'biff', 'time', 'fmt', '-f', '%B %-d, %Y', 'now'})
+  local now = vim.fn.system({'bttf', 'time', 'fmt', '-f', '%B %-d, %Y', 'now'})
   vim.api.nvim_put({vim.fn.trim(now)}, 'l', true, false)
 end)
 

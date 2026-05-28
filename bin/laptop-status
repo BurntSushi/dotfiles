@@ -8,5 +8,5 @@ else
 fi
 nowcolor=3b82ff
 font='^fn(Cousine:bold:size=18)'
-now="$(biff time fmt now -f "^fg(#$nowcolor)%a, %B %d, %Y, %H:%M %Z")"
+now="$(bttf time fmt now -f "^fg(#$nowcolor)%a, %B %d, %Y, %H:%M %Z")"
 exec printf "%s%s  ^fg(#$batcolor)%s\n" "$font" "$now" "$battery"

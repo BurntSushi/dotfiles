@@ -6,7 +6,7 @@ usage() {
 
 dir="/tmp/recordings"
 progressdir="$dir/progress"
-stamp="$(biff time round -s second now | biff time fmt -f rfc3339)"
+stamp="$(bttf time round -s second now | bttf time fmt -f rfc3339)"
 path="$dir/$stamp.mp4"
 progresspath="$progressdir/$stamp.log"
 
