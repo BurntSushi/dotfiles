@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# This script is meant to be run at the root of a worktree checkout
+# after the current branch has been merged to the default branch via
+# the GitHub UI. This will update the local default branch and then
+# forcefully delete the merged branch along with the worktree directory.
+# It then drops the caller into the default branch directory.
+#
+# The last bit means this command should be run as `. git-worktree-merged`.
+
+default="$(git-master-name)"
+current="$(git branch --show-current)"
+if ! [ -f ./.git ] && ! rg -q gitdir ./.git; then
+  echo "expected this to be a worktree directory" >&2
+  exit 1
+fi
+if ! [ -d ../"$default" ]; then
+  echo "expected default branch at $(realpath ../"$default")" >&2
+  exit 1
+fi
+
+(cd ../"$default" && git pull)
+git checkout -d "$default"
+git branch -D "$current"
+cd ../"$default"
