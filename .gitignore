@@ -143,6 +143,7 @@
 /tmp
 /wallpaper
 /work
+/www
 
 # Files we always want to ignore
 .netrwhist
