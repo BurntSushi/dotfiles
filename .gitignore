@@ -110,7 +110,7 @@
 /.vcpkg
 /.vim-cache
 /.viminfo
-/.vscode
+/.vscode*
 /.wine
 /.wget*
 /.wicd
