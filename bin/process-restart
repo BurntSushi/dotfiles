@@ -6,7 +6,5 @@ if [ -z "$process" ]; then
   echo "Usage: $(basename "$0") <process-name>" >&2
   exit 1
 fi
-if pgrep "^$process$" &> /dev/null; then
-  killall "$process"
-fi
+pgrep -f "(^|/)$process($|\\s+)" | xargs -r kill
 exec "$process" "$@"

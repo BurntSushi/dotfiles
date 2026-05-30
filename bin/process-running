@@ -6,7 +6,7 @@ if [ -z "$process" ]; then
   echo "Usage: $(basename "$0") <process-name>" >&2
   exit 1
 fi
-if pgrep -q "^$process$" &> /dev/null; then
+if pgrep -f "(^|/)$process($|\\s+)" &> /dev/null; then
   exit 0
 fi
 exec "$process" "$@"
