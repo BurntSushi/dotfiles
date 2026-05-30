@@ -16,19 +16,19 @@
 "terminal -e tmux -u new zsh"
   mod4 + shift + t
 
-"terminal-tmux nas"
+"tt nas"
   mod4 + s
 
-"terminal-tmux duff"
+"tt duff"
   mod4 + h
 
-"terminal-tmux duff astral"
+"tt duff astral"
   mod1 + mod4 + a
 
-"terminal-tmux armlisa"
+"tt armlisa"
   mod4 + m
 
-"terminal-tmux bs"
+"tt burntsushi.net"
   mod4 + d
 
 "terminal -e ssh -A kent -t clones/tmux/tmux -u new -A -s remote"
