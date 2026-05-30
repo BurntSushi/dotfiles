@@ -3,5 +3,6 @@
 url="https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage"
 path="$HOME/bin/x86_64/nvim"
 
+mkdir -p "$(dirname "$path")"
 curl -L "$url" --create-dirs > "$path"
 chmod +x "$path"
