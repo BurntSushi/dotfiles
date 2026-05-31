@@ -20,6 +20,9 @@ case "$host" in
   bart)
     port=3003
     ;;
+  nas2)
+    port=3004
+    ;;
   *)
     echo "sr-port: unrecognized hostname $host" >&2
     exit 1

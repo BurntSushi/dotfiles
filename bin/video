@@ -49,73 +49,61 @@ fi
 sleep 1
 
 case $(myhostname) in
-duff|frink)
-  ps aux | grep -v grep | grep dzen-workspaces | awk '{print $2}' | xargs -r kill
-  killall trayer
-  (sleep 1 && \
-    trayer \
-    --widthtype pixel --width 150 \
-    --heighttype pixel --height 40 \
-    --edge bottom --align right --monitor 1 \
-    --SetDockType true) &
-  (sleep 1 && \
-    $HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces \
-    | dzen2 -dock -xs 3 -h 40 -fn 'Cousine-18' -ta l -bg '#ffffff' -y 1170) &
-  ;;
-Tiger)
-  if array_exists laptop "$*"; then
-    placeHead laptop
-  else
+  duff|frink)
+    ps aux | grep -v grep | grep dzen-workspaces | awk '{print $2}' | xargs -r kill
+    killall trayer
+    (sleep 1 && \
+      trayer \
+      --widthtype pixel --width 150 \
+      --heighttype pixel --height 40 \
+      --edge bottom --align right --monitor 1 \
+      --SetDockType true) &
+    (sleep 1 && \
+      $HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces \
+      | dzen2 -dock -xs 3 -h 40 -fn 'Cousine-18' -ta l -bg '#ffffff' -y 1170) &
+    ;;
+  nas2)
+    ps aux | grep -v grep | grep dzen-workspaces | awk '{print $2}' | xargs -r kill
+    killall stalonetray
+    (
+      stalonetray \
+        --background '#ffffff' \
+        --icon-size 40 --geometry 1x1-0-0 --grow-gravity SE --icon-gravity SE
+    ) &
+    (
+      $HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces \
+        | dzen2 -dock -xs 3 -h 40 -fn 'Cousine-18' -ta l -bg '#ffffff' -y 1170
+    ) &
+    ;;
+  bart|kang)
+    if array_exists laptop "$*"; then
+      placeHead laptop
+    else
+      placeHead "$1"
+    fi
+    ;;
+  flanders|milhouse|wiggum)
     placeHead "$1"
-  fi
-  ;;
-monty)
-  if array_exists laptop "$*"; then
-    placeHead laptop
-  else
-    placeHead "$1"
-  fi
-  ;;
-krusty|kang|kodos|bart)
-  if array_exists laptop "$*"; then
-    placeHead laptop
-  else
-    placeHead "$1"
-  fi
-  ;;
-Turtle)
-  if array_exists laptop "$*"; then
-    placeHead laptop
-  else
-    placeHead "$1"
-  fi
-  ;;
-skinner)
-  ;;
-chalmers)
-  ;;
-flanders|milhouse|wiggum)
-  placeHead "$1"
-  ;;
-otto)
-  pgrep dzen-workspaces | xargs -r kill
-  killall trayer
-  (sleep 1 && \
-    trayer \
-    --widthtype pixel --width 150 \
-    --heighttype pixel --height 40 \
-    --edge bottom --align right \
-    --SetDockType true) &
+    ;;
+  otto)
+    pgrep dzen-workspaces | xargs -r kill
+    killall trayer
+    (sleep 1 && \
+      trayer \
+      --widthtype pixel --width 150 \
+      --heighttype pixel --height 40 \
+      --edge bottom --align right \
+      --SetDockType true) &
 
-  headHeight="$(gohead query tv | cut -f4)"
-  y="$((headHeight - 40))"
-  (sleep 1 && \
-    $HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces \
-    | dzen2 -dock -xs 2 -h 40 -fn 'Cousine-18' -ta l -bg '#ffffff' -y "$y") &
-  ;;
-*)
-  echo "Unrecognized machine '$(hostname)'." >&2
-  exit 1
-  ;;
+    headHeight="$(gohead query tv | cut -f4)"
+    y="$((headHeight - 40))"
+    (sleep 1 && \
+      $HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces \
+      | dzen2 -dock -xs 2 -h 40 -fn 'Cousine-18' -ta l -bg '#ffffff' -y "$y") &
+    ;;
+  *)
+    echo "Unrecognized machine '$(hostname)'." >&2
+    exit 1
+    ;;
 esac
 exit 0

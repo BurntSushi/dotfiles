@@ -20,11 +20,11 @@ apply() {
     bart|kang)
       framework-configure-touchpad
       ;;
-    wiggum|otto|flanders|milhouse)
+    nas2|wiggum|otto|flanders|milhouse)
       no-blanking
       xset m 3 1
       ;;
-    duff|frink)
+    duff)
       xset m 1 1
       xinput --set-prop 'Logitech Anywhere MX' 'libinput Accel Speed' -0.75
       xinput --set-prop 'pointer:Logitech MX Anywhere 2' 'libinput Accel Speed' -0.75

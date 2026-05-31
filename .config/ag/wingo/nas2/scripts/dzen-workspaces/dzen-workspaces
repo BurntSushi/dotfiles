@@ -9,7 +9,7 @@ W = pywingo.Wingo()
 cfg = W.LoadConfig()
 markup = {}
 for k in ('current', 'visible', 'hidden', 'empty'):
-    markup[k] = cfg.get('fmt', k)
+    markup[k] = cfg.get('fmt', k, raw=True)
 
 
 @W.bind('AddedWorkspace')
@@ -38,7 +38,8 @@ def show(_):
         else:
             htagged.append(markup['hidden'] % space)
 
-    print '[%s] %s' % (' '.join(vtagged), ' '.join(htagged))
+    print('[%s] %s' % (' '.join(vtagged), ' '.join(htagged)))
     sys.stdout.flush()
+
 
 W.loop()

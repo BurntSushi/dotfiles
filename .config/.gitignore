@@ -65,6 +65,7 @@
 /mimeapps.list
 /mirage
 /monitors.xml*
+/mozilla
 /nautilus
 /nitrogen
 /okularpartrc
@@ -87,6 +88,7 @@
 /session
 /snes9x
 /sniffnet
+/systemd
 /totem
 /trashrc
 /Unknown Organization

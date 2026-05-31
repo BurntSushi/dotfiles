@@ -4,6 +4,9 @@
 
 # We start by un-ignoring all hidden files and directories. This way, hidden
 # directories like `.config` will show up in ripgrep searches.
+#
+# This does mean that `.git` gets whitelisted, which isn't what we want. So we
+# ignore it in `~/.ignore`.
 !.*
 
 # top-level hidden files/directories that we specifically ignore and skip over.

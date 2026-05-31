@@ -19,6 +19,9 @@
 "tt nas"
   mod4 + s
 
+"tt nas2"
+  mod4 + shift + s
+
 "tt duff"
   mod4 + h
 
