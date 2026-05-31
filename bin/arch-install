@@ -166,18 +166,6 @@ x() {
   driver="$1"
 
   pacman --noconfirm -S xorg xorg-xinit
-  case "$driver" in
-    intel)
-      pacman --noconfirm -S xf86-video-intel
-      ;;
-    radeon)
-      pacman --noconfirm -S xf86-video-amdgpu
-      ;;
-    *)
-      echo "unrecognized graphics driver" >&2
-      exit 1
-      ;;
-  esac
 }
 
 pkgs() {
