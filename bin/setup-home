@@ -23,6 +23,9 @@ if [ ! -d "$HOME/.git" ]; then
   git remote add origin 'https://github.com/BurntSushi/dotfiles'
   git pull origin master --ff-only
   git branch --set-upstream-to origin/master master
+  # For whatever reason, this command specifically commonly fails when the
+  # corresponding GPG key hasn't been unlocked yet. Probably
+  # because it is run non-interactively.
   git-crypt unlock
   chmod 600 "$HOME/.ssh/config"
 else

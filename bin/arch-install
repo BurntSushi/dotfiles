@@ -31,6 +31,8 @@
 #
 #   cfdisk /dev/sda
 #
+# N.B. /dev/sda is just an example. These days, it's probably /dev/nvme0n1.
+#
 # Use a GPT partition table. Then create a 2GB boot EFI System Partition.
 # And then a Linux system partition using the rest of the space. No swap
 # partition. Write it. Then format the partitions:
@@ -38,21 +40,33 @@
 #   mkfs.fat -F32 /dev/sda1
 #   mkfs.ext4 /dev/sda2
 #
+# Finally, mount the latter above to `/mnt` and the former to `/mnt/boot`:
+#
+#   mount /dev/sda2 /mnt
+#   mkdir /mnt/boot
+#   mount /dev/sda1 /mnt/boot
+#
 # Then you can start the steps below.
 
-# Recommended steps:
+# Recommended steps before entering chroot:
 #
 #   encrypt (if encrypting disk, recommended for laptop)
 #   bootstrap before entering chroot
-#   copy this script into INSTALL_DIR
+#   installinit
+#
+# Now enter the chroot:
+#
 #   arch-chroot /mnt
+#
+# And continue installation using `/arch-install`:
+#
 #   rootinit after entering chroot
 #   x (if installing graphics)
 #   pkgs
 #   xpkgs (if installing graphics)
 #   bluetoothinit
-#   userinit
-#   kaitinit (optional)
+#   andrewinit
+#   kaitinit
 #   wifiinit (optional)
 #   grubinit
 #
@@ -61,6 +75,7 @@
 #   yayinit
 #   aurpkgs
 #   aurxpkgs (if installing graphics)
+#   dhcpcdinit
 #
 # At this point, reboot to disk, as dealing with GPG off the
 # live disk seems to have issues.
@@ -108,6 +123,15 @@ bootstrap() {
   genfstab -U "$INSTALL_DIR" >> "$INSTALL_DIR"/etc/fstab
 }
 
+installinit() {
+  run='curl -fsSL https://burntsushi.net/stuff/arch-install | bash -s -- "$@"'
+  dest="$INSTALL_DIR"/archlinux-install
+
+  echo '#!/usr/bin/env bash' > "$dest"
+  echo "$run" >> "$INSTALL_DIR"/archlinux-install
+  chmod +x "$dest"
+}
+
 rootinit() {
   if [ $# != 1 ]; then
     echo "Usage: $(basename "$0") rootinit <hostname>" >&2
@@ -147,7 +171,7 @@ x() {
       pacman --noconfirm -S xf86-video-intel
       ;;
     radeon)
-      pacman --noconfirm -S xf86-video-ati
+      pacman --noconfirm -S xf86-video-amdgpu
       ;;
     *)
       echo "unrecognized graphics driver" >&2
@@ -183,12 +207,14 @@ pkgs() {
     aws-cli s3cmd colordiff curl wget ctags darkhttpd pass rsync \
     nodejs yarn \
     terminus-font \
-    words
+    words \
+    keyd
   pkgfile --update
+  systemctl enable keyd
 }
 
 xpkgs() {
-  pacman --noconfirm -Rsn vim
+  pacman --noconfirm -Rdd vim
   pacman --noconfirm -S \
     xterm \
     alacritty \
@@ -200,21 +226,20 @@ xpkgs() {
     dunst \
     i3lock \
     mpv \
-    nitrogen \
     numlockx \
     xclip \
     xsel \
     xdotool \
     wmctrl \
     scrot \
-    trayer \
     freerdp \
-    gmrun \
     gvim \
     noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra \
     pipewire-audio pipewire-pulse pipewire-alsa wireplumber \
     pamixer pavucontrol \
+    recordmydesktop \
     firefox
+  systemctl --user enable wireplumber
 }
 
 bluetoothinit() {
@@ -222,7 +247,7 @@ bluetoothinit() {
   systemctl enable bluetooth
 }
 
-userinit() {
+andrewinit() {
   # Use the same group ID on all machines.
   sudo groupmod -n users-old users
   sudo groupadd -g 100 users
@@ -235,11 +260,6 @@ userinit() {
   echo "make sure '%wheel ALL=(ALL) NOPASSWD: ALL' is in sudoers"
 }
 
-wifiinit() {
-  pacman --noconfirm -S networkmanager network-manager-applet
-  systemctl enable NetworkManager
-}
-
 kaitinit() {
   sudo useradd -g users -u 1002 -m -s /bin/bash \
     -G disk,lp,wheel,log,dbus,network,video,audio,optical,storage,scanner,power \
@@ -247,6 +267,11 @@ kaitinit() {
   echo "set kait password"
   sudo passwd kait
   echo "make sure '%wheel ALL=(ALL) NOPASSWD: ALL' is in sudoers"
+}
+
+wifiinit() {
+  pacman --noconfirm -S networkmanager network-manager-applet
+  systemctl enable NetworkManager
 }
 
 grubinit() {
@@ -289,13 +314,24 @@ aurxpkgs() {
   #   gkleds
   #   gkrellsun
   #   gkrellweather
+  #
+  # Also, these programs require gtk2. Which now requires going through the AUR.
+  # This is bad. Let's try and use stalonetray instead. And find an alternative
+  # program to set wallpaper. No reason to use gtk2 for that.
+  #
+  #   trayer
+  #   nitrogen
+  #
+  # The only other thing on my system requiring gtk2 is XSANE, but it looks like
+  # there are many alternatives there too. NAPS2 looks promising:
+  # https://wiki.archlinux.org/title/SANE
   yay --noconfirm -S \
     dzen2-xft-xpm-xinerama-git \
     google-chrome \
     1password 1password-cli \
     idesk \
+    gmrun \
     ttf-hack-nerd \
-    ttf-oxygen \
     ttf-dejavu \
     ttf-fira-mono \
     ttf-mononoki-git \
@@ -303,14 +339,32 @@ aurxpkgs() {
     ttf-ubuntu-font-family
 }
 
+dhcpcdinit() {
+  sudo systemctl enable dhcpcd
+}
+
 gpginit() {
+  import() {
+    private_key="$1"
+    fingerprint=$(
+      gpg \
+        --pinentry-mode loopback \
+        --with-colons \
+        --import-options show-only \
+        --import "$private_key" \
+        | awk -F: '$1 == "fpr" {print $10; exit}'
+    )
+    # We could consider using `gpg --export-ownertrust` and then
+    # `gpg --import-ownertrust`. But this way works too.
+    echo "$fingerprint:6:" | gpg --import-ownertrust
+  }
+
   rsync \
     --archive --recursive --human-readable --partial --inplace --progress \
     -e 'ssh -p 7704' \
     andrew@home.burntsushi.net:/m/data/andrew/keys/*.key.* /tmp/
-  gpg --pinentry-mode loopback --import /tmp/jamslam@gmail.com.key.priv
-  gpg --pinentry-mode loopback --import /tmp/kbrady39@gmail.com.key.priv
-  echo "use 'gpg --edit-key {email}' to trust each key completely"
+  import /tmp/jamslam@gmail.com.key.priv
+  import /tmp/kbrady39@gmail.com.key.priv
 }
 
 homeinit() {
@@ -343,20 +397,14 @@ xenvinit() {
   git clone https://github.com/BurntSushi/wingo /tmp/wingo
   cp -a /tmp/wingo/data ~/.local/share/wingo
 
-  virtualenv "$HOME/.pyx11"
-  # shellcheck disable=SC1091
-  . "$HOME/.pyx11/bin/activate"
-  pip install git+https://github.com/wingowm/pywingo
-
   # Someone seems to have fucked up the KDE/qt6 packages
   # on Archlinux, so we need to download this magical file
   # in order to make file associations in Dolphin work. WTF.
   #
   # See: https://old.reddit.com/r/kde/comments/1bd313p/dolphin_not_recognizing_file_associations/l26i3m2/
   mkdir "$HOME/.config/menus"
-  curl \
-    -L https://raw.githubusercontent.com/KDE/plasma-workspace/master/menu/desktop/plasma-applications.menu \
-    -o "$HOME/.config/menus/applications.menu"
+  url="https://github.com/KDE/plasma-workspace/raw/11e7f5306fa013ec5c2b894a28457dabf5c42bad/menu/desktop/plasma-applications.menu"
+  curl -L "$url" -o "$HOME/.config/menus/applications.menu"
 }
 
 # Split into its own step so that it can be run on its own. When major Python
@@ -373,12 +421,14 @@ pywingoinit() {
 }
 
 sshinit() {
+  sudo systemctl enable sshd
+  sudo systemctl start sshd
   ssh-extract-key burntsushi
 }
 
 scannerinit() {
   # New color printer.
-  brsaneconfig4 -a name=BrotherColor model=MFC-L3770CDW ip=192.168.1.151
+  sudo brsaneconfig4 -a name=BrotherColor model=MFC-L3770CDW ip=192.168.1.151
 }
 
 autologin() {
@@ -393,12 +443,13 @@ EOF
 case "$1" in
   encrypt) shift ; encrypt "$@" ;;
   bootstrap) shift ; bootstrap "$@" ;;
+  installinit) shift ; installinit "$@" ;;
   rootinit) shift ; rootinit "$@" ;;
   x) shift ; x "$@" ;;
   pkgs) shift ; pkgs "$@" ;;
   xpkgs) shift ; xpkgs "$@" ;;
   bluetoothinit) shift ; bluetoothinit "$@" ;;
-  userinit) shift ; userinit "$@" ;;
+  andrewinit) shift ; andrewinit "$@" ;;
   kaitinit) shift ; kaitinit "$@" ;;
   wifiinit) shift ; wifiinit "$@" ;;
   grubinit) shift ; grubinit "$@" ;;
@@ -408,6 +459,7 @@ case "$1" in
   homeinit) shift ; homeinit "$@" ;;
   xenvinit) shift ; xenvinit "$@" ;;
   pywingoinit) shift ; pywingoinit "$@" ;;
+  dhcpcdinit) shift ; dhcpcdinit "$@" ;;
   gpginit) shift ; gpginit "$@" ;;
   sshinit) shift ; sshinit "$@" ;;
   scannerinit) shift ; scannerinit "$@" ;;
