@@ -204,7 +204,7 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'sh',
+  pattern = {'sh', 'bash', 'zsh'},
   callback = function()
     spacing.space2()
     vim.b.comment = '#'
@@ -276,12 +276,5 @@ vim.api.nvim_create_autocmd('FileType', {
     -- files. I'm not sure yet how to make this work in Lua. But I haven't
     -- really looked.
     -- inoremap # X#
-  end,
-})
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'zsh',
-  callback = function()
-    spacing.space4()
-    vim.b.comment = '#'
   end,
 })

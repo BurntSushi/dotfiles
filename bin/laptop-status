@@ -7,6 +7,5 @@ else
   batcolor=ff6961
 fi
 nowcolor=3b82ff
-font='^fn(Cousine:bold:size=18)'
 now="$(bttf time fmt now -f "^fg(#$nowcolor)%a, %B %d, %Y, %H:%M %Z")"
-exec printf "%s%s  ^fg(#$batcolor)%s\n" "$font" "$now" "$battery"
+exec printf "%s  ^fg(#$batcolor)%s\n" "$now" "$battery"

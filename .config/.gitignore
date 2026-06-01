@@ -14,6 +14,7 @@
 /coc
 /Code
 /Code\ -\ OSS
+/composer
 /configstore
 /dconf
 /dolphinrc
@@ -66,6 +67,7 @@
 /mirage
 /monitors.xml*
 /mozilla
+/naps2
 /nautilus
 /nitrogen
 /okularpartrc
@@ -88,11 +90,13 @@
 /session
 /snes9x
 /sniffnet
+/spotify
 /systemd
 /totem
 /trashrc
 /Unknown Organization
 /user-dirs.*
+/variety
 /vivaldi
 /vivaldi-snapshot
 /vlc

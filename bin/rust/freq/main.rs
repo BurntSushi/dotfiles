@@ -10,10 +10,7 @@ Usage:
 See `freq --help` for more detail.
 */
 
-#![allow(warnings)]
-
 use std::{
-    borrow::Cow,
     io::Write,
     path::{Path, PathBuf},
 };
@@ -368,8 +365,6 @@ impl FreqsOtherMany {
     fn into_table(self, config: &Config) -> Table {
         let mut table = Table::default();
         for (units, freq) in self.map {
-            use std::fmt::Write;
-
             table.total += freq;
             if !units.iter().all(|unit| config.include_unit(&unit)) {
                 continue;

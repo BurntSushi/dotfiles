@@ -1,7 +1,7 @@
 #!/bin/sh
 
 startup
-video main &
+screenpos main &
 dunst &
 ag-blueberry-tray &
 restart-compositor &

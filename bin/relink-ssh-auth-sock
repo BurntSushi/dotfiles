@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -eu
+
+link="$HOME/.ssh/ssh_auth_sock"
+
+if [[
+  -n "${SSH_CONNECTION:-}" &&
+  -n "${SSH_AUTH_SOCK:-}" &&
+  "$SSH_AUTH_SOCK" != "$link" &&
+  -S "$SSH_AUTH_SOCK"
+]]; then
+  mkdir -p "$HOME/.ssh"
+  chmod 700 "$HOME/.ssh"
+  ln -snf "$SSH_AUTH_SOCK" "$link"
+fi
+
+if [ -S "$link" ]; then
+  printf '%s\n' "$link"
+else
+  exit 1
+fi

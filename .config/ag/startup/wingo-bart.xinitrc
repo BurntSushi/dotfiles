@@ -4,8 +4,8 @@ set -x
 set -e
 
 startup
-nitrogen --restore &
-video laptop &
+screenpos laptop &
+variety &
 dunst &
 nm-applet &
 ag-blueberry-tray &

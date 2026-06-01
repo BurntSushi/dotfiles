@@ -197,7 +197,7 @@ pkgs() {
     terminus-font \
     words \
     keyd \
-    bash-language-server
+    bash-language-server lua-language-server typescript-language-server
   pkgfile --update
   systemctl enable keyd
 }
@@ -227,6 +227,8 @@ xpkgs() {
     pipewire-audio pipewire-pulse pipewire-alsa wireplumber \
     pamixer pavucontrol \
     recordmydesktop \
+    variety \
+    stalonetray \
     firefox
   systemctl --user enable wireplumber
 }
@@ -296,30 +298,13 @@ aurpkgs() {
 }
 
 aurxpkgs() {
-  # It looks like gkrellm has finally gone the way of the dodo. This is what
-  # I used to install:
-  #
-  #   gkrellm
-  #   gkleds
-  #   gkrellsun
-  #   gkrellweather
-  #
-  # Also, these programs require gtk2. Which now requires going through the AUR.
-  # This is bad. Let's try and use stalonetray instead. And find an alternative
-  # program to set wallpaper. No reason to use gtk2 for that.
-  #
-  #   trayer
-  #   nitrogen
-  #
-  # The only other thing on my system requiring gtk2 is XSANE, but it looks like
-  # there are many alternatives there too. NAPS2 looks promising:
-  # https://wiki.archlinux.org/title/SANE
   yay --noconfirm -S \
     dzen2-xft-xpm-xinerama-git \
     google-chrome \
     1password 1password-cli \
     idesk \
     gmrun \
+    naps2-bin \
     ttf-hack-nerd \
     ttf-dejavu \
     ttf-fira-mono \

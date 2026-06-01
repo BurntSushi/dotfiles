@@ -34,6 +34,7 @@
 /.emscripten_cache
 /.falcon.*
 /.fceux
+/.fehbg
 /.fontconfig
 /.fzf*
 /.ghcup
