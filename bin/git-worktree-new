@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+default="$(git-master-name)"
+name="$1"
+if [ -z "$name" ]; then
+  echo "Usage: $(basename "$0") <worktree-name>" >&2
+  exit 1
+fi
+git worktree add -d ../"$name" "$default"
+cd ../"$name"
+git checkout -b "ag/$name"
