@@ -196,7 +196,8 @@ pkgs() {
     nodejs yarn \
     terminus-font \
     words \
-    keyd
+    keyd \
+    bash-language-server
   pkgfile --update
   systemctl enable keyd
 }
