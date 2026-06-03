@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+# This craziness was suggested by ChatGPT.
+local host=$1
+shift
+local code='exec "$@"'
+ssh "$host" "zsh -ic ${(q)code} DUMMY ${(@q)@}"

@@ -1,17 +1,18 @@
 #!/bin/sh
 
 host="$1"
-msg="$2"
+summary="$2"
+body="$3"
 if [ -z "$host" ]; then
   host=$(myhostname)
 fi
-if [ -z "$msg" ]; then
-  msg="done"
+if [ -z "$summary" ]; then
+  summary="done"
 fi
 if [ "$host" = "$(myhostname)" ]; then
-  notify-send "$msg" &
+  notify-send "$summary" "$body" &
   audio-play /usr/share/sounds/freedesktop/stereo/complete.oga &
   wait
 else
-  ssh "$host" -t zsh -ic A > /dev/null 2>&1
+  sshrun "$host" A "$host" "$summary" "$body"
 fi
