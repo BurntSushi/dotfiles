@@ -102,6 +102,11 @@ vim.lsp.config('lua_ls', {
   },
 })
 
+vim.lsp.config("bashls", {
+  cmd = { "bash-language-server", "start" },
+  filetypes = { "sh", "bash", "zsh" },
+})
+
 vim.lsp.config('clangd', {})
 vim.lsp.config('ts_ls', {})
 
@@ -162,5 +167,6 @@ end)
 vim.lsp.enable('ty')
 vim.lsp.enable('rust_analyzer')
 vim.lsp.enable('lua_ls')
+vim.lsp.enable("bashls")
 vim.lsp.enable('clangd')
 vim.lsp.enable('ts_ls')

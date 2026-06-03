@@ -269,6 +269,12 @@ vim.api.nvim_create_autocmd('FileType', {
     -- This was in my vim config. Not sure
     -- what it's doing? Hmmm. See:
     -- https://stackoverflow.com/questions/191201/indenting-comments-to-match-code-in-vim
+    --
+    -- I think this was a way to make the fucking dumb `#` de-denting in YAML
+    -- files stop. No idea what it only applies to YAML. (Because YAML sucks?)
+    -- But it's supremely annoying when writing comments in GitHub CI run
+    -- files. I'm not sure yet how to make this work in Lua. But I haven't
+    -- really looked.
     -- inoremap # X#
   end,
 })
