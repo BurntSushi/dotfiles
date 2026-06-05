@@ -1,0 +1,44 @@
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+notify = [
+  "sh", "-c",
+  "A bart 'Codex' 'Done or waiting for input'",
+]
+
+[tui]
+notifications = ["agent-turn-complete", "approval-requested"]
+notification_condition = "unfocused"
+notification_method = "auto"
+
+[projects."/home/andrew/code/rust/jiff/master"]
+trust_level = "trusted"
+
+[projects."/home/andrew/code/rust/biff"]
+trust_level = "trusted"
+
+[projects."/home/andrew/code/rust/bttf"]
+trust_level = "trusted"
+
+[projects."/home/andrew/code/rust/bttf/master"]
+trust_level = "trusted"
+
+[projects."/home/andrew/code/rust/ripgrep"]
+trust_level = "trusted"
+
+[projects."/home/andrew/code/rust/regex/master"]
+trust_level = "trusted"
+
+[tui.model_availability_nux]
+"gpt-5.5" = 4
+
+[plugins."google-calendar@openai-curated"]
+enabled = true
+
+[plugins."gmail@openai-curated"]
+enabled = true
+
+[plugins."github@openai-curated"]
+enabled = true
+
+[plugins."google-drive@openai-curated"]
+enabled = true
