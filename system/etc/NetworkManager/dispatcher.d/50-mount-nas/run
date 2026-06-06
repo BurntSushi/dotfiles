@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+target_user=andrew
+target_uid="$(id -u "$target_user")"
+unit=mount-nas.service
+tag=NetworkManager-mount-nas
+
+iface="${1:-}"
+action="${2:-}"
+
+case "$action" in
+  up|vpn-up)
+    ;;
+  connectivity-change)
+    # Only react when NetworkManager says connectivity is fully online.
+    [ "${CONNECTIVITY_STATE:-}" = "FULL" ] || exit 0
+    ;;
+  *)
+    exit 0
+    ;;
+esac
+
+runtime_dir="/run/user/$target_uid"
+bus="unix:path=$runtime_dir/bus"
+
+if [ ! -S "$runtime_dir/bus" ]; then
+  logger -t "$tag" \
+    "user systemd bus not available for $target_user; not starting $unit"
+  exit 0
+fi
+
+logger -t "$tag" \
+  "NetworkManager action=$action iface=$iface" \
+  "connection=${CONNECTION_ID:-unknown}; starting $unit"
+
+runuser -u "$target_user" -- \
+  env XDG_RUNTIME_DIR="$runtime_dir" \
+      DBUS_SESSION_BUS_ADDRESS="$bus" \
+      systemctl --user start --no-block "$unit"

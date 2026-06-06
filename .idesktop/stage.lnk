@@ -3,6 +3,6 @@ table Icon
   Icon: /usr/share/icons/oxygen/base/64x64/places/folder-blue.png
   X: 202
   Y: 62
-  Command[0]: dolphin /m/media/stage
+  Command[0]: dolphin --new-window /m/media/stage &
 end
 

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+. "$HOME/bin/x11-go"
+
+if [ $# != 5 ]; then
+  echo "$(basename "$0") <font-size> <x> <y> <w> <h>" >&2
+  exit 1
+fi
+
+font_size="$1"
+x="$2"
+y="$3"
+w="$4"
+h="$5"
+
+script="$HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces"
+"$script" | \
+  dzen2 -dock -fn "Cousine:size=$font_size" -fg black -bg white -ta l -sa c \
+    -x "$x" -y "$y" -w "$w" -h "$h"

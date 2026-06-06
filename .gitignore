@@ -34,6 +34,7 @@
 /.emscripten_cache
 /.falcon.*
 /.fceux
+/.fehbg
 /.fontconfig
 /.fzf*
 /.ghcup
@@ -55,6 +56,8 @@
 /.ICEauthority
 /.isheadless
 /.islaptop
+/.islowerres
+/.ismedia
 /.iswork
 /.java
 /.k5login

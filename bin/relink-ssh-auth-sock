@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+set -eu
+
+link="$HOME/.ssh/ssh_auth_sock"
+
+if [[
+  -n "${SSH_CONNECTION:-}" &&
+  -n "${SSH_AUTH_SOCK:-}" &&
+  "$SSH_AUTH_SOCK" != "$link" &&
+  -S "$SSH_AUTH_SOCK"
+]]; then
+  mkdir -p "$HOME/.ssh"
+  chmod 700 "$HOME/.ssh"
+  ln -snf "$SSH_AUTH_SOCK" "$link"
+fi
+
+# When our link isn't valid, try to make it so.
+if ! [ -S "$link" ]; then
+  for agent in "$HOME/.ssh/agent"/*; do
+    if SSH_AUTH_SOCK="$agent" timeout 2s ssh-add -l > /dev/null 2>&1; then
+      ln -snf "$agent" "$link"
+      break
+    fi
+  done
+fi
+
+if [ -S "$link" ]; then
+  printf '%s\n' "$link"
+else
+  exit 1
+fi

@@ -1,12 +1,26 @@
 #!/bin/sh
 
-battery="$(batrem -s | tr -d '\n')"
-if echo "$battery" | rg -q 'AC'; then
-  batcolor=77dd77
-else
-  batcolor=ff6961
+if [ $# != 1 ]; then
+  echo "$(basename "$0") <font-size>" >&2
+  exit 1
 fi
+font_size="$1"
+
 nowcolor=3b82ff
-font='^fn(Cousine:bold:size=18)'
 now="$(bttf time fmt now -f "^fg(#$nowcolor)%a, %B %d, %Y, %H:%M %Z")"
-exec printf "%s%s  ^fg(#$batcolor)%s\n" "$font" "$now" "$battery"
+if is-laptop; then
+  battery="$(batrem -s | tr -d '\n')"
+  if echo "$battery" | rg -q 'AC'; then
+    batcolor=77dd77
+  else
+    batcolor=ff6961
+  fi
+  exec printf \
+    "^fn(Cousine:size=$font_size)%s  ^fn(Cousine:bold:size=$font_size)^fg(#$batcolor)%s\n" \
+    "$now" \
+    "$battery"
+else
+  exec printf \
+    "^fn(Cousine:size=$font_size)%s\n" \
+    "$now"
+fi

@@ -29,6 +29,9 @@ trust_level = "trusted"
 [projects."/home/andrew/code/rust/regex/master"]
 trust_level = "trusted"
 
+[projects."/home/andrew"]
+trust_level = "trusted"
+
 [tui.model_availability_nux]
 "gpt-5.5" = 4
 

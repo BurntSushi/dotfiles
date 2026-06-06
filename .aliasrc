@@ -69,8 +69,8 @@ nh() {
 }
 
 reenv() {
-  ssh_reagent
-  eval $(tmux show-environment -s | rg DISPLAY)
+  relink-ssh-auth-sock
+  eval $(tmux show-environment -s DISPLAY)
 }
 
 ssh_reagent() {
@@ -149,5 +149,5 @@ o() {
 
 p() {
   pattern="$1"
-  pgrep -a "$1" | rg "$1"
+  pgrep -a "$pattern" | rg "$1"
 }

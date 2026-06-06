@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# A better version of `killall` that seems to work more reliably. The key trick
+# here is pgrep's `-f` flag, which will search the full command name.
+#
+# This probably isn't fully robust, but good enough for me.
+
+process="$1"
+if [ -z "$process" ]; then
+  echo "Usage: $(basename "$0") <process-name>" >&2
+  exit 1
+fi
+pgrep -f "(^|/)$process($|\\s+)" | xargs -r kill

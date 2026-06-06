@@ -12,4 +12,5 @@ fi
 exec \
   terminal \
     -e ssh -AY "$host" -t \
-      '. ~/.pathrc ; tmux' -u new -A -s "$tmux_session_name"
+      '. ~/.pathrc ; export SSH_AUTH_SOCK="$(relink-ssh-auth-sock)" ; tmux' \
+      -u new -A -s "$tmux_session_name"

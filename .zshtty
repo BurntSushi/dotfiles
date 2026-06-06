@@ -1,0 +1,32 @@
+# vim: ft=zsh sw=2 ts=2 sts=2
+
+# Disable beeping.
+setterm --blength 0 > /dev/null 2>&1
+# Disable software flow control (Ctrl+Q/Ctrl+S)
+# See: https://unix.stackexchange.com/questions/545045/what-is-the-difference-between-ixon-and-ixoff-tty-attributes
+stty -ixon
+
+# Setup history paging. We bind UP/DOWN to a special variant of history
+# searching that matches according to prefix (not just the first word).
+# This will also move the cursor to the end of the line.
+autoload -Uz history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+# UP does history prefix search, backwards.
+# DOWN does history prefix search, forwards.
+if is-work; then
+  # For Ubuntu machines, the normal '\u[A' combo doesn't seem to work for
+  # arrow keys. It's not clear why. This formulation was taken from:
+  # https://github.com/zsh-users/zsh-history-substring-search/issues/92
+  # shellcheck disable=SC2154
+  bindkey "${terminfo[kcuu1]}" history-beginning-search-backward-end
+  bindkey "${terminfo[kcud1]}" history-beginning-search-forward-end
+else
+  bindkey '\e[A' history-beginning-search-backward-end
+  bindkey '\e[B' history-beginning-search-forward-end
+fi
+
+# CTRL-X CTRL-E edits current command in editor.
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^x^e' edit-command-line

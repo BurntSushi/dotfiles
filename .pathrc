@@ -13,6 +13,9 @@ prependpath() {
   esac
 }
 
+# Set the Cargo installation directory.
+export CARGO_INSTALL_ROOT="$HOME/.local/cargo"
+
 # Setup PATH.
 # shellcheck disable=SC2123
 PATH=""
@@ -26,37 +29,23 @@ PATH="$(prependpath "$PATH" /usr/bin/vendor_perl)"
 PATH="$(prependpath "$PATH" /usr/local/sbin)"
 PATH="$(prependpath "$PATH" /usr/local/bin)"
 PATH="$(prependpath "$PATH" /usr/local/go/bin)"
-# Home specific paths.
-PATH="$(prependpath "$PATH" "$HOME/.local/bin")"
-PATH="$(prependpath "$PATH" "$HOME/.gem/ruby/2.5.0/bin")"
-PATH="$(prependpath "$PATH" "$HOME/go/bin")"
-PATH="$(prependpath "$PATH" "$CARGO_INSTALL_ROOT/bin")"
-PATH="$(prependpath "$PATH" "$HOME/.cargo/bin")"
-PATH="$(prependpath "$PATH" "$HOME/.local/cargo/bin")"
-PATH="$(prependpath "$PATH" "$HOME/.ghcup/bin")"
+# This is for emscripten. Whhhyyyyyyyyyyy is it in /usr/lib? Wtf?
+PATH="$(prependpath "$PATH" "/usr/lib/emscripten")"
+# macOS paths
+PATH="$(prependpath "$PATH" "$HOME/tmp/nvim-osx64/bin")"
+# These come from my m2 mac mini via homebrew.
+if [ -r "/opt/homebrew" ]; then
+  PATH="$(prependpath "$PATH" "/opt/homebrew/bin")"
+  PATH="$(prependpath "$PATH" "/opt/homebrew/sbin")"
+fi
 # My paths.
+PATH="$(prependpath "$PATH" "$CARGO_INSTALL_ROOT/bin")"
 PATH="$(prependpath "$PATH" "$HOME/bin")"
 PATH="$(prependpath "$PATH" "$HOME/bin/x86_64")"
 PATH="$(prependpath "$PATH" "$HOME/bin/aarch64")"
 PATH="$(prependpath "$PATH" "$HOME/rust/ripgrep/target/release")"
-PATH="$(prependpath "$PATH" "$HOME/rust/ripgrep/target/release/examples")"
-PATH="$(prependpath "$PATH" "$HOME/rust/xsv/target/release")"
-# macOS paths
-PATH="$(prependpath "$PATH" "$HOME/tmp/nvim-osx64/bin")"
-# These come from my m2 mac mini.
-PATH="$(prependpath "$PATH" "/opt/homebrew/bin")"
-PATH="$(prependpath "$PATH" "/opt/homebrew/sbin")"
-
-# This is for pyenv.
-PATH="$(prependpath "$PATH" "$HOME/.pyenv/shims")"
-
-# This is for emscripten. Whhhyyyyyyyyyyy is it in /usr/lib? Wtf?
-PATH="$(prependpath "$PATH" "/usr/lib/emscripten")"
 
 export PATH
-
-# Set the Cargo installation directory.
-export CARGO_INSTALL_ROOT="$HOME/.local/cargo"
 
 # If homebrew was installed in /opt, then it wants all these vars set to
 # point it in the right direction.
@@ -66,8 +55,7 @@ if [ -r "/opt/homebrew" ]; then
   export HOMEBREW_REPOSITORY="/opt/homebrew";
   export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
   export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
-  # This apparently tells C/C++ compiles where to find header files?
+  # This apparently tells C/C++ compilers where to find header files?
   # Not sure if it's appropriate to set this unconditionally, alas...
   export CPATH="/opt/homebrew/include"
 fi
-

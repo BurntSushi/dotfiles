@@ -2,12 +2,13 @@
 
 # This used to do more when I used different versions of Chrome on different
 # machines. But now I just use stable when I use Chrome.
-case "$(myhostname)" in
-  bart)
-    # And we set the scaling factor for when the DPI is too high.
-    exec google-chrome-stable --force-device-scale-factor=1.5 "$@"
-    ;;
-  *)
-    exec google-chrome-stable "$@"
-    ;;
-esac
+#
+# And we set the scaling factor for when the DPI is too high.
+# Or when the screen is set far away.
+if is-laptop; then
+  exec google-chrome-stable --force-device-scale-factor=1.5 "$@"
+elif is-media; then
+  exec google-chrome-stable --force-device-scale-factor=1.25 "$@"
+else
+  exec google-chrome-stable "$@"
+fi

@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 host="$1"
 summary="$2"
 body="$3"
-if [ -z "$host" ]; then
+if [ -z "$host" ] || [ "$host" = "self" ]; then
   host=$(myhostname)
 fi
 if [ -z "$summary" ]; then
@@ -11,8 +11,13 @@ if [ -z "$summary" ]; then
 fi
 if [ "$host" = "$(myhostname)" ]; then
   notify-send "$summary" "$body" &
-  audio-play /usr/share/sounds/freedesktop/stereo/complete.oga &
+  pw-play /usr/share/sounds/freedesktop/stereo/complete.oga &
   wait
 else
-  sshrun "$host" A "$host" "$summary" "$body"
+  if timeout 2 ssh-add -l &> /dev/null; then
+    sshrun "$host" A "$host" "$summary" "$body"
+  else
+    echo $MY_ALERT_URL
+    curl -H "Title: $summary" -d "$body" "$MY_ALERT_URL" &> /dev/null
+  fi
 fi

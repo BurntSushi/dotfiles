@@ -1,109 +1,88 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-. $HOME/bin/x11-go
+. "$HOME/bin/x11-go"
 
-function headNum {
-  headName="$1"
-  gohead tabs | cut -f1-2 | grep "$headName" | cut -f1
+# Place the pager, status bar and system try on the head given.
+#
+# The head given should be a name recognized by `gohead`. This also sets the
+# "primary" head to be the one given.
+place_head() {
+  local head_name="$1"
+  local x y w h
+
+  IFS=$'\t' read -r x y w h < <(gohead query "$head_name" | cut -f2-5)
+  # This is important because stalonetray bases its positioning on the primary
+  # RandR monitor.
+  gohead primary "$head_name" &> /dev/null
+  place_by_head_geometry "$x" "$y" "$w" "$h"
 }
 
-function placeHead {
-  headName="$1"
-  geom=$(gohead query "$headName" | cut -f2-5)
-  x=$(echo "$geom" | cut -f1)
-  y=$(echo "$geom" | cut -f2)
-  w=$(echo "$geom" | cut -f3)
-  h=$(echo "$geom" | cut -f4)
+# Places the pager, status bar and system tray based on the head geometry
+# given.
+#
+# This routine doesn't know what head it's being place on, despite the fact
+# that dzen2 and stalonetray purportedly support positioning based on RandR
+# head number. The problem is that they each use different systems. So we just
+# position everything ourselves in the context of the root window geometry.
+place_by_head_geometry() {
+  local mx="$1"
+  local my="$2"
+  local mwidth="$3"
+  local mheight="$4"
 
-  place $(headNum "$headName") $x $y $w $h
+  local height=35
+  local font_size=14
+  local status_width=450
+  local tray_width=100
+  if [[ $mheight -gt 1200 ]] || is-media; then
+    height=50
+    font_size=21
+    status_width=650
+    tray_width=300
+  fi
+
+  local extended_status_width=$((status_width + tray_width))
+  local pager_width=$((mwidth - extended_status_width))
+  local y=$((mheight - height + my))
+  dzen-wingo-workspaces "$font_size" "$mx" "$y" "$pager_width" "$height" &
+  dzen-laptop-status \
+    "$font_size" \
+    "$((mx + pager_width))" "$y" "$extended_status_width" "$height" &
+  # stalonetray has weird positioning. It's relative to the *primary* RandR
+  # head, which we set in `pl`. So we give it -0-0 to indicate the
+  # bottom right corner.
+  my-stalonetray "0" "0" "$height" &
 }
 
-function array_exists {
-  search="$1"
-  haystack=($2)
+has_arg() {
+  local search="$1"
+  shift
 
-  for needle in ${haystack[@]}; do
-    if [ "$search" == "$needle" ]; then
+  local arg
+  for arg in "$@"; do
+    if [ "$search" = "$arg" ]; then
       return 0
     fi
   done
-
   return 1
 }
 
-function array_key {
-  search="$1"
-  keys=($2)
-  values=($3)
-
-  for (( i=0; i<${#values[*]}; i++ )); do
-    if [ "$search" == "${values[$i]}" ]; then
-      echo "${keys[$i]}"
-    fi
-  done
-}
-
-if ! gohead set $*; then
+# Actually run the necessary `xrandr` command.
+if ! gohead set "$@" &> /dev/null; then
   exit 1
 fi
-sleep 1
 
-case $(myhostname) in
-  duff|frink)
-    ps aux | grep -v grep | grep dzen-workspaces | awk '{print $2}' | xargs -r kill
-    killall trayer
-    (sleep 1 && \
-      trayer \
-      --widthtype pixel --width 150 \
-      --heighttype pixel --height 40 \
-      --edge bottom --align right --monitor 1 \
-      --SetDockType true) &
-    (sleep 1 && \
-      $HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces \
-      | dzen2 -dock -xs 3 -h 40 -fn 'Cousine-18' -ta l -bg '#ffffff' -y 1170) &
-    ;;
-  nas2)
-    ps aux | grep -v grep | grep dzen-workspaces | awk '{print $2}' | xargs -r kill
-    killall stalonetray
-    (
-      stalonetray \
-        --background '#ffffff' \
-        --icon-size 40 --geometry 1x1-0-0 --grow-gravity SE --icon-gravity SE
-    ) &
-    (
-      $HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces \
-        | dzen2 -dock -xs 3 -h 40 -fn 'Cousine-18' -ta l -bg '#ffffff' -y 1170
-    ) &
-    ;;
-  bart|kang)
-    if array_exists laptop "$*"; then
-      placeHead laptop
-    else
-      placeHead "$1"
-    fi
-    ;;
-  flanders|milhouse|wiggum)
-    placeHead "$1"
-    ;;
-  otto)
-    pgrep dzen-workspaces | xargs -r kill
-    killall trayer
-    (sleep 1 && \
-      trayer \
-      --widthtype pixel --width 150 \
-      --heighttype pixel --height 40 \
-      --edge bottom --align right \
-      --SetDockType true) &
+# Kill any pager stuff we had.
+killall dzen-workspaces &> /dev/null
+killall dzen2 &> /dev/null
+killall stalonetray &> /dev/null
 
-    headHeight="$(gohead query tv | cut -f4)"
-    y="$((headHeight - 40))"
-    (sleep 1 && \
-      $HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces \
-      | dzen2 -dock -xs 2 -h 40 -fn 'Cousine-18' -ta l -bg '#ffffff' -y "$y") &
-    ;;
-  *)
-    echo "Unrecognized machine '$(hostname)'." >&2
-    exit 1
-    ;;
-esac
-exit 0
+# Look for a special head to place our stuff on first.
+for special in main middle; do
+  if has_arg "$special" "$@"; then
+    place_head "$special"
+    exit 0
+  fi
+done
+# Otherwise fall back to the first one given.
+place_head "$1"

@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+# This should generally be run via `systemctl --user start mount-nas` instead
+# of run directly. See `~/.config/systemd/user/mount-nas.service`. ---AG
+
+set -euo pipefail
+
+export SSH_AUTH_SOCK=/home/andrew/.ssh/ssh_auth_sock
+
+# Wait until the ssh agent socket exists.
+until [ -S "$SSH_AUTH_SOCK" ]; do
+  echo "waiting for SSH_AUTH_SOCK=$SSH_AUTH_SOCK"
+  sleep 1
+done
+
+# Wait until the agent has at least one key loaded.
+until ssh-add -l >/dev/null 2>&1; do
+  echo "waiting for ssh-agent keys"
+  sleep 1
+done
+
+# Wait until the host resolves.
+until getent ahosts home.burntsushi.net >/dev/null 2>&1; do
+  echo "waiting for DNS: home.burntsushi.net"
+  sleep 2
+done
+
+# Wait until SSH auth actually works.
+until ssh -o BatchMode=yes -o ConnectTimeout=3 nas true >/dev/null 2>&1; do
+  echo "waiting for SSH auth to nas"
+  sleep 2
+done
+
+# For our media PCs, we mount the NAS as read-only.
+# Why? Because I have a 5.5 year old (as of 2026-06-15)
+# and sometimes he does wild things.
+read_only=
+if is-media; then
+  read_only="-o ro"
+fi
+sshfs nas:/m /m \
+  -f \
+  $read_only \
+  -o allow_other \
+  -o reconnect \
+  -o follow_symlinks \
+  -o writeback_cache=no \
+  -o kernel_cache \
+  -o ServerAliveInterval=15 \
+  -o ServerAliveCountMax=3 \
+  -o BatchMode=yes &
+sshfs_pid=$!
+
+until findmnt -T /m >/dev/null 2>&1; do
+  if ! kill -0 "$sshfs_pid" 2>/dev/null; then
+    wait "$sshfs_pid"
+    exit $?
+  fi
+  echo "waiting for /m to be mounted"
+  sleep 1
+done
+
+A self 'NAS is mounted'
+wait "$sshfs_pid"

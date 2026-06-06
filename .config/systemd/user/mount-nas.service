@@ -1,0 +1,20 @@
+[Unit]
+Description=Mount NAS
+After=network-online.target
+
+[Service]
+Type=simple
+Environment=PATH=/home/andrew/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/home/andrew/bin/mount-nas
+ExecStop=/usr/bin/fusermount3 -u /m
+Restart=on-failure
+RestartSec=30
+
+# Let the wrapper wait instead of failing quickly.
+TimeoutStartSec=0
+
+# Avoid tripping the limiter during transient boot weirdness.
+StartLimitBurst=20
+
+[Install]
+WantedBy=default.target

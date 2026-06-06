@@ -1,3 +1,6 @@
+# shellcheck disable=SC2034,SC2206
+# vim: ft=zsh sw=2 ts=2 sts=2
+
 # Define aliases and generic shell variables.
 [[ -f ~/.pathrc ]] && . ~/.pathrc
 [[ -f ~/.aliasrc ]] && . ~/.aliasrc
@@ -19,13 +22,8 @@ else
   umask 0002
 fi
 
-# Disable beeping.
-setterm --blength 0 > /dev/null 2>&1
-# Disable software flow control (Ctrl+Q/Ctrl+S)
-# See: https://unix.stackexchange.com/questions/545045/what-is-the-difference-between-ixon-and-ixoff-tty-attributes
-stty -ixon
-
 # Don't remove a space before the pipe symbol.
+# shellcheck disable=SC2034
 ZLE_REMOVE_SUFFIX_CHARS=$' \t\n;&'
 
 # Setup LS_COLORS.
@@ -36,6 +34,7 @@ fi
 # Set fpath for custom completions.
 fpath=(~/.zsh-complete $fpath)
 if [[ -f /usr/local/share/zsh-completions ]]; then
+  # shellcheck disable=SC2128
   fpath=(/usr/local/share/zsh-completions $fpath)
 fi
 
@@ -43,6 +42,7 @@ fi
 # See: https://superuser.com/questions/458906/zsh-tab-completion-of-git-commands-is-very-slow-how-can-i-turn-it-off
 __git_other_files() {
   if [[ "$PWD" = "$HOME" ]]; then
+    # shellcheck disable=SC2034
     local -a expl
     _wanted files expl 'other file' _files
   fi
@@ -77,30 +77,6 @@ bindkey '\e[1~' beginning-of-line
 bindkey '\e[4~' end-of-line
 # SHIFT-TAB should go backwards during auto-completion.
 bindkey '\e[Z' reverse-menu-complete
-
-# Setup history paging. We bind UP/DOWN to a special variant of history
-# searching that matches according to prefix (not just the first word).
-# This will also move the cursor to the end of the line.
-autoload -Uz history-search-end
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
-# UP does history prefix search, backwards.
-# DOWN does history prefix search, forwards.
-if is-work; then
-  # For Ubuntu machines, the normal '\u[A' combo doesn't seem to work for
-  # arrow keys. It's not clear why. This formulation was taken from:
-  # https://github.com/zsh-users/zsh-history-substring-search/issues/92
-  bindkey "$terminfo[kcuu1]" history-beginning-search-backward-end
-  bindkey "$terminfo[kcud1]" history-beginning-search-forward-end
-else
-  bindkey '\e[A' history-beginning-search-backward-end
-  bindkey '\e[B' history-beginning-search-forward-end
-fi
-
-# CTRL-X CTRL-E edits current command in editor.
-autoload -Uz edit-command-line
-zle -N edit-command-line
-bindkey '^x^e' edit-command-line
 
 # Make it so `command $foo` will potential split "$foo" into multiple
 # parameters, which is how most other shells work.
@@ -162,17 +138,6 @@ add-zsh-hook -Uz preexec preexec
 # Enable fzf integration.
 if [[ -f ~/.fzf.zsh ]]; then
   . ~/.fzf.zsh
-else
-  fzf=(
-    /usr/share/fzf
-    /usr/share/doc/fzf/examples
-  )
-  for p in $fzf; do
-    if [[ -d "$p" ]]; then
-      . "$p/key-bindings.zsh" && . "$p/completion.zsh"
-      break
-    fi
-  done
 fi
 
 # Enable auto suggestions when typing commands.
@@ -183,7 +148,7 @@ zshauto=(
   /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
   /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 )
-for p in $zshauto; do
+for p in "${zshauto[@]}"; do
   if [[ -f "$p" ]]; then
     . "$p"
     break
@@ -204,21 +169,23 @@ zshsyntax=(
   /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 )
-for p in $zshsyntax; do
+for p in "${zshsyntax[@]}"; do
   if [[ -f "$p" ]]; then
     . "$p"
     break
   fi
 done
 
-# Add gvm environment. gvm is used for managing Go installations.
-if [[ -f ~/.gvm/scripts/gvm ]]; then
-  . ~/.gvm/scripts/gvm
+# Run commands for configuring tty related options.
+# We guard this to ensure it won't run for shells
+# not connected to a tty.
+if [ -t 0 ]; then
+  . ~/.zshtty
 fi
 
-# Try to reconnect to ssh agent?
-# if is-work; then
-  # if ! ssh-add -L > /dev/null 2>&1; then
-    # ssh_reagent
-  # fi
-# fi
+# Try to setup a symlink for our ssh agent authorization socket. This gives
+# it a stable path so that we can reference it in various contexts and
+# without needing to change the SSH_AUTH_SOCK environment variable. e.g., For
+# reconstructing a tmux session or running sshfs via a systemd user service
+# that utilizes the currently running agent.
+relink-ssh-auth-sock &> /dev/null

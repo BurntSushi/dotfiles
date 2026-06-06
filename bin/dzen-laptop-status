@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+if [ $# != 5 ]; then
+  echo "$(basename "$0") <font-size> <x> <y> <w> <h>" >&2
+  exit 1
+fi
+
+font_size="$1"
+x="$2"
+y="$3"
+w="$4"
+h="$5"
+(
+  while "true"; do
+    laptop-status "$font_size"
+    sleep 10s
+  done
+) | dzen2 -dock -fn Cousine -fg black -bg white -ta l -sa c \
+      -x "$x" -y "$y" -w "$w" -h "$h"

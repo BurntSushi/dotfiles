@@ -1,6 +1,5 @@
 #!/bin/sh
 
-set -x
 set -e
 
 process-running xconfig-self-healing &

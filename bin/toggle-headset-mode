@@ -21,7 +21,7 @@ notify_high_fidelity() {
 }
 
 beep() {
-  audio-play /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
+  pw-play /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
 }
 
 case "$(myhostname)" in

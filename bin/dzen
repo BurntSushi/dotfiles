@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+dzen2 -dock -xs "$monitor" -h "$height" -fn "$font" -ta l -bg '#ffffff' -y "$y"

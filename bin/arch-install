@@ -197,7 +197,7 @@ pkgs() {
     terminus-font \
     words \
     keyd \
-    bash-language-server
+    bash-language-server lua-language-server typescript-language-server
   pkgfile --update
   systemctl enable keyd
 }
@@ -207,7 +207,7 @@ xpkgs() {
   pacman --noconfirm -S \
     xterm \
     alacritty \
-    k3b konversation konsole dolphin okular \
+    k3b konversation konsole dolphin okular ffmpegthumbs \
     qt6ct oxygen oxygen-icons kde-cli-tools \
     xbindkeys \
     libnotify \
@@ -223,10 +223,13 @@ xpkgs() {
     scrot \
     freerdp \
     gvim \
+    vorbis-tools \
     noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra \
     pipewire-audio pipewire-pulse pipewire-alsa wireplumber \
     pamixer pavucontrol \
     recordmydesktop \
+    feh variety \
+    stalonetray \
     firefox
   systemctl --user enable wireplumber
 }
@@ -296,30 +299,13 @@ aurpkgs() {
 }
 
 aurxpkgs() {
-  # It looks like gkrellm has finally gone the way of the dodo. This is what
-  # I used to install:
-  #
-  #   gkrellm
-  #   gkleds
-  #   gkrellsun
-  #   gkrellweather
-  #
-  # Also, these programs require gtk2. Which now requires going through the AUR.
-  # This is bad. Let's try and use stalonetray instead. And find an alternative
-  # program to set wallpaper. No reason to use gtk2 for that.
-  #
-  #   trayer
-  #   nitrogen
-  #
-  # The only other thing on my system requiring gtk2 is XSANE, but it looks like
-  # there are many alternatives there too. NAPS2 looks promising:
-  # https://wiki.archlinux.org/title/SANE
   yay --noconfirm -S \
     dzen2-xft-xpm-xinerama-git \
     google-chrome \
     1password 1password-cli \
     idesk \
     gmrun \
+    naps2-bin \
     ttf-hack-nerd \
     ttf-dejavu \
     ttf-fira-mono \
@@ -391,7 +377,7 @@ xenvinit() {
   # in order to make file associations in Dolphin work. WTF.
   #
   # See: https://old.reddit.com/r/kde/comments/1bd313p/dolphin_not_recognizing_file_associations/l26i3m2/
-  mkdir "$HOME/.config/menus"
+  mkdir -p "$HOME/.config/menus"
   url="https://github.com/KDE/plasma-workspace/raw/11e7f5306fa013ec5c2b894a28457dabf5c42bad/menu/desktop/plasma-applications.menu"
   curl -L "$url" -o "$HOME/.config/menus/applications.menu"
 }

@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+VIRTUAL_SINK="bluetooth_speakers"
+DESC="Bluetooth-Speakers"
+TAG="bluetooth-speaker-loopback"
+
+find_speaker_sinks() {
+  pactl list sinks |
+    awk '
+      /^Sink #/ { sink="" }
+      /^\s*Name:/ { sink=$2 }
+      /^\s*Description:/ {
+        desc=$0
+        if (sink ~ /^bluez_output\./ && desc ~ /Denon|JBL Flip/) {
+          print sink
+        }
+      }
+    '
+}
+
+ensure_virtual_sink() {
+  if ! pactl list short sinks | awk '{print $2}' | rg -qx "$VIRTUAL_SINK"; then
+    pactl load-module module-null-sink \
+      sink_name="$VIRTUAL_SINK" \
+      sink_properties="device.description=\"$DESC\"" >/dev/null
+  fi
+  # pactl set-default-sink "$VIRTUAL_SINK"
+  # pactl set-sink-volume "$VIRTUAL_SINK" 100%
+  pactl set-sink-mute "$VIRTUAL_SINK" 0
+}
+
+unload_loopbacks() {
+  pactl list modules |
+    awk -v tag="$TAG" '
+      /^Module #/ {
+        id = $2
+        sub(/^#/, "", id)
+      }
+      $0 ~ tag {
+        print id
+      }
+    ' |
+    while read -r id; do
+      pactl unload-module "$id" || true
+    done
+}
+
+create_loopbacks() {
+  local sinks=()
+  mapfile -t sinks < <(find_speaker_sinks)
+
+  if ((${#sinks[@]} == 0)); then
+    echo "No connected bluetooth speaker sinks found."
+    exit 0
+  fi
+
+  for sink in "${sinks[@]}"; do
+    # pactl set-sink-volume "$sink" 100% || true
+    pactl set-sink-mute "$sink" 0 || true
+
+    pactl load-module module-loopback \
+      source="${VIRTUAL_SINK}.monitor" \
+      sink="$sink" \
+      latency_msec=100 \
+      sink_input_properties="application.name=\"$TAG\"" >/dev/null
+  done
+
+  echo "Routing $VIRTUAL_SINK to:"
+  printf '  %s\n' "${sinks[@]:0:4}"
+}
+
+ensure_virtual_sink
+unload_loopbacks
+create_loopbacks
