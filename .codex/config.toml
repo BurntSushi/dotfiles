@@ -1,5 +1,6 @@
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
+model_reasoning_effort = "high"
 notify = [
   "sh", "-c",
   "A bart 'Codex' 'Done or waiting for input'",
