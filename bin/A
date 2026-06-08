@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 host="$1"
 summary="$2"
@@ -14,5 +14,9 @@ if [ "$host" = "$(myhostname)" ]; then
   audio-play /usr/share/sounds/freedesktop/stereo/complete.oga &
   wait
 else
-  sshrun "$host" A "$host" "$summary" "$body"
+  if timeout 2 ssh-add -l &> /dev/null; then
+    sshrun "$host" A "$host" "$summary" "$body"
+  else
+    curl -H "Title: $summary" -d "$body" "$ALERT_URL"
+  fi
 fi
