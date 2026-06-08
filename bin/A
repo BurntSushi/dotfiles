@@ -18,6 +18,6 @@ else
     sshrun "$host" A "$host" "$summary" "$body"
   else
     echo $MY_ALERT_URL
-    curl -H "Title: $summary" -d "$body" "$MY_ALERT_URL"
+    curl -H "Title: $summary" -d "$body" "$MY_ALERT_URL" &> /dev/null
   fi
 fi
