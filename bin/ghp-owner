@@ -3,8 +3,10 @@
 set -e
 
 : "${TMPDIR:=/tmp}"
-base="$1"
-if [ -z "$base" ]; then
+if [ -n "$1" ] && ! [[ "$1" = --* ]]; then
+  base="$1"
+  shift
+else
   base="$(git-master-name)"
 fi
 
@@ -22,6 +24,7 @@ fi
 mkdir -p "$TMPDIR/gh-pr-create"
 output="$(mktemp -p "$TMPDIR/gh-pr-create")"
 git push -u origin "$branch"
-gh pr create --repo "$owner/$name" --fill --base "$base" --head "$headref" \
-  | tee "$output"
+gh pr create \
+  --repo "$owner/$name" --fill --base "$base" --head "$headref" "$@" \
+    | tee "$output"
 tail -n1 < "$output" | xcp
