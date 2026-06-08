@@ -17,6 +17,7 @@ else
   if timeout 2 ssh-add -l &> /dev/null; then
     sshrun "$host" A "$host" "$summary" "$body"
   else
-    curl -H "Title: $summary" -d "$body" "$ALERT_URL"
+    echo $MY_ALERT_URL
+    curl -H "Title: $summary" -d "$body" "$MY_ALERT_URL"
   fi
 fi
