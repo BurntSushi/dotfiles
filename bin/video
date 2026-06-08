@@ -1,105 +1,99 @@
 #!/bin/bash
 
-. $HOME/bin/x11-go
+. "$HOME/bin/x11-go"
 
-function headNum {
-  headName="$1"
-  gohead tabs | cut -f1-2 | grep "$headName" | cut -f1
+head_num() {
+  local head_name="$1"
+  gohead tabs | cut -f1-2 | grep "$head_name" | cut -f1
 }
 
-function placeHead {
-  headName="$1"
-  geom=$(gohead query "$headName" | cut -f2-5)
-  x=$(echo "$geom" | cut -f1)
-  y=$(echo "$geom" | cut -f2)
-  w=$(echo "$geom" | cut -f3)
-  h=$(echo "$geom" | cut -f4)
+place_head() {
+  local head_name="$1"
+  local x y w h
 
-  place $(headNum "$headName") $x $y $w $h
+  IFS=$'\t' read -r x y w h < <(gohead query "$head_name" | cut -f2-5)
+  place "$(head_num "$head_name")" "$x" "$y" "$w" "$h"
 }
 
-function array_exists {
-  search="$1"
-  haystack=($2)
+has_arg() {
+  local search="$1"
+  shift
 
-  for needle in ${haystack[@]}; do
-    if [ "$search" == "$needle" ]; then
+  local arg
+  for arg in "$@"; do
+    if [ "$search" = "$arg" ]; then
       return 0
     fi
   done
-
   return 1
 }
 
-function array_key {
-  search="$1"
-  keys=($2)
-  values=($3)
-
-  for (( i=0; i<${#values[*]}; i++ )); do
-    if [ "$search" == "${values[$i]}" ]; then
-      echo "${keys[$i]}"
-    fi
-  done
+kill_dzen_workspaces() {
+  pgrep dzen-workspaces | xargs -r kill
 }
 
-if ! gohead set $*; then
+start_trayer() {
+  (sleep 1 && trayer "$@") &
+}
+
+start_dzen_workspaces() {
+  local monitor="$1"
+  local y="$2"
+
+  (
+    sleep 1
+    "$HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces" \
+      | dzen2 -dock -xs "$monitor" -h 40 -fn 'Cousine-18' -ta l \
+        -bg '#ffffff' -y "$y"
+  ) &
+}
+
+if ! gohead set "$@"; then
   exit 1
 fi
 sleep 1
 
-case $(myhostname) in
+case "$(myhostname)" in
   duff|frink)
-    ps aux | grep -v grep | grep dzen-workspaces | awk '{print $2}' | xargs -r kill
+    kill_dzen_workspaces
     killall trayer
-    (sleep 1 && \
-      trayer \
+    start_trayer \
       --widthtype pixel --width 150 \
       --heighttype pixel --height 40 \
       --edge bottom --align right --monitor 1 \
-      --SetDockType true) &
-    (sleep 1 && \
-      $HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces \
-      | dzen2 -dock -xs 3 -h 40 -fn 'Cousine-18' -ta l -bg '#ffffff' -y 1170) &
+      --SetDockType true
+    start_dzen_workspaces 3 1170
     ;;
   nas2)
-    ps aux | grep -v grep | grep dzen-workspaces | awk '{print $2}' | xargs -r kill
+    kill_dzen_workspaces
     killall stalonetray
+    my-stalonetray &
     (
-      stalonetray \
-        --background '#ffffff' \
-        --icon-size 40 --geometry 1x1-0-0 --grow-gravity SE --icon-gravity SE
-    ) &
-    (
-      $HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces \
+      "$HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces" \
         | dzen2 -dock -xs 3 -h 40 -fn 'Cousine-18' -ta l -bg '#ffffff' -y 1170
     ) &
     ;;
   bart|kang)
-    if array_exists laptop "$*"; then
-      placeHead laptop
+    if has_arg laptop "$@"; then
+      place_head laptop
     else
-      placeHead "$1"
+      place_head "$1"
     fi
     ;;
   flanders|milhouse|wiggum)
-    placeHead "$1"
+    place_head "$1"
     ;;
   otto)
-    pgrep dzen-workspaces | xargs -r kill
+    kill_dzen_workspaces
     killall trayer
-    (sleep 1 && \
-      trayer \
+    start_trayer \
       --widthtype pixel --width 150 \
       --heighttype pixel --height 40 \
       --edge bottom --align right \
-      --SetDockType true) &
+      --SetDockType true
 
-    headHeight="$(gohead query tv | cut -f4)"
-    y="$((headHeight - 40))"
-    (sleep 1 && \
-      $HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces \
-      | dzen2 -dock -xs 2 -h 40 -fn 'Cousine-18' -ta l -bg '#ffffff' -y "$y") &
+    head_height="$(gohead query tv | cut -f4)"
+    start_dzen_workspaces 2 "$((head_height - 40))"
     ;;
   *)
     echo "Unrecognized machine '$(hostname)'." >&2
