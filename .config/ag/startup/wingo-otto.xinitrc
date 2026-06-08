@@ -2,7 +2,7 @@
 
 startup &
 sleep 2
-screenpos tv
+video tv
 nitrogen --restore
 gkrellm &
 idesk &

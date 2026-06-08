@@ -4,7 +4,7 @@ startup &
 nitrogen --restore
 (
   sleep 0.3
-  screenpos laptop
+  video laptop
   dunst &
   nm-applet &
   blueberry-tray &

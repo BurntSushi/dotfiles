@@ -4,7 +4,7 @@ set -x
 set -e
 
 startup
-screenpos laptop &
+video laptop &
 variety &
 dunst &
 nm-applet &

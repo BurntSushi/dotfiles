@@ -11,7 +11,7 @@ case "$1" in
       ) | rg -or '$1' '(.*)\.gpg$'
     )"
     for f in $passwords; do
-      (pass "$f" | rg -vq '1PASS') && echo $f
+      (pass "$f" | rg -q -e 1PASS -e 1STALE) || echo $f
     done
     ;;
   untagged)

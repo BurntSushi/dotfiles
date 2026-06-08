@@ -2,7 +2,7 @@
 
 startup &
 media
-screenpos left middle right
+video left middle right
 nitrogen --restore
 dunst &
 exec run-wingo-environment
