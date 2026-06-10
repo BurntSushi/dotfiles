@@ -9,10 +9,12 @@ head_num() {
 
 place_head() {
   local head_name="$1"
+  local monitor
   local x y w h
 
+  monitor="$(head_num "$head_name")"
   IFS=$'\t' read -r x y w h < <(gohead query "$head_name" | cut -f2-5)
-  place "$(head_num "$head_name")" "$x" "$y" "$w" "$h"
+  place_monitor "$monitor" "$x" "$y" "$w" "$h"
 }
 
 has_arg() {
@@ -46,6 +48,61 @@ start_dzen_workspaces() {
       | dzen2 -dock -xs "$monitor" -h 40 -fn 'Cousine-18' -ta l \
         -bg '#ffffff' -y "$y"
   ) &
+}
+
+place_monitor() {
+  local monitor="$1"
+  local mx="$2"
+  local my="$3"
+  local mwidth="$4"
+  local mheight="$5"
+  local font="Cousine:size=18"
+  local height=40
+
+  case "$(myhostname)" in
+    kang|bart)
+      font="Cousine:size=25"
+      height=50
+      ;;
+  esac
+
+  local y=$((mheight - height + my))
+  local tray_width=300
+  local bat_width=650
+  local pager_width
+  if is-laptop; then
+    pager_width=$((mwidth - bat_width - tray_width))
+  else
+    pager_width=$((mwidth - tray_width))
+  fi
+
+  kill_dzen_workspaces
+  killall trayer
+  killall dzen2
+
+  (
+    "$HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces" \
+      | dzen2 -dock -xs 2 -h "$height" -fn "$font" -ta l \
+        -bg '#ffffff' -y "$y"
+  ) &
+  (
+    trayer \
+      --widthtype pixel --width "$tray_width" \
+      --heighttype pixel --height "$height" \
+      --edge bottom --align right \
+      --monitor "$monitor" \
+      --SetDockType true
+  ) &
+
+  if is-laptop; then
+    pgrep batrem | xargs -r kill
+    (
+      while true; do
+        laptop-status && sleep 10s
+      done
+    ) | dzen2 -dock -fn "Cousine:size=18" -fg black -bg white \
+      -x "$((mx + pager_width))" -y "$y" -w "$bat_width" -h "$height" &
+  fi
 }
 
 if ! gohead set "$@"; then

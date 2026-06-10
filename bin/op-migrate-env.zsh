@@ -8,8 +8,10 @@ append() {
 }
 
 stale() {
-  local entry="$1"
-  append "$entry" 1STALE
+  # local entry="$1"
+  for entry; do
+    append "$entry" 1STALE
+  done
 }
 
 fin() {
