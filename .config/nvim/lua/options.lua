@@ -18,9 +18,13 @@ spacing.space2()
 -- the current one isn't saved.
 vim.opt.hidden = true
 
+-- This makes neovim use OSC 52 escapes for clipboard integration. The nice
+-- benefit here is that it doesn't require X11 forwarding. Yay!
+vim.g.clipboard = 'osc52'
+
 -- This causes neovim to use the system clipboard for all yanking operations,
 -- instead of needing to use the '+' or '*' registers explicitly.
-vim.opt.clipboard:append('unnamedplus')
+vim.opt.clipboard = 'unnamedplus'
 
 -- Always disable code folding.
 vim.opt.foldenable = false
@@ -78,21 +82,3 @@ vim.opt.completeopt = 'noselect'
 -- [1]: https://old.reddit.com/r/neovim/comments/f0qx2y/automatically_reload_file_if_contents_changed/
 -- [2]: https://github.com/neovim/neovim/issues/1936
 vim.opt.autoread = true
-
--- Make copy/paste from the unnamed register work well.
--- I don't remember exactly why I need this.
-if vim.fn.executable('xsel') == 1 then
-  -- Adapted from runtime/autoload/provider/clipboard.vim.
-  vim.g.clipboard = {
-    name = 'myxsel',
-    copy = {
-      ['+'] = 'xsel --nodetach --input --clipboard',
-      ['*'] = 'xsel --nodetach --input --primary',
-    },
-    paste = {
-      ['+'] = 'xsel --output --clipboard',
-      ['*'] = 'xsel --output --primary',
-    },
-    cache_enabled = 1,
-  }
-end

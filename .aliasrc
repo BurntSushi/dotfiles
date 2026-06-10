@@ -70,7 +70,7 @@ nh() {
 
 reenv() {
   ssh_reagent
-  eval $(tmux show-environment -s | rg DISPLAY)
+  eval $(tmux show-environment -s DISPLAY)
 }
 
 ssh_reagent() {
