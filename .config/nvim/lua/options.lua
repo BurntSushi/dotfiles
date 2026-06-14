@@ -2,6 +2,11 @@
 -- https://neovim.io/doc/user/lua.html#vim.hl
 -- https://neovim.io/doc/user/undo.html#undo-persistence
 
+-- Enable project local configuration. Just drop in a `.nvim.lua` in a
+-- repository root directory.
+vim.o.exrc = true
+vim.o.secure = true
+
 -- Show line numbers.
 vim.opt.number = true
 
@@ -20,7 +25,23 @@ vim.opt.hidden = true
 
 -- This makes neovim use OSC 52 escapes for clipboard integration. The nice
 -- benefit here is that it doesn't require X11 forwarding. Yay!
-vim.g.clipboard = 'osc52'
+-- vim.g.clipboard = 'osc52'
+
+vim.g.clipboard = {
+  name = 'OSC52 copy, xcp paste',
+
+  copy = {
+    ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+    ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+  },
+
+  paste = {
+    ['+'] = { 'xcp', '--output' },
+    ['*'] = { 'xcp', '--output' },
+  },
+
+  cache_enabled = 0,
+}
 
 -- This causes neovim to use the system clipboard for all yanking operations,
 -- instead of needing to use the '+' or '*' registers explicitly.

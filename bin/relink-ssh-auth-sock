@@ -15,6 +15,16 @@ if [[
   ln -snf "$SSH_AUTH_SOCK" "$link"
 fi
 
+# When our link isn't valid, try to make it so.
+if ! [ -S "$link" ]; then
+  for agent in "$HOME/.ssh/agent"/*; do
+    if SSH_AUTH_SOCK="$agent" timeout 2s ssh-add -L > /dev/null 2>&1; then
+      ln -snf "$agent" "$link"
+      break
+    fi
+  done
+fi
+
 if [ -S "$link" ]; then
   printf '%s\n' "$link"
 else
