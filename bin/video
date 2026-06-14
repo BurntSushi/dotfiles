@@ -54,9 +54,9 @@ place_monitor() {
   local font_size=14
   local status_width=450
   local tray_width=100
-  if [[ $mheight > 1200 ]]; then
+  if [[ $mheight -gt 1200 ]]; then
     height=50
-    font_size=23
+    font_size=21
     status_width=650
     tray_width=300
   fi
@@ -80,20 +80,17 @@ killall dzen2 &> /dev/null
 killall stalonetray &> /dev/null
 
 case "$(myhostname)" in
-  duff|frink)
-    my-stalonetray &
-    start_dzen_workspaces 3 1170
-    ;;
-  nas2)
-    place_head "$1"
-    ;;
-  bart|kang)
-    if has_arg laptop "$@"; then
-      place_head laptop
+  bart|duff|kang|nas2)
+    if has_arg main "$@"; then
+      place_head main
     else
       place_head "$1"
     fi
     ;;
+  # duff|frink)
+    # my-stalonetray &
+    # start_dzen_workspaces 3 1170
+    # ;;
   flanders|milhouse|wiggum)
     place_head "$1"
     ;;
