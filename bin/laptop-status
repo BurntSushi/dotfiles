@@ -1,5 +1,11 @@
 #!/bin/sh
 
+if [ $# != 1 ]; then
+  echo "$(basename "$0") <font-size>" >&2
+  exit 1
+fi
+font_size="$1"
+
 battery="$(batrem -s | tr -d '\n')"
 if echo "$battery" | rg -q 'AC'; then
   batcolor=77dd77
@@ -8,4 +14,7 @@ else
 fi
 nowcolor=3b82ff
 now="$(bttf time fmt now -f "^fg(#$nowcolor)%a, %B %d, %Y, %H:%M %Z")"
-exec printf "%s  ^fg(#$batcolor)%s\n" "$now" "$battery"
+exec printf \
+  "^fn(Cousine:size=$font_size)%s  ^fn(Cousine:bold:size=$font_size)^fg(#$batcolor)%s\n" \
+  "$now" \
+  "$battery"

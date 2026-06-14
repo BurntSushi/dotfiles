@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 . "$HOME/bin/x11-go"
 
@@ -30,14 +30,6 @@ has_arg() {
   return 1
 }
 
-kill_dzen_workspaces() {
-  pgrep dzen-workspaces | xargs -r kill
-}
-
-start_trayer() {
-  (sleep 1 && trayer "$@") &
-}
-
 start_dzen_workspaces() {
   local monitor="$1"
   local y="$2"
@@ -56,15 +48,8 @@ place_monitor() {
   local my="$3"
   local mwidth="$4"
   local mheight="$5"
-  local font="Cousine:size=18"
-  local height=40
-
-  case "$(myhostname)" in
-    kang|bart)
-      font="Cousine:size=25"
-      height=50
-      ;;
-  esac
+  local height=50
+  local font_size=23
 
   local y=$((mheight - height + my))
   local tray_width=300
@@ -76,54 +61,31 @@ place_monitor() {
     pager_width=$((mwidth - tray_width))
   fi
 
-  kill_dzen_workspaces
-  killall trayer
-  killall dzen2
-
-  (
-    "$HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces" \
-      | dzen2 -dock -xs 2 -h "$height" -fn "$font" -ta l \
-        -bg '#ffffff' -y "$y"
-  ) &
-  (
-    trayer \
-      --widthtype pixel --width "$tray_width" \
-      --heighttype pixel --height "$height" \
-      --edge bottom --align right \
-      --monitor "$monitor" \
-      --SetDockType true
-  ) &
-
+  dzen-wingo-workspaces \
+    "$font_size" "$monitor" \
+    "$y" "$pager_width" "$height" &
   if is-laptop; then
-    pgrep batrem | xargs -r kill
-    (
-      while true; do
-        laptop-status && sleep 10s
-      done
-    ) | dzen2 -dock -fn "Cousine:size=18" -fg black -bg white \
-      -x "$((mx + pager_width))" -y "$y" -w "$bat_width" -h "$height" &
+    dzen-laptop-status \
+      "$font_size" "$monitor" \
+      "$((mx + pager_width))" "$y" "$height" &
   fi
+  my-stalonetray &
 }
 
-if ! gohead set "$@"; then
+if ! gohead set "$@" &> /dev/null; then
   exit 1
 fi
-sleep 1
+
+killall dzen-workspaces &> /dev/null
+killall dzen2 &> /dev/null
+killall stalonetray &> /dev/null
 
 case "$(myhostname)" in
   duff|frink)
-    kill_dzen_workspaces
-    killall trayer
-    start_trayer \
-      --widthtype pixel --width 150 \
-      --heighttype pixel --height 40 \
-      --edge bottom --align right --monitor 1 \
-      --SetDockType true
+    my-stalonetray &
     start_dzen_workspaces 3 1170
     ;;
   nas2)
-    kill_dzen_workspaces
-    killall stalonetray
     my-stalonetray &
     (
       "$HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces" \
@@ -141,13 +103,7 @@ case "$(myhostname)" in
     place_head "$1"
     ;;
   otto)
-    kill_dzen_workspaces
-    killall trayer
-    start_trayer \
-      --widthtype pixel --width 150 \
-      --heighttype pixel --height 40 \
-      --edge bottom --align right \
-      --SetDockType true
+    my-stalonetray &
 
     head_height="$(gohead query tv | cut -f4)"
     start_dzen_workspaces 2 "$((head_height - 40))"
