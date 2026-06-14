@@ -48,28 +48,27 @@ place_monitor() {
   local my="$3"
   local mwidth="$4"
   local mheight="$5"
-  local height=50
-  local font_size=23
 
   local y=$((mheight - height + my))
-  local tray_width=300
-  local bat_width=650
-  local pager_width
-  if is-laptop; then
-    pager_width=$((mwidth - bat_width - tray_width))
-  else
-    pager_width=$((mwidth - tray_width))
+  local height=35
+  local font_size=14
+  local status_width=450
+  local tray_width=100
+  if [[ $mheight > 1200 ]]; then
+    height=50
+    font_size=23
+    status_width=650
+    tray_width=300
   fi
 
+  local pager_width=$((mwidth - status_width - tray_width))
   dzen-wingo-workspaces \
     "$font_size" "$monitor" \
     "$y" "$pager_width" "$height" &
-  if is-laptop; then
-    dzen-laptop-status \
-      "$font_size" "$monitor" \
-      "$((mx + pager_width))" "$y" "$height" &
-  fi
-  my-stalonetray &
+  dzen-laptop-status \
+    "$font_size" "$monitor" \
+    "$((mx + pager_width))" "$y" "$height" &
+  my-stalonetray "$height" &
 }
 
 if ! gohead set "$@" &> /dev/null; then
@@ -86,11 +85,7 @@ case "$(myhostname)" in
     start_dzen_workspaces 3 1170
     ;;
   nas2)
-    my-stalonetray &
-    (
-      "$HOME/.config/wingo/scripts/dzen-workspaces/dzen-workspaces" \
-        | dzen2 -dock -xs 3 -h 40 -fn 'Cousine-18' -ta l -bg '#ffffff' -y 1170
-    ) &
+    place_head "$1"
     ;;
   bart|kang)
     if has_arg laptop "$@"; then

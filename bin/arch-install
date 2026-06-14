@@ -227,7 +227,7 @@ xpkgs() {
     pipewire-audio pipewire-pulse pipewire-alsa wireplumber \
     pamixer pavucontrol \
     recordmydesktop \
-    variety \
+    feh variety \
     stalonetray \
     firefox
   systemctl --user enable wireplumber
