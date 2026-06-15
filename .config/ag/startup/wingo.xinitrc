@@ -30,8 +30,10 @@ case "$(myhostname)" in
     ag-blueberry-tray &
     (volume mute ; volume mute) &
     restart-compositor &
-    if is-laptop; then
+    if cmd-exists nm-applet; then
       nm-applet &
+    fi
+    if is-laptop; then
       autobright &
 
       # An agent to make the fingerprint sensor work.
