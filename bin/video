@@ -8,10 +8,8 @@
 # "primary" head to be the one given.
 place_head() {
   local head_name="$1"
-  local monitor
   local x y w h
 
-  monitor="$(head_num "$head_name")"
   IFS=$'\t' read -r x y w h < <(gohead query "$head_name" | cut -f2-5)
   # This is important because stalonetray bases its positioning on the primary
   # RandR monitor.
@@ -57,11 +55,6 @@ place_by_head_geometry() {
   my-stalonetray "0" "0" "$height" &
 }
 
-head_num() {
-  local head_name="$1"
-  gohead tabs | cut -f1-2 | grep "$head_name" | cut -f1
-}
-
 has_arg() {
   local search="$1"
   shift
@@ -85,24 +78,12 @@ killall dzen-workspaces &> /dev/null
 killall dzen2 &> /dev/null
 killall stalonetray &> /dev/null
 
-# Now place our pager, status info and system tray on the right monitor.
-case "$(myhostname)" in
-  bart|duff|kang|milhouse|nas2|otto)
-    # Look for a special head to place our stuff on first.
-    for special in main middle; do
-      if has_arg "$special" "$@"; then
-        place_head "$special"
-        exit 0
-      fi
-    done
-    # Otherwise fall back to the first one given.
-    place_head "$1"
-    ;;
-  flanders|wiggum)
-    place_by_head_geometry "$1"
-    ;;
-  *)
-    echo "Unrecognized machine '$(hostname)'." >&2
-    exit 1
-    ;;
-esac
+# Look for a special head to place our stuff on first.
+for special in main middle; do
+  if has_arg "$special" "$@"; then
+    place_head "$special"
+    exit 0
+  fi
+done
+# Otherwise fall back to the first one given.
+place_head "$1"
