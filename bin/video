@@ -37,7 +37,7 @@ place_by_head_geometry() {
   local font_size=14
   local status_width=450
   local tray_width=100
-  if [[ $mheight -gt 1200 ]]; then
+  if [[ $mheight -gt 1200 ]] || is-media; then
     height=50
     font_size=21
     status_width=650
