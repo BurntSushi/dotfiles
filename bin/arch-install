@@ -207,7 +207,7 @@ xpkgs() {
   pacman --noconfirm -S \
     xterm \
     alacritty \
-    k3b konversation konsole dolphin okular \
+    k3b konversation konsole dolphin okular ffmpegthumbs \
     qt6ct oxygen oxygen-icons kde-cli-tools \
     xbindkeys \
     libnotify \
