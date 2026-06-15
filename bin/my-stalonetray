@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 
-if [ $# != 1 ]; then
-  echo "$(basename "$0") <height>" >&2
+if [ $# != 3 ]; then
+  echo "$(basename "$0") <x> <y> <height>" >&2
   exit 1
 fi
-height="$1"
-shift
+x="$1"
+y="$2"
+h="$3"
+shift 3
 
 stalonetray \
   --background '#ffffff' \
-  --geometry 1x1-0-0 \
-  --icon-size "$height" \
+  --geometry 1x1-$x-$y \
+  --icon-size "$h" \
   --icon-gravity E \
   --grow-gravity E \
   --window-strut bottom \

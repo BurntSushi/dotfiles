@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 if [ $# != 5 ]; then
-  echo "$(basename "$0") <font-size> <monitor> <x> <y> <h>" >&2
+  echo "$(basename "$0") <font-size> <x> <y> <w> <h>" >&2
   exit 1
 fi
 
 font_size="$1"
-monitor="$2"
-x="$3"
-y="$4"
+x="$2"
+y="$3"
+w="$4"
 h="$5"
 (
   while "true"; do
@@ -16,4 +16,4 @@ h="$5"
     sleep 10s
   done
 ) | dzen2 -dock -fn Cousine -fg black -bg white -ta l -sa c \
-      -xs "$monitor" -x "$x" -y "$y" -h "$h"
+      -x "$x" -y "$y" -w "$w" -h "$h"
