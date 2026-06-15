@@ -31,7 +31,7 @@
 # Play volume ding when it changes.
 ding() {
     sound=/usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
-    audio-play "$sound"
+    pw-play "$sound"
 }
 
 # Get the volume as a percentage.

@@ -11,7 +11,7 @@ if [ -z "$summary" ]; then
 fi
 if [ "$host" = "$(myhostname)" ]; then
   notify-send "$summary" "$body" &
-  audio-play /usr/share/sounds/freedesktop/stereo/complete.oga &
+  pw-play /usr/share/sounds/freedesktop/stereo/complete.oga &
   wait
 else
   if timeout 2 ssh-add -l &> /dev/null; then

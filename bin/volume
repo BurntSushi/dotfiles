@@ -30,7 +30,7 @@ notify_volume() {
 
 # Play a little beep.
 beep() {
-  audio-play /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
+  pw-play /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
 }
 
 # Gets an icon for the provided volume. The volume provided should be a
@@ -51,49 +51,26 @@ get_volume_icon() {
   echo "$icon"
 }
 
-case "$(myhostname)" in
-  nas2|duff|kang|bart|flanders|milhouse|otto|wiggum)
-    case $1 in
-      up)
-        pamixer --increase 5
-        notify_volume
-        ;;
-      down)
-        pamixer --decrease 5
-        notify_volume
-        ;;
-      mute)
-        if ! eval $(pamixer --get-mute); then
-          notify_muted
-        fi
-        pamixer --toggle-mute
-        if ! eval $(pamixer --get-mute); then
-          notify_volume
-        fi
-        ;;
-      *)
-        echo "Unrecognized command: $1" >&2
-        exit 1
-        ;;
-    esac
+case $1 in
+  up)
+    pamixer --increase 5
+    notify_volume
+    ;;
+  down)
+    pamixer --decrease 5
+    notify_volume
+    ;;
+  mute)
+    if ! eval $(pamixer --get-mute); then
+      notify_muted
+    fi
+    pamixer --toggle-mute
+    if ! eval $(pamixer --get-mute); then
+      notify_volume
+    fi
     ;;
   *)
-    case "$(hostname)" in
-      *)      control='Master' mcontrol='Master' ;;
-    esac
-    case "$(hostname)" in
-      monty|Turtle)
-        card=0
-        ;;
-      *)
-        card=1
-        ;;
-    esac
-
-    case $1 in
-      up)   amixer -c$card set "$control" 2+ unmute ;;
-      down) amixer -c$card set "$control" 2- unmute ;;
-      mute) amixer -q set "$mcontrol" toggle ;;
-    esac
+    echo "Unrecognized command: $1" >&2
+    exit 1
     ;;
 esac

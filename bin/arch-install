@@ -223,6 +223,7 @@ xpkgs() {
     scrot \
     freerdp \
     gvim \
+    vorbis-tools \
     noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra \
     pipewire-audio pipewire-pulse pipewire-alsa wireplumber \
     pamixer pavucontrol \
