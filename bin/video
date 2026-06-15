@@ -44,7 +44,6 @@ place_by_head_geometry() {
   local extended_status_width=$((status_width + tray_width))
   local pager_width=$((mwidth - extended_status_width))
   local y=$((mheight - height + my))
-  echo $font_size $mx $y $pager_width $height
   dzen-wingo-workspaces "$font_size" "$mx" "$y" "$pager_width" "$height" &
   dzen-laptop-status \
     "$font_size" \
