@@ -6,7 +6,7 @@ set -e
 
 base="$HOME/.config/ag/startup"
 case "$(myhostname)" in
-  bart|nas2|duff)
+  bart|nas2|duff|otto)
     run-wingo-environment &
     # Wait for Wingo to start before doing other things that generally require
     # a WM to be present below. e.g., Starting the bottom dock in `video`.
@@ -37,6 +37,9 @@ case "$(myhostname)" in
       # An agent to make the fingerprint sensor work.
       /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
     fi
+    if is-media; then
+      idesk &
+    fi
 
     # Run the 1password tray.
     1password \
@@ -57,8 +60,5 @@ case "$(myhostname)" in
     ;;
   wiggum)
     exec "$base/wingo-wiggum.xinitrc"
-    ;;
-  otto)
-    exec "$base/wingo-otto.xinitrc"
     ;;
 esac

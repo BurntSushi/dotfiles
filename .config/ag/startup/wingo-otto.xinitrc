@@ -2,7 +2,7 @@
 
 startup &
 sleep 2
-video tv
+video main
 nitrogen --restore
 gkrellm &
 idesk &
