@@ -6,7 +6,7 @@ set -e
 
 base="$HOME/.config/ag/startup"
 case "$(myhostname)" in
-  bart|nas2|duff|otto)
+  bart|nas2|duff|otto|milhouse)
     run-wingo-environment &
     # Wait for Wingo to start before doing other things that generally require
     # a WM to be present below. e.g., Starting the bottom dock in `video`.
@@ -57,9 +57,9 @@ case "$(myhostname)" in
   flanders)
     exec "$base/wingo-flanders.xinitrc"
     ;;
-  milhouse)
-    exec "$base/wingo-milhouse.xinitrc"
-    ;;
+  # milhouse)
+    # exec "$base/wingo-milhouse.xinitrc"
+    # ;;
   wiggum)
     exec "$base/wingo-wiggum.xinitrc"
     ;;
