@@ -13,7 +13,7 @@ place_head() {
   IFS=$'\t' read -r x y w h < <(gohead query "$head_name" | cut -f2-5)
   # This is important because stalonetray bases its positioning on the primary
   # RandR monitor.
-  gohead primary "$head_name"
+  gohead primary "$head_name" &> /dev/null
   place_by_head_geometry "$x" "$y" "$w" "$h"
 }
 
