@@ -73,6 +73,10 @@ reenv() {
   eval $(tmux show-environment -s DISPLAY)
 }
 
+x11fwd() {
+  eval $(tmux show-environment -s DISPLAY)
+}
+
 ssh_reagent() {
   for agent in "$HOME/.ssh/agent"/* /tmp/ssh-*/agent.*; do
     export SSH_AUTH_SOCK="$agent"
