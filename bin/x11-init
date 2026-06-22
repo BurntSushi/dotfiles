@@ -46,29 +46,42 @@ esac
 variety &
 dunst &
 ag-blueberry-tray &
-(volume mute ; volume mute) &
 restart-compositor &
-if cmd-exists nm-applet; then
-  nm-applet &
-fi
-if is-laptop; then
-  autobright &
 
-  # An agent to make the fingerprint sensor work.
-  /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-fi
-if is-media; then
-  idesk &
-fi
-
-# Run the 1password tray.
 1password \
   --silent \
   --force-device-scale-factor=1.5 \
   --log=debug &> /tmp/1password.log &
 
+if cmd-exists nm-applet; then
+  nm-applet &
+fi
+
 if is-laptop; then
-  (ssh-add-keys && relink-ssh-auth-sock && systemctl --user start mount-nas) &
+  autobright &
+
+  # I can't remember why I do this for my laptop.
+  (volume mute ; volume mute) &
+
+  # An agent to make the fingerprint sensor work.
+  /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+
+  (
+    ssh-add-keys
+    relink-ssh-auth-sock
+    systemctl --user start mount-nas
+  ) &
+elif is-media; then
+  # Show some nice icons for our media PCs.
+  idesk &
+  (
+    # The media PCs have a passwordless ssh key
+    # that grants them access to the NAS. But it
+    # needs to be in the agent for it to work.
+    ssh-add ~/.ssh/id_rsa
+    # Ensure we've re-linked our ssh auth socket.
+    relink-ssh-auth-sock
+  ) &
 fi
 
 while true; do sleep 86400s; done
