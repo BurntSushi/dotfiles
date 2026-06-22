@@ -14,6 +14,9 @@ place_head() {
   # This is important because stalonetray bases its positioning on the primary
   # RandR monitor.
   gohead primary "$head_name" &> /dev/null
+  # Put the pointer on one of the monitors.
+  wingo-cmd '(HeadFocus 0)'
+  wingo-cmd '(MovePointerRelative 0 0)'
   place_by_head_geometry "$x" "$y" "$w" "$h"
 }
 
