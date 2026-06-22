@@ -90,6 +90,7 @@
 #   sshinit
 #   scannerinit
 #   autologin (for media PCs)
+#   nasinit (for PCs wanting automatic NAS connection via sshfs)
 #
 # Time for some manual steps:
 #
@@ -159,12 +160,6 @@ rootinit() {
 }
 
 x() {
-  if [ $# != 1 ]; then
-    echo "Usage: $(basename "$0") x <intel | radeon>" >&2
-    exit 1
-  fi
-  driver="$1"
-
   pacman --noconfirm -S xorg xorg-xinit
 }
 
@@ -415,6 +410,13 @@ ExecStart=-/usr/bin/agetty --autologin andrew --noclear %I $TERM
 EOF
 }
 
+nasinit() {
+  systemctl --user enable mount-nas
+  systemctl --user start mount-nas
+  cd ~/system/etc/NetworkManager/dispatcher.d/50-mount-nas || exit 1
+  ln -s run copy:$(myhostname)
+}
+
 case "$1" in
   encrypt) shift ; encrypt "$@" ;;
   bootstrap) shift ; bootstrap "$@" ;;
@@ -439,6 +441,7 @@ case "$1" in
   sshinit) shift ; sshinit "$@" ;;
   scannerinit) shift ; scannerinit "$@" ;;
   autologin) shift ; autologin "$@" ;;
+  nasinit) shift ; nasinit "$@" ;;
   *)
     echo "unrecognized command" >&2
     exit 1
