@@ -1,6 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 
-if [[ "$(uname)" = *CYGWIN* ]]; then
+case "$(uname)" in
+  *CYGWIN*)
     exit 0
-fi
-exit 1
+    ;;
+  *)
+    exit 1
+    ;;
+esac

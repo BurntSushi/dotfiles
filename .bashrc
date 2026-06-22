@@ -1,10 +1,7 @@
 # Check for an interactive session
 [ -z "$PS1" ] && return
 
-# Define aliases and generic shell variables.
-[[ -f ~/.pathrc ]] && . ~/.pathrc
-[[ -f ~/.aliasrc ]] && . ~/.aliasrc
-[[ -f ~/.envrc ]] && . ~/.envrc
+. "$HOME/.bashenv"
 
 # Setup umask.
 # N.B. kent is a shared system, so use more restrictive umask.

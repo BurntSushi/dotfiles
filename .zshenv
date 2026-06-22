@@ -1,0 +1,5 @@
+# vim: ft=zsh sw=2 ts=2 sts=2
+
+[[ -f ~/.pathrc ]] && . ~/.pathrc
+[[ -f ~/.aliasrc ]] && . ~/.aliasrc
+[[ -f ~/.envrc ]] && . ~/.envrc

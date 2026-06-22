@@ -1,11 +1,6 @@
 # shellcheck disable=SC2034,SC2206
 # vim: ft=zsh sw=2 ts=2 sts=2
 
-# Define aliases and generic shell variables.
-[[ -f ~/.pathrc ]] && . ~/.pathrc
-[[ -f ~/.aliasrc ]] && . ~/.aliasrc
-[[ -f ~/.envrc ]] && . ~/.envrc
-
 # When doing Astral work, do some custom setup.
 if tmux-is-astral; then
   . ~/.astralrc

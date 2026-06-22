@@ -1,5 +1,8 @@
 # vim: ft=sh sw=2 ts=2 sts=2
 
+# Nudge bash to read `~/.bashenv` for non-interactive scripts.
+export BASH_ENV="$HOME/.bashenv"
+
 . "$HOME/.bashrc"
 
 if cmd-exists startx; then
