@@ -31,6 +31,8 @@ until ssh -o BatchMode=yes -o ConnectTimeout=3 nas true >/dev/null 2>&1; do
   sleep 2
 done
 
+echo "done waiting; connecting to NAS..."
+
 # For our media PCs, we mount the NAS as read-only.
 # Why? Because I have a 5.5 year old (as of 2026-06-15)
 # and sometimes he does wild things.
@@ -60,5 +62,6 @@ until findmnt -T /m >/dev/null 2>&1; do
   sleep 1
 done
 
+echo "NAS is mounted"
 A self 'NAS is mounted'
 wait "$sshfs_pid"
