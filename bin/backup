@@ -38,6 +38,12 @@
 
 set -e
 
+# Make everything operate in the C locale. Otherwise I've found inconsistencies
+# between `sort` and `join` that seem like a bug, but that I don't know enough
+# to confirm it as such. Either way, we don't care about real locales. We just
+# want something sorted.
+export LC_ALL=C
+
 # The temporary directories to use while performing backups.
 TMPDIR="/m/tmp"
 # This directory is a placeholder for compressing and encrypting "one time"
@@ -205,7 +211,7 @@ cmd_sync() {
 
   # Find the md5 sums of the current files.
   find "$sync_dir" -type f -print0 \
-    | xargs -0 -n512 -P4 md5sum | \
+    | xargs -0 -n512 -P8 md5sum | \
     while read -r md5 path; do
       echo -e "$path\t$md5"
     done \
@@ -225,7 +231,7 @@ cmd_sync() {
 
   # Find everything in the current set that isn't in the old set and add it.
   comm -13 "$old_files" "$new_files" \
-    | xargs --no-run-if-empty -d'\n' -P4 -n128 \
+    | xargs --no-run-if-empty -d'\n' -P8 -n128 \
         "$0" --internal-encrypt-and-sum adding
   # Find everything in the old set that isn't in the current set and remove it.
   comm -23 "$old_files" "$new_files" | \
@@ -241,7 +247,7 @@ cmd_sync() {
         echo "$path"
       fi
     done \
-    | xargs --no-run-if-empty -d'\n' -P4 -n128 \
+    | xargs --no-run-if-empty -d'\n' -P8 -n128 \
         "$0" --internal-encrypt-and-sum updating
   # Clean up after ourselves.
   rm -f "$old_md5" "$old_files" "$new_md5" "$new_files"
