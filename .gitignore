@@ -9,6 +9,9 @@
 # ignore it in `~/.ignore`.
 !.*
 
+# This is my syncthing directory.
+/sync
+
 # top-level hidden files/directories that we specifically ignore and skip over.
 # It's annoying to maintain this list, but it's worth doing IMO. Because it
 # lets us craft a small(ish) `$HOME` environment that works well with tools
