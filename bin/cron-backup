@@ -1,7 +1,6 @@
 #!/bin/zsh
 
 export HOME=/home/andrew
-# . $HOME/.zshrc
 
 LOG=/m/log/backup.log
 
