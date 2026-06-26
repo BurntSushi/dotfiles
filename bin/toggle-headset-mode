@@ -25,7 +25,7 @@ beep() {
 }
 
 case "$(myhostname)" in
-  kang|bart)
+  maggie|bart)
     card=bluez_card.50_C2_75_69_8E_5E
     ;;
   *)

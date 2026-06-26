@@ -17,7 +17,7 @@ apply() {
   xset b 0
 
   case "$(myhostname)" in
-    bart|kang)
+    bart|maggie)
       framework-configure-touchpad
       ;;
     nas2|wiggum|otto|flanders|milhouse)

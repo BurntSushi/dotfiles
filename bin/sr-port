@@ -14,7 +14,7 @@ case "$host" in
   armlisa)
     port=3001
     ;;
-  kang)
+  maggie)
     port=3002
     ;;
   bart)
