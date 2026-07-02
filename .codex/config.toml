@@ -1,10 +1,11 @@
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
-model_reasoning_effort = "high"
+model_reasoning_effort = "xhigh"
 notify = [
   "sh", "-c",
   "A bart 'Codex' 'Done or waiting for input'",
 ]
+model = "gpt-5.5"
 
 [tui]
 notifications = ["agent-turn-complete", "approval-requested"]
