@@ -366,6 +366,7 @@ xenvinit() {
   go install -v github.com/BurntSushi/wingo/...@latest
   go install -v github.com/BurntSushi/gohead/...@latest
   git clone https://github.com/BurntSushi/wingo /tmp/wingo
+  mkdir -p ~/.local/share
   cp -a /tmp/wingo/data ~/.local/share/wingo
 
   # Someone seems to have fucked up the KDE/qt6 packages
@@ -412,6 +413,8 @@ EOF
 }
 
 nasinit() {
+  sudo mkdir /m
+  sudo chown andrew:users /m
   systemctl --user enable mount-nas
   systemctl --user start mount-nas
   cd ~/system/etc/NetworkManager/dispatcher.d/50-mount-nas || exit 1
