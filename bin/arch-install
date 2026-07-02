@@ -182,6 +182,7 @@ pkgs() {
     asciidoc \
     pdftk \
     unzip \
+    iwd \
     cronie openssh openssl sshfs sshuttle gnupg tmux nfs-utils enscript \
     docker ffmpeg jq ripgrep yt-dlp fzf \
     iotop htop linux-tools pkgfile pwgen pv strace tig time tree valgrind \
