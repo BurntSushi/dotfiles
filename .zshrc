@@ -131,9 +131,16 @@ add-zsh-hook -Uz precmd precmd
 add-zsh-hook -Uz preexec preexec
 
 # Enable fzf integration.
-if [[ -f ~/.fzf.zsh ]]; then
-  . ~/.fzf.zsh
-fi
+fzffiles=(
+  ~/.fzf.zsh
+  /usr/share/fzf/key-bindings.zsh
+)
+for p in "${fzffiles[@]}"; do
+  if [[ -f "$p" ]]; then
+    . "$p"
+    break
+  fi
+done
 
 # Enable auto suggestions when typing commands.
 zshauto=(
