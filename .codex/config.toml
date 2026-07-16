@@ -1,16 +1,20 @@
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "ultra"
 notify = [
   "sh", "-c",
   "A bart 'Codex' 'Done or waiting for input'",
 ]
-model = "gpt-5.5"
+model = "gpt-5.6-sol"
 
 [tui]
 notifications = ["agent-turn-complete", "approval-requested"]
 notification_condition = "unfocused"
 notification_method = "auto"
+
+[tui.model_availability_nux]
+"gpt-5.5" = 4
+"gpt-5.6-sol" = 4
 
 [projects."/home/andrew/code/rust/jiff/master"]
 trust_level = "trusted"
@@ -33,8 +37,20 @@ trust_level = "trusted"
 [projects."/home/andrew"]
 trust_level = "trusted"
 
-[tui.model_availability_nux]
-"gpt-5.5" = 4
+[projects."/home/andrew/code/rust/ripgrep/master"]
+trust_level = "trusted"
+
+[projects."/home/andrew/clones/fff"]
+trust_level = "trusted"
+
+[projects."/home/andrew/clones/redb"]
+trust_level = "trusted"
+
+[projects."/home/andrew/code/rust/ruff/main"]
+trust_level = "trusted"
+
+[projects."/home/andrew/code/rust/snap"]
+trust_level = "trusted"
 
 [plugins."google-calendar@openai-curated"]
 enabled = true
