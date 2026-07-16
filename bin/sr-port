@@ -23,6 +23,9 @@ case "$host" in
   nas2)
     port=3004
     ;;
+  marge)
+    port=3005
+    ;;
   *)
     echo "sr-port: unrecognized hostname $host" >&2
     exit 1

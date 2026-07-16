@@ -1,0 +1,39 @@
+# [NoDecor] 
+# match := MatchClientClass ":client:" "google-chrome" 
+#  
+# managed := FrameNada ":client:" 
+
+[ForceFloating]
+match := MatchClientClass ":client:" "gimp"
+
+managed := ToggleFloating ":client:"
+
+[Resize]
+match := MatchClientClass ":client:" "konsole"
+
+managed := Resize ":client:" 0.6 0.6
+managed := Move (GetActive) 0.2 0.2
+
+[FocusTransparency]
+# If you have a compositing manager running, this will use transparency
+# to indicate focus.
+match := True
+
+focused := SetOpacity ":client:" 1.0
+unfocused := SetOpacity ":client:" 0.85
+
+[Autostart]
+match := True
+
+# You can add startup programs here if you like.
+#startup := Shell "xterm"
+
+# You can add more by just adding another definition of "startup".
+#startup := Shell "gkrellm"
+
+[Dale]
+# Dale is an easter egg.
+# Use "match := False" to disable. Or delete it. Whatever.
+match := False
+
+startup := Dale

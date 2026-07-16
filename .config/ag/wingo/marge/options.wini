@@ -1,0 +1,57 @@
+[Options]
+# The list of workspaces to set upon startup. Workspaces can be added or
+# removed while Wingo is running.
+workspaces := 1 2 3 4 mail browser irc text s1 s2 s3 doc
+
+# The default layout that is used in a particular workspace. Currently, the
+# only available layouts are: Floating, Vertical or Horizontal.
+# Setting this to something other than a Floating layout effectively turns
+# Wingo into a tiling window manager.
+default_layout := Floating
+
+# When enabled, windows will be focused when the mouse enters the window.
+# N.B. I don't use focus follows mouse, so I'm not sure precisely how it
+# should work. If I've messed up, file a bug report.
+focus_follows_mouse := no
+
+# If enabled, head focus will follow the mouse. That is, moving the mouse to
+# another monitor will move the focus to the workspace on that monitor.
+# Note that this does not require that "focus_follows_mouse" be enabled;
+# however this only works when the mouse is directly over the root window.
+# (So enabling this option might be weight if "focus_follows_mouse" is
+# disabled.)
+#
+# N.B. It is possible that this could have an effect on performance, since
+# all pointer motion events on the root window must be inspected.
+focus_follows_mouse_head := no
+
+# Whether error messages should be shown or not. Error messages typically
+# show up when you've tried to do something illegal with one of Wingo's
+# commands.
+# Error messages acquire focus and do not disappear until they lose focus, or
+# if the "confirm" or "cancel" keys have been pressed.
+show_popup_errors := yes
+
+# Whether FYI messages should be shown or not. These are typically used to
+# indicate state changes, like when a the current workspace is changed.
+# Note that FYI messages only appear for a set amount of time (see "popup_time"
+# below) and then disappear. They never acquire focus.
+show_popup_fyi := yes
+
+# The time that an "FYI" message window stays visible in milliseconds.
+# After time expires, the message disappears.
+popup_time := 500
+
+# The key that acts as the "confirm" key. This is mostly used in prompts. When
+# the confirm key is pressed, the prompt will execute an action corresponding
+# to the inputted text or the selected item.
+confirm := Return
+
+# The key that acts as the "cancel" key. This is mostly used in prompts. When
+# the cancel key is pressed, the prompt disappears and no action occurs.
+cancel := Escape
+
+# The program to use to play a wav file. This is only used with the "Dale"
+# command, which is an easter egg.
+audio_play_cmd := aplay
+
