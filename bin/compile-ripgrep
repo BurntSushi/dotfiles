@@ -1,12 +1,16 @@
 #!/usr/bin/env zsh
 
 checkout="$HOME/rust/ripgrep"
+if ! [ -d "$checkout" ]; then
+  checkout="$HOME/rust/master/ripgrep"
+fi
 custom=
+suffix=
 debug=
-# features='simd-accel'
 features=''
 target=''
 target_flag=''
+cargo=cargo
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -21,18 +25,26 @@ while [ $# -gt 0 ]; do
     --musl)
         target='x86_64-unknown-linux-musl'
         target_flag=("--target" $target)
+        cargo=cross
         shift
         ;;
     --help)
-        echo "Usage: $(basename "$0") [--debug --pcre2 --musl]"
+        echo "Usage: $(basename "$0") [--debug --pcre2 --musl] [<checkout> [<suffix>]]"
         exit
         ;;
     -*)
         break
         ;;
     *)
-        checkout="$1"
-        custom=1
+        if [ -z "$custom" ]; then
+          checkout="$1"
+          custom=1
+        elif [ -z "$suffix" ]; then
+          suffix="$1"
+        else
+          echo "Usage: $(basename "$0") [--debug --pcre2 --musl] [<checkout> [<suffix>]]" >&2
+          exit 1
+        fi
         shift
         ;;
     esac
@@ -42,7 +54,7 @@ done
 # export RUSTFLAGS="-C target-cpu=native -C link-arg=-fuse-ld=lld"
 # export RUSTFLAGS="--cfg regex_disable_auto_optimizations --cfg regex_runtime_teddy_ssse3"
 if [ -n "$debug" ]; then
-  cargo build "$@" \
+  $cargo build "$@" \
     --manifest-path "$checkout/Cargo.toml" \
     --features "$features" \
     $target_flag
@@ -52,7 +64,7 @@ if [ -n "$debug" ]; then
     bin="$checkout/target/$target/debug/rg"
   fi
 else
-  cargo build "$@" \
+  $cargo build "$@" \
     --manifest-path "$checkout/Cargo.toml" \
     --features "$features" \
     --release \
@@ -78,4 +90,20 @@ if [ -z "$custom" ]; then
           cp "$bin" "$checkout/target/release/rg"
       fi
   fi
+fi
+
+rev="$(git -C "$checkout" rev-parse HEAD | head -c8)"
+if is-mac; then
+  dir="$HOME/bin/aarch64"
+else
+  dir="$HOME/bin/x86_64"
+fi
+for dest in "$dir/rg" "$dir/rg-$rev"; do
+  cp "$bin" "$dest"
+  echo "available at: $dest"
+done
+if [ -n "$suffix" ]; then
+  dest="$dir/rg-$suffix"
+  cp "$bin" "$dest"
+  echo "available at: $dest"
 fi
