@@ -187,7 +187,7 @@ pkgs() {
     docker ffmpeg jq ripgrep yt-dlp fzf \
     iotop htop linux-tools pkgfile pwgen pv strace tig time tree valgrind \
     vim \
-    git git-crypt tk \
+    git git-crypt git-absorb tk \
     aws-cli s3cmd colordiff curl wget ctags darkhttpd pass rsync \
     nodejs yarn \
     terminus-font \
@@ -280,7 +280,6 @@ aurpkgs() {
   # It looks like these need to be manually installed:
   #
   #   brother-mfc-l3770cdw
-  #   par
   #
   # The AUR packages appear borked.
   yay --noconfirm -S \
@@ -291,7 +290,8 @@ aurpkgs() {
     zsh-completions \
     zsh-syntax-highlighting \
     zsh-fast-syntax-highlighting-git \
-    dict-wn
+    dict-wn \
+    par
 }
 
 aurxpkgs() {
