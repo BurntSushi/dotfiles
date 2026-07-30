@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 
-checkout="$HOME/rust/ripgrep"
+checkout="$HOME/rust/ripgrep/master"
 if ! [ -d "$checkout" ]; then
-  checkout="$HOME/rust/master/ripgrep"
+  checkout="$HOME/rust/ripgrep"
 fi
 custom=
 suffix=
