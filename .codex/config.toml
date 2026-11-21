@@ -5,16 +5,19 @@ notify = [
   "sh", "-c",
   "A bart 'Codex' 'Done or waiting for input'",
 ]
-model = "gpt-5.6-sol"
+model = "gpt-6.1-sol"
 
 [tui]
 notifications = ["agent-turn-complete", "approval-requested"]
 notification_condition = "unfocused"
 notification_method = "auto"
+screen_reader_detection_done = true
+fullscreen_transcript = false
 
 [tui.model_availability_nux]
 "gpt-5.5" = 4
 "gpt-5.6-sol" = 4
+"gpt-6.1-sol" = 4
 
 [projects."/home/andrew/code/rust/jiff/master"]
 trust_level = "trusted"
@@ -56,6 +59,18 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/home/andrew/rust/jiff/master"]
+trust_level = "trusted"
+
+[projects."/home/andrew/rust/memchr"]
+trust_level = "trusted"
+
+[projects."/home/andrew/rust/regex/master"]
+trust_level = "trusted"
+
+[projects."/home/andrew/rust/uv/main"]
+trust_level = "trusted"
+
+[projects."/home/andrew/clones/blog"]
 trust_level = "trusted"
 
 [plugins."google-calendar@openai-curated"]
