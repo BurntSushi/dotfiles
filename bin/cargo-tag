@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+crate="$1"
+if [ -z "$crate" ]; then
+  echo "Usage: $(basename "$0") <crate>" >&2
+  exit 1
+fi
+exec cargo release tag \
+  --execute \
+  --no-confirm \
+  --sign-tag --tag-name '{{version}}' -p ${crate}

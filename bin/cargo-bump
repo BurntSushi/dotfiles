@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+if [ $# -le 1 ]; then
+  echo "Usage: $(basename "$0") <level-or-version> <crate> ..." >&2
+  exit 1
+fi
+shift
+
+level_or_version="$1"
+shift
+
+packages=""
+for crate; do
+  packages+=" -p $crate"
+done
+
+exec cargo release version --execute --no-confirm "$level_or_version" ${packages}
