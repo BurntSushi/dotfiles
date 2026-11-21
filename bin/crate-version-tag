@@ -1,9 +1,10 @@
 #!/bin/sh
 
-if [ $# != 1 ]; then
-    echo "Usage: $(basename $0) tag" >&2
+if [ $# = 0 ]; then
+    echo "Usage: $(basename $0) tag ..." >&2
     exit 1
 fi
 
-tag="$1"
-exec git tag -s -a "$tag" -m "$tag"
+for tag; do
+  git tag -s -a "$tag" -m "$tag"
+done
