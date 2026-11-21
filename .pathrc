@@ -40,6 +40,7 @@ if [ -r "/opt/homebrew" ]; then
 fi
 # My paths.
 PATH="$(prependpath "$PATH" "$CARGO_INSTALL_ROOT/bin")"
+PATH="$(prependpath "$PATH" "$HOME/.local/bin")"
 PATH="$(prependpath "$PATH" "$HOME/bin")"
 PATH="$(prependpath "$PATH" "$HOME/bin/x86_64")"
 PATH="$(prependpath "$PATH" "$HOME/bin/aarch64")"
