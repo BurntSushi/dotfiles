@@ -35,7 +35,7 @@ vim.lsp.config('rust_analyzer', {
       diagnostics = {
         enable = true,
         disabled = {
-          'inactive-code',
+          'inactive_code',
           'incorrect-ident-case',
           'unlinked-file',
           'unresolved-macro-call',
